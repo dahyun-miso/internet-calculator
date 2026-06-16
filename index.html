@@ -309,21 +309,100 @@ textarea:focus{outline:none;border-color:#3b6ef0}
   <span class="upd">최종 업데이트: 2025.03.30</span>
 </div>
 <script>
-(function(){
-  const AGENTS = { '박다현': '박다현', '김미진': '김미진' };
-  const params = new URLSearchParams(window.location.search);
-  const agent = params.get('agent');
-  if(agent && AGENTS[agent]){
-    // 헤더 배지에 에이전트명 표시
-    const badge = document.getElementById('agent-badge');
-    if(badge) badge.textContent = agent;
-    // 상담사 이름 입력 필드 자동 입력
-    window.addEventListener('DOMContentLoaded', function(){
-      const nameInput = document.getElementById('agent-name');
-      if(nameInput) nameInput.value = agent;
+// ── 에이전트별 localStorage 저장/불러오기 ──
+const AGENTS = { '박다현': '박다현', '김미진': '김미진' };
+const _agentParam = new URLSearchParams(window.location.search).get('agent');
+const AGENT_KEY = (_agentParam && AGENTS[_agentParam]) ? 'agent_' + _agentParam : null;
+
+// 헤더 배지 표시
+if(AGENT_KEY){
+  const badge = document.getElementById('agent-badge');
+  if(badge) badge.textContent = _agentParam;
+}
+
+// 저장할 필드 목록
+const SAVE_FIELDS = ['isp','internet','tv','tv-extra','router','phone','addon','bundle','install','agent-name','cust-name','install-date','mobile-isp','mobile-bundle'];
+
+function saveToStorage(){
+  if(!AGENT_KEY) return;
+  try {
+    const data = {};
+    SAVE_FIELDS.forEach(id => {
+      const el = document.getElementById(id);
+      if(el) data[id] = el.value;
     });
+    // 메모패드
+    const memo = document.getElementById('memo-pad');
+    if(memo) data['memo-pad'] = memo.value;
+    // 비교 탭 데이터
+    data['tabData'] = JSON.stringify(typeof tabData !== 'undefined' ? tabData : {});
+    data['currentTab'] = typeof currentTab !== 'undefined' ? currentTab : 1;
+    localStorage.setItem(AGENT_KEY, JSON.stringify(data));
+  } catch(e){}
+}
+
+function loadFromStorage(){
+  if(!AGENT_KEY) return;
+  try {
+    const raw = localStorage.getItem(AGENT_KEY);
+    if(!raw) return;
+    const data = JSON.parse(raw);
+
+    // 에이전트 이름 세팅
+    const nameEl = document.getElementById('agent-name');
+    if(nameEl) nameEl.value = data['agent-name'] || _agentParam;
+
+    // 기타 텍스트 필드
+    ['cust-name','install-date'].forEach(id => {
+      const el = document.getElementById(id);
+      if(el && data[id] !== undefined) el.value = data[id];
+    });
+
+    // 메모패드
+    const memo = document.getElementById('memo-pad');
+    if(memo && data['memo-pad']) memo.value = data['memo-pad'];
+
+    // ISP 먼저 세팅 후 드롭다운 채우기
+    const isp = data['isp'];
+    if(isp && typeof PRODUCTS !== 'undefined' && PRODUCTS[isp]){
+      const ispEl = document.getElementById('isp');
+      ispEl.value = isp;
+      ispEl.classList.add('isp-selected');
+      if(typeof onIspChange === 'function') onIspChange();
+      // 나머지 드롭다운
+      ['internet','tv','tv-extra','router','phone','addon','bundle','install'].forEach(id => {
+        const el = document.getElementById(id);
+        if(el && data[id] !== undefined){ el.value = data[id]; if(typeof updateWrapState==='function') updateWrapState(id); }
+      });
+      if(typeof updateDandokLock==='function') updateDandokLock();
+      if(typeof filterBundleOptions==='function') filterBundleOptions();
+    }
+
+    // 탭 데이터 복원
+    if(data['tabData'] && typeof tabData !== 'undefined'){
+      try { const td = JSON.parse(data['tabData']); Object.assign(tabData, td); } catch(e){}
+    }
+
+    if(typeof calc==='function') calc();
+  } catch(e){}
+}
+
+// 자동 저장: 모든 변경 시
+function _setupAutoSave(){
+  // 드롭다운/입력 변경 감지
+  document.addEventListener('change', saveToStorage);
+  document.addEventListener('input', saveToStorage);
+}
+
+window.addEventListener('DOMContentLoaded', function(){
+  // 에이전트명 기본 세팅 (저장값 없을 때)
+  if(AGENT_KEY){
+    const nameEl = document.getElementById('agent-name');
+    if(nameEl && !nameEl.value) nameEl.value = _agentParam;
   }
-})();
+  loadFromStorage();
+  _setupAutoSave();
+});
 </script>
 <div class="layout">
   <div class="left-col">
