@@ -3,17 +3,19 @@
 <head>
 <meta charset="UTF-8">
 <meta name="viewport" content="width=device-width, initial-scale=1.0">
-<title>인터넷 상품 요금 계산기</title>
+<title>미소 인터넷 결합 계산기</title>
 <style>
 *{box-sizing:border-box;margin:0;padding:0}
 html,body{height:100%;font-family:-apple-system,BlinkMacSystemFont,'Apple SD Gothic Neo','Noto Sans KR','Malgun Gothic',sans-serif;background:#eef0f4;color:#1a1a1a;font-size:16px}
 .header{background:#1e2b3a;color:#fff;padding:14px 28px;display:flex;align-items:center;gap:14px;position:sticky;top:0;z-index:100;box-shadow:0 2px 8px rgba(0,0,0,.25)}
-.header h1{font-size:19px;font-weight:700;letter-spacing:-.3px}
+.header h1{font-size:19px;font-weight:700;letter-spacing:-.3px;display:flex;align-items:center;gap:8px}
+.header h1 img{height:22px;display:block}
 .header .badge{font-size:12px;background:rgba(255,255,255,.15);padding:3px 10px;border-radius:20px;white-space:nowrap}
 .header .upd{margin-left:auto;font-size:12px;color:rgba(255,255,255,.5)}
 .layout{display:flex;flex-direction:row;padding:18px;gap:0;height:calc(100vh - 54px);overflow:hidden}
-.left-col{overflow-y:auto;display:flex;flex-direction:column;gap:14px;padding-right:4px;width:50%;min-width:280px;flex-shrink:0}
-.right-col{overflow-y:auto;display:flex;flex-direction:column;gap:14px;flex:1;min-width:280px;padding-left:18px}
+.left-col{overflow-y:auto;display:flex;flex-direction:column;gap:14px;padding-right:4px;width:33.333%;min-width:260px;flex-shrink:0}
+.mid-col{overflow-y:auto;display:flex;flex-direction:column;gap:14px;padding:0 14px;width:33.333%;min-width:260px;flex-shrink:0}
+.right-col{overflow-y:auto;display:flex;flex-direction:column;gap:14px;flex:1;min-width:260px;padding-left:4px}
 .card{background:#fff;border:1px solid #dde1e8;border-radius:12px;padding:18px 20px}
 .card-title{font-size:12px;font-weight:700;color:#7a8499;text-transform:uppercase;letter-spacing:.07em;margin-bottom:14px;display:flex;align-items:center;gap:6px}
 .card-title::before{content:'';display:inline-block;width:3px;height:14px;background:#3b6ef0;border-radius:2px}
@@ -65,7 +67,7 @@ textarea:focus{outline:none;border-color:#3b6ef0}
 .promo-note{display:none;font-size:13px;font-weight:600;color:#8a5900;background:#fff4cc;border:1px solid #f5c842;border-radius:8px;padding:8px 12px;margin-top:10px}
 ::-webkit-scrollbar{width:5px}
 ::-webkit-scrollbar-thumb{background:#ccd0da;border-radius:3px}
-@media(max-width:900px){.layout{grid-template-columns:1fr;height:auto;overflow:visible}.left-col,.right-col{overflow-y:visible}.result-hero .fee{font-size:34px}}
+@media(max-width:900px){.layout{grid-template-columns:1fr;height:auto;overflow:visible}.left-col,.mid-col,.right-col{overflow-y:visible}.result-hero .fee{font-size:34px}}
 
 /* ── 필드 래퍼 (X버튼 포함) ── */
 .field-wrap{display:flex;flex-direction:column;gap:5px}
@@ -304,10 +306,9 @@ textarea:focus{outline:none;border-color:#3b6ef0}
 .copy-toast.show{opacity:1;transform:translateX(-50%) translateY(0)}
 </style>
 <div class="header">
-  <img src="data:image/png;base64,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" alt="miso" style="height:28px;border-radius:6px;">
-  <h1>미소 인터넷 결합 계산기</h1>
+  <h1><img src="data:image/jpeg;base64,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" alt="miso">미소 인터넷 결합 계산기</h1>
   <span class="badge" id="agent-badge">인터넷 부서</span>
-  <span class="upd">최종 업데이트: 2026.06.16</span>
+  <span class="upd">최종 업데이트: 2025.03.30</span>
 </div>
 <div class="layout">
   <div class="left-col">
@@ -486,9 +487,9 @@ textarea:focus{outline:none;border-color:#3b6ef0}
 
   </div>
 
-  <div class="resizer" id="resizer"><div class="resizer-handle"></div></div>
+  <div class="resizer" id="resizer1"><div class="resizer-handle"></div></div>
 
-  <div class="right-col">
+  <div class="mid-col">
     <!-- 바로가기 버튼 -->
     <div style="display:flex;gap:6px;flex-wrap:wrap">
       <a class="qshortcut" href="https://app-na2.hubspot.com/user-guide/20652401?via=home" target="_blank">🟠 허브스팟</a>
@@ -550,7 +551,11 @@ textarea:focus{outline:none;border-color:#3b6ef0}
         <button class="memo-clear-btn" onclick="clearMemoKeepSummary()">🗑 지우기</button>
       </div>
     </div>
+  </div>
 
+  <div class="resizer" id="resizer2"><div class="resizer-handle"></div></div>
+
+  <div class="right-col">
     <!-- 전환 탭 -->
     <div class="right-tabs">
       <div class="right-tab active" onclick="switchRightTab('calc',this)">📊 계산기</div>
@@ -561,11 +566,11 @@ textarea:focus{outline:none;border-color:#3b6ef0}
     <div class="right-tab-panel" id="rtab-calc">
       <!-- 사은품 표 -->
       <div class="card">
-        <button class="gift-toggle-btn" id="gift-toggle-btn" onclick="toggleGiftTable()">
+        <button class="gift-toggle-btn open" id="gift-toggle-btn" onclick="toggleGiftTable()">
           <span>🎁 사은품 표 (2026/6 기준)</span>
           <span class="gt-arrow">▼</span>
         </button>
-        <div class="gift-table-wrap" id="gift-table-wrap">
+        <div class="gift-table-wrap open" id="gift-table-wrap">
           <table class="gift-table">
             <thead><tr><th>통신사</th><th>100단독</th><th>200단독</th><th>500단독</th><th>1G단독</th><th>100번들</th><th>200번들</th><th>500번들</th><th>기가번들</th></tr></thead>
             <tbody>
@@ -603,14 +608,10 @@ textarea:focus{outline:none;border-color:#3b6ef0}
           </div>
         </div>
         <div class="quick-accordion">
-          <button class="qacc-btn" id="qacc-btn-cov" onclick="toggleAcc('cov')"><span>📍 가용 조회</span><span class="qacc-arrow">▼</span></button>
-          <div class="qacc-body" id="qacc-body-cov" style="flex-direction:column">
-            <a class="qbtn" href="https://www.juso.go.kr/" target="_blank" style="width:100%;justify-content:center;background:#f5f7fb;border-color:#d0d5e0;color:#3b4a6b;font-size:12px">🏠 도로명 주소</a>
-            <div style="display:flex;gap:7px;width:100%">
-              <a class="qbtn kt" href="https://help.kt.com/serviceinfo/SearchHomePhone.do" target="_blank" style="flex:1;justify-content:center">KT</a>
-              <a class="qbtn sk" href="https://www.bworld.co.kr/myb/product/join/address/svcAveSearch.do" target="_blank" style="flex:1;justify-content:center">SKB</a>
-              <a class="qbtn lg" href="https://www.lguplus.com/support/online/coverage-check" target="_blank" style="flex:1;justify-content:center">LG</a>
-            </div>
+          <button class="qacc-btn open" id="qacc-btn-cov" onclick="toggleAcc('cov')"><span>📍 가용 조회</span><span class="qacc-arrow">▼</span></button>
+          <div class="qacc-body open" id="qacc-body-cov" style="flex-direction:column">
+            <a class="qbtn" href="https://www.ius-guide.kr/home#" target="_blank" style="width:100%;justify-content:center;display:flex;background:#eef2ff;border-color:#3b6ef0;color:#1a3a8f;padding:10px 13px;font-size:13px;font-weight:700">🔎 3사 통합 조회</a>
+            <a class="qbtn" href="https://www.juso.go.kr/" target="_blank" style="width:100%;justify-content:center;display:flex;background:#f5f7fb;border-color:#d0d5e0;color:#3b4a6b;padding:10px 13px;font-size:13px">🏠 도로명 주소</a>
           </div>
         </div>
         <div class="quick-accordion">
@@ -775,9 +776,11 @@ function clearField(id){
 
 /* ── 전체 초기화 ── */
 function resetProductSelection(){
-  // ISP는 초기화하지 않고 현재 값 유지, 드롭다운만 다시 채움
+  // ISP도 -- 선택하세요 -- 로 초기화
   const ispEl = document.getElementById('isp');
-  const currentIsp = ispEl ? ispEl.value : 'KT';
+  if(ispEl){ ispEl.value = ''; ispEl.classList.remove('isp-selected'); }
+  const ispWrap = document.getElementById('wrap-isp');
+  if(ispWrap) ispWrap.classList.remove('has-value');
   // 동적 드롭다운만 초기화
   ['internet','tv','tv-extra','router','phone','addon','bundle','install'].forEach(id => {
     const s = document.getElementById(id);
@@ -785,8 +788,8 @@ function resetProductSelection(){
     const w = document.getElementById('wrap-'+id);
     if(w) w.classList.remove('has-value','disabled');
   });
-  // 드롭다운 다시 채우기
-  if(currentIsp) onIspChange();
+  // ISP 변경 핸들러 호출 (선택값 없으므로 추가 동작 없이 상태만 정리)
+  onIspChange();
   // 날짜 피커
   const dp = document.getElementById('install-date-picker');
   if(dp){ dp.value=''; dp.style.borderColor='#d0d5e0'; }
@@ -953,7 +956,7 @@ function calcGift(isp, inet, tv, hasTv, bundle, phone){
   // SKY + 100/200mb + TV있음(ALL/베이직/플러스) + 결합있음 → 0
   if(isp==='SKY' && (inet.includes('100mb')||inet.includes('200mb')) &&
      hasTv && (tv.includes('ALL')||tv.includes('베이직')||tv.includes('플러스')) &&
-     bundle && bundle!=='없음') return {t:0,c:0,v:0};
+     bundle && bundle!=='없음') return {t:0,c:0,v:0,coupon:true};
 
   // KT: 결합 종류 + TV 종류에 따라 다른 gift 테이블 사용
   if(isp==='KT' || isp==='KT 오피스넷'){
@@ -1015,7 +1018,7 @@ function calcGift(isp, inet, tv, hasTv, bundle, phone){
     }
 
     // 결합 없을 때: 단순 총액
-    return typeof raw==='object' ? raw : {t:raw, c:raw, v:0, coupon:true};
+    return typeof raw==='object' ? {...raw, coupon:true} : {t:raw, c:raw, v:0, coupon:true};
   }
 
   // 기타 통신사 (LGU, SKB, SKT, 헬로비전 등)
@@ -1042,12 +1045,18 @@ function giftText(g,isp){
   const t = giftTotal(g);
   return `최대 ${fmt(t)}`;
 }
-function giftSub(g,isp){
+function giftSub(g,isp,bundle){
   if(!g||giftTotal(g)===0) return '';
   if(typeof g==='object' && g.c!==undefined){
     const vLabel = g.coupon ? '쿠폰' : '상품권';
+    let storeNote = '';
+    if(isp==='KT' && vLabel==='상품권'){
+      const bundleName = bundle && bundle!=='없음' ? (bundle.includes('/')?bundle.split('/').pop().trim():bundle) : '';
+      const isFamily = bundleName.includes('패밀리');
+      storeNote = isFamily ? ' (이마트 or 다이소)' : ' (이마트 or 롯데마트 or 다이소)';
+    }
     if(g.v===0) return `전액 현금 지급 · 설치 후 7일 이내 자동 지급`;
-    return `현금 ${fmt(g.c/10000)}만 + ${vLabel} ${fmt(g.v/10000)}만`;
+    return `현금 ${fmt(g.c/10000)}만 + ${vLabel} ${fmt(g.v/10000)}만${storeNote}`;
   }
   return '현금 지급 · 설치 후 7일 이내 자동 지급';
 }
@@ -1133,7 +1142,7 @@ function calc(){
     giftBox.style.display='block';
     if(gt>0){
       document.getElementById('gift-amount').textContent=giftText(gift,isp);
-      document.getElementById('gift-sub').textContent=giftSub(gift,isp);
+      document.getElementById('gift-sub').textContent=giftSub(gift,isp,bundle);
     } else {
       document.getElementById('gift-amount').textContent='0원';
       document.getElementById('gift-sub').textContent='해당 없음';
@@ -1165,8 +1174,8 @@ function calc(){
   document.getElementById('memo-text').value=`1. 상품 : ${isp} ${inet}${tvLine}${tvExLine}\n2. 요금 : ${fmt(monthly)}\n3. 사은품 : ${buildGiftMemoText(gift,isp)}\n4. 설치비 : ${installFee>0?fmt(installFee)+' (첫 달 부과)':'없음'}\n5. 설치 희망일자 : ${installDate}\n6. 기타 : 기존 가족 또는 본인 명의 회선있는 경우 유지 필요 안내 / 수긍 이사 고객 Y / 추후 소명 발생 시 관련 서류 제출 동의 인터넷 설치 후 고객센터로 후결합 요청 안내`;
 
   // 문자 탭 자동 업데이트
-  updateMsgTabs(isp,inet,tv,hasTv,monthly,installFee,gift,agentName,installDate,bundle,bundleDis);
-  updateProdSummary(isp,inet,tv,hasTv,monthly,installFee,gift,bundleDis);
+  updateMsgTabs(isp,inet,tv,hasTv,monthly,installFee,gift,agentName,installDate,bundle,bundleDis,installItem,router);
+  updateProdSummary(isp,inet,tv,hasTv,monthly,installFee,gift,bundleDis,bundle,installItem,router);
 }
 function getAll(){const isp=document.getElementById('isp').value;const p=PRODUCTS[isp]||{};const inet=document.getElementById('internet').value||'';const tv=document.getElementById('tv').value||'미가입';const tvEx=document.getElementById('tv-extra').value||'없음';const router=document.getElementById('router').value||'';const bundle=document.getElementById('bundle').value||'없음';const installItem=document.getElementById('install').value||'';const agentName=document.getElementById('agent-name').value||'박다현';const custName=document.getElementById('cust-name').value||'고객님';const installDate=document.getElementById('install-date').value||'미정';const inetFee=p.internet?.[inet]||0;const tvFee=p.tv?.[tv]||0;const tvExFee=p['tv-extra']?.[tvEx]||0;const routerFee=p.router?.[router]||0;const phoneFee=p.phone?.[document.getElementById('phone').value]||0;const addonFee=p.addon?.[document.getElementById('addon').value]||0;const bundleDis=p.bundle?.[bundle]||0;const installFee=p.install?.[installItem]||0;const monthly=inetFee+tvFee+tvExFee+routerFee+phoneFee+addonFee-bundleDis;const hasTv=tv&&tv!=='미가입';const gift=getGift(isp,inet,hasTv);const gt=giftTotal(gift);return{isp,inet,tv,hasTv,agentName,custName,installDate,monthly,installFee,gift,gt};}
 let _toastTimer;
@@ -1205,27 +1214,71 @@ function toggleProdSummary(){
   if(arrow) arrow.style.transform = isOpen ? 'rotate(-90deg)' : 'rotate(0deg)';
 }
 
-function updateProdSummary(isp,inet,tv,hasTv,monthly,installFee,gift,bundleDis){
+// 상품 제안 요약(상담 메모장)에서만 쓰는 간결한 사은품 표기: (현금10/상품권4)
+function giftShortCompact(g){
+  if(!g) return null;
+  const t = giftTotal(g);
+  if(t===0) return null;
+  if(typeof g==='object' && g.c!==undefined){
+    const vLabel = g.coupon ? '쿠폰' : '상품권';
+    if(g.v===0) return `${fmt(t)}원(전액 현금)`;
+    return `${fmt(t)}원(현금${fmt(g.c/10000)}/${vLabel}${fmt(g.v/10000)})`;
+  }
+  return `${fmt(t)}원(전액 현금)`;
+}
+
+// 상품제안/문자탭이 공통으로 사용하는 상품 요약 라인 빌더 (단일 소스: 한 곳만 고치면 양쪽 다 반영됨)
+function buildProductLines(isp,inet,tv,hasTv,monthly,installFee,gift,bundleDis,bundle,installItem,router){
   const gt = giftTotal(gift);
-  const giftStr = gt>0 ? giftShort(gift,isp) : '별도 안내';
-  const instStr = installFee>0 ? fmt(installFee)+'원 (첫 달 부과)' : '없음';
-  const bundleStr = bundleDis>0 ? ' / 결합 시 월 '+fmt(monthly-bundleDis)+'원' : '';
+  const giftStr = gt>0 ? giftShortCompact(gift) : null;
+  // 설치비 수식: ="▶️ 설치비 "&TEXTJOIN("",TRUE,설치비,"원")&" 첫 달 부과"&IF(주말 설치비," (주말 설치비)"," (평일 18시 이후 & 주말 및 공휴일 설치 시 할증료 25% 부과)")
+  const isWeekendInstall = installItem && installItem.includes('(주말)');
+  const instStr = installFee>0 ? fmt(installFee)+'원 첫 달 부과'+(isWeekendInstall ? ' (주말 설치비)' : ' (평일 18시 이후 & 주말 및 공휴일 설치 시 할증료 25% 부과)') : null;
+  const bundleName = (bundle && bundle!=='없음') ? (bundle.includes('/')?bundle.split('/').pop().trim():bundle) : '';
+  // monthly는 이미 결합할인이 차감된 "결합 후" 금액. 결합 전 금액 = monthly + bundleDis
+  const beforeBundle = monthly + bundleDis;
+
+  // 공유기 선택 시 상품 줄 뒤에 공유기명 추가 ("공유기 X" 류는 제외)
+  const routerName = (router && !router.includes('공유기 X')) ? router : '';
+  const productLine = (isp && inet) ? ('▶️ '+isp+' '+inet+(routerName?' '+routerName:'')) : '';
+  const tvLine = (hasTv && tv) ? ('▶️ '+tv) : '';
+  const monthlyLine = '▶️ 월 '+fmt(beforeBundle)+'원';
+  const bundleLine = bundleDis>0 ? '▶️ '+(bundleName?bundleName+' ':'')+'시 월 '+fmt(monthly)+'원' : '';
+  const installLine = installFee>0 ? '▶️ 설치비 '+instStr : '';
+  const giftLine = giftStr ? '▶️ 사은품 '+giftStr : '';
+
+  return {productLine, tvLine, monthlyLine, bundleLine, installLine, giftLine, giftStr, beforeBundle, bundleName, routerName};
+}
+
+function updateProdSummary(isp,inet,tv,hasTv,monthly,installFee,gift,bundleDis,bundle,installItem,router){
+  const L = buildProductLines(isp,inet,tv,hasTv,monthly,installFee,gift,bundleDis,bundle,installItem,router);
   let parts = ['[3년약정/VAT포함]'];
-  if(isp && inet) parts.push('▶️ '+isp+' '+inet);
-  if(hasTv && tv) parts.push('▶️ '+tv);
-  parts.push('▶️ 월 '+fmt(monthly)+'원'+bundleStr);
-  if(installFee>0) parts.push('▶️ 설치비 '+instStr);
-  if(gt>0) parts.push('▶️ 사은품 '+giftStr);
+  if(L.productLine) parts.push(L.productLine);
+  if(L.tvLine) parts.push(L.tvLine);
+  parts.push(L.monthlyLine);
+  if(L.bundleLine) parts.push(L.bundleLine);
+  if(L.installLine) parts.push(L.installLine);
+  if(L.giftLine) parts.push(L.giftLine);
   const summaryText = parts.join('\n');
   window._prodSummaryText = parts.slice(1).join('\n');
   window._prodSummaryLines = parts.length;
 
-  // textarea 요약 부분만 교체, 사용자 입력(--- 이하) 보존
-  const el = document.getElementById('memo-pad');
-  const cur = el.value;
-  const sepIdx = cur.indexOf('\n---');
-  const userPart = sepIdx >= 0 ? cur.slice(sepIdx) : '';
-  el.value = summaryText + userPart;
+  // 상품제안 모드가 켜진 상태라면, 메모장 안의 "■ 상품제안 내용" 다음 텍스트를 실시간 갱신
+  if(typeof _proposalOn !== 'undefined' && _proposalOn){
+    const el = document.getElementById('memo-pad');
+    if(el){
+      const marker = '■ 상품제안 내용\n';
+      const startIdx = el.value.indexOf(marker);
+      if(startIdx !== -1){
+        const contentStart = startIdx + marker.length;
+        const restIdx = el.value.indexOf('\n\n■ 펜딩사유', contentStart);
+        if(restIdx !== -1){
+          el.value = el.value.slice(0, contentStart) + window._prodSummaryText + el.value.slice(restIdx);
+        }
+      }
+    }
+  }
+
   window._prevSummaryLines = parts.length;
 }
 
@@ -1273,13 +1326,7 @@ ${prodText}
 
 function clearMemoKeepSummary(){
   const el = document.getElementById('memo-pad');
-  const lines = el.value.split('\n');
-  const summaryLines = window._prevSummaryLines || 0;
-  if(summaryLines > 0){
-    el.value = lines.slice(0, summaryLines).join('\n');
-  } else {
-    el.value = '';
-  }
+  el.value = '';
 }
 
 function toggleAcc(key){
@@ -1445,31 +1492,28 @@ function deleteCustomTab(idx, e) {
   if (firstTab) { document.querySelectorAll('.msg-tab').forEach(t=>t.classList.remove('active')); firstTab.classList.add('active'); document.getElementById('msg-textarea-active').value = getMsgContent(currentMsgTab); setUnsaved(false); }
 }
 
-function updateMsgTabs(isp,inet,tv,hasTv,monthly,installFee,gift,agentName,installDate,bundle,bundleDis){
-  const gt=giftTotal(gift);
-  const giftStr=gt>0?giftShort(gift,isp):null;
+function updateMsgTabs(isp,inet,tv,hasTv,monthly,installFee,gift,agentName,installDate,bundle,bundleDis,installItem,router){
+  const L = buildProductLines(isp,inet,tv,hasTv,monthly,installFee,gift,bundleDis,bundle,installItem,router);
+  const giftStr = L.giftStr;
   const tvStr=hasTv?tv:'미가입';
-  const instStr=installFee>0?fmt(installFee)+' 원 첫 달 부과 (평일 18시 이후 & 주말 및 공휴일 설치 시 할증료 25% 부과)':'없음';
-  const monthlyStr=fmt(monthly)+'원';
-  const bundleStr=bundleDis>0?' / 결합 시 월 '+fmt(monthly-bundleDis)+'원':'';
-  // 결합 상품명 파싱 (슬래시 뒤)
-  const bundleName=bundle&&bundle!=='없음'?(bundle.includes('/')?bundle.split('/').pop().trim():bundle):'';
-  const inetTv=hasTv?`▶️ ${isp}${inet}\n▶️ ${tv}${hasTv?' 셋톱 임대 포함':''}`:`▶️ ${isp}${inet}`;
+  const monthlyStr=fmt(L.beforeBundle)+'원';
+  const bundleLine = L.bundleLine ? '\n'+L.bundleLine : '';
+  const inetTv=hasTv?`${L.productLine}\n▶️ ${tv}${hasTv?' 셋톱 임대 포함':''}`:`${L.productLine}`;
 
   // 0: 상품 안내
-  const _instLine = installFee>0 ? `\n▶️ 설치비 ${instStr}` : '';
+  const _instLine = L.installLine ? '\n'+L.installLine : '';
   const _annGiftLine = giftStr ? `\n▶️ 사은품 ${giftStr}` : '';
-  const ann=`[미소] 상품 & 사은품 요약 안내\n\n안녕하세요, 미소 인터넷 부서입니다.\n고객님께서 오늘 상담 받으신 상품 안내드립니다. \n\n[3년약정/VAT포함]\n${inetTv}\n▶️ 월 ${monthlyStr}${bundleStr}${_instLine}${_annGiftLine}\n\n* 혜택은 실시간으로 바뀔 수 있다는 점 안내드립니다.\n\n▶️ 이벤트 사은품 최대 40,000원\n✅ 후기 작성 시 최대 10,000원 지급\n(미소 공식 네이버 카페)\n✅친구 추천 시 30,000원 지급\n(횟수 제한 없이 무제한 지급)\n미소 전담 상담사 ${agentName} 드림.`;
+  const ann=`[미소] 상품 & 사은품 요약 안내\n\n안녕하세요, 미소 인터넷 부서입니다.\n고객님께서 오늘 상담 받으신 상품 안내드립니다. \n\n[3년약정/VAT포함]\n${inetTv}\n▶️ 월 ${monthlyStr}${bundleLine}${_instLine}${_annGiftLine}\n\n* 혜택은 실시간으로 바뀔 수 있다는 점 안내드립니다.\n\n▶️ 이벤트 사은품 최대 40,000원\n✅ 후기 작성 시 최대 10,000원 지급\n(미소 공식 네이버 카페)\n✅친구 추천 시 30,000원 지급\n(횟수 제한 없이 무제한 지급)\n미소 전담 상담사 ${agentName} 드림.`;
 
   // 1: 가입 완료
   const _doneGiftLine = giftStr ? `\n▶️ 사은품 ${giftStr}\n✅사은품은 설치 후 7일 이내 자동으로 지급되나 평일기준 5시 이전 개통 받았다고 문자 주시면 당일입금 도움드리겠습니다. ` : '';
-  const done=`[미소] 가입 완료 안내\n\n안녕하세요, 고객님.\n미소 인터넷 부서입니다.\n\n✅ 계약이 완료되었어요, 아래 내용은 계약서와 동일한 효력이 있으니 꼼꼼히 읽어주세요.\n\n⚠️ 3년 약정이며, 아래와 같은 상황에 해당하면 받으셨던 사은품은 환수 됩니다. \n① 1년 이내 해지\n② 3개월 (90일) 이상 정지\n③ 1년 이내 요금제 하향 (상향 시에는 환수 되지 않습니다!) \n④ 3개월 이내 명의변경\n⑤ 개통 1년이내 결제수단 지로청구서로 변경\n⚠️ 신규 가입 후 기존에 인터넷은 꼭 해지 해주세요. 자동해지되지 않으며 이럴 경우 요금이 이중 부과되어요. \n⚠️ 3년 이내 해지 시 통신사 본사에 위약금 (할인 반환금) 및 통신사에 따라 면제된 와이파이 / 통신기기 설치비 반환이 필요할 수 있어요. \n\n✅ 가입 상품 안내\n[3년약정/VAT포함]\n${inetTv}\n▶️ 월 ${monthlyStr}${bundleStr}${_instLine}${_doneGiftLine}\n\n▶️ 이벤트 사은품 최대 40,000원\n✅ 후기 작성 시 최대 10,000원 지급 (↓)\n(미소 공식 네이버 카페)\nhttps://forms.gle/kzVQ5iPKQWP1m5SEA\n✅친구 추천 시 30,000원 지급 (↓)\n(횟수 제한 없이 무제한 지급)\nhttps://forms.gle/2D9sTnsGmEH97i8D8\n\n미소 전담 상담사 ${agentName} 드림.`;
+  const done=`[미소] 가입 완료 안내\n\n안녕하세요, 고객님.\n미소 인터넷 부서입니다.\n\n✅ 계약이 완료되었어요, 아래 내용은 계약서와 동일한 효력이 있으니 꼼꼼히 읽어주세요.\n\n⚠️ 3년 약정이며, 아래와 같은 상황에 해당하면 받으셨던 사은품은 환수 됩니다. \n① 1년 이내 해지\n② 3개월 (90일) 이상 정지\n③ 1년 이내 요금제 하향 (상향 시에는 환수 되지 않습니다!) \n④ 3개월 이내 명의변경\n⑤ 개통 1년이내 결제수단 지로청구서로 변경\n⚠️ 신규 가입 후 기존에 인터넷은 꼭 해지 해주세요. 자동해지되지 않으며 이럴 경우 요금이 이중 부과되어요. \n⚠️ 3년 이내 해지 시 통신사 본사에 위약금 (할인 반환금) 및 통신사에 따라 면제된 와이파이 / 통신기기 설치비 반환이 필요할 수 있어요. \n\n✅ 가입 상품 안내\n[3년약정/VAT포함]\n${inetTv}\n▶️ 월 ${monthlyStr}${bundleLine}${_instLine}${_doneGiftLine}\n\n▶️ 이벤트 사은품 최대 40,000원\n✅ 후기 작성 시 최대 10,000원 지급 (↓)\n(미소 공식 네이버 카페)\nhttps://forms.gle/kzVQ5iPKQWP1m5SEA\n✅친구 추천 시 30,000원 지급 (↓)\n(횟수 제한 없이 무제한 지급)\nhttps://forms.gle/2D9sTnsGmEH97i8D8\n\n미소 전담 상담사 ${agentName} 드림.`;
 
   // 2: 후결합
   const isp3=isp||'통신사';
   const ispTel={'KT':'100','KT 오피스넷':'100','LGU':'101','LG 소호':'101','SKB':'106','SKT':'106','헬로비전':'1855-1500','SKY':'1599-0999'};
   const telNum=ispTel[isp]||'고객센터';
-  const combo=`[미소] 결합 방법 안내\n\n고객님, 인터넷 설치 후에 결합을 따로 진행해주셔야 합니다!\n\n■ ${isp3} 본사 고객센터 번호 ${telNum}로 전화하셔서\n■ ${bundleName||'결합 상품'} 신청해주시면, 결합 할인 적용됩니다.\n■ 결합 할인 적용 위해 꼭 잊지 말고 결합 신청해주세요!\n\n감사합니다.\n미소 전담 상담사 ${agentName} 드림.`;
+  const combo=`[미소] 결합 방법 안내\n\n고객님, 인터넷 설치 후에 결합을 따로 진행해주셔야 합니다!\n\n■ ${isp3} 본사 고객센터 번호 ${telNum}로 전화하셔서\n■ ${L.bundleName||'결합 상품'} 신청해주시면, 결합 할인 적용됩니다.\n■ 결합 할인 적용 위해 꼭 잊지 말고 결합 신청해주세요!\n\n감사합니다.\n미소 전담 상담사 ${agentName} 드림.`;
 
   // 3: 연결시도·부재
   const absent=`[미소] 인터넷 가입 혜택 안내 드립니다!\n\n안녕하세요, 고객님!\n인터넷 상담 요청 주셔서 연락드렸지만, 잠시 부재중이셔서 문자로 안내드립니다 😊\n\n지금 가입 시\n✅ 사은품 최대 49만원 +\n✅ 통신요금 결합 할인 혜택 가능해요!\n\n필요하신 정보만 간단하게 안내드릴 수 있어요.\n👉 편하신 상담 방법 알려주세요!\n📞 통화 원하시면 시간 남겨주시고\n📩 문자로 원하시면 '네' 라고만 회신주셔도 바로 상담 도와드릴게요 :)\n\n부담 없이 편하게 연락주세요!\n지금 남겨주시면 가장 빠른 혜택 안내 도와드릴게요!\n\n감사합니다.\n미소 전담 상담사 ${agentName} 드림.`;
@@ -1523,8 +1567,6 @@ function resetFrom(changedId){
 }
 
 document.getElementById('isp').addEventListener('change', onIspChange);
-// 기본값 KT
-document.getElementById('isp').value = 'KT';
 onIspChange();
 initMsgTabs();
 ['internet','tv','tv-extra','router','phone','addon','bundle','install'].forEach(id=>{
@@ -1543,45 +1585,76 @@ initMsgTabs();
   document.getElementById(id).addEventListener('input', calc);
 });
 
-/* ── 리사이저 드래그 ── */
+/* ── 리사이저 드래그 (3분할: resizer1=left/mid, resizer2=mid/right) ── */
 (function(){
-  const resizer = document.getElementById('resizer');
+  const layout = document.querySelector('.layout');
   const leftCol = document.querySelector('.left-col');
-  const layout  = document.querySelector('.layout');
-  if(!resizer || !leftCol || !layout) return;
+  const midCol = document.querySelector('.mid-col');
+  const rightCol = document.querySelector('.right-col');
+  if(!layout || !leftCol || !midCol || !rightCol) return;
 
-  let startX = 0;
-  let startW = 0;
+  // colB가 right-col(맨 마지막 컬럼)인 경우는 폭을 px로 고정하지 않고
+  // flex:1로 유지해서 창 크기가 바뀌어도(예: 전체화면) 남는 공간을 항상 채우도록 함
+  function setupResizer(resizerId, colA, colB, colBIsLast){
+    const resizer = document.getElementById(resizerId);
+    if(!resizer) return;
 
-  resizer.addEventListener('mousedown', function(e){
-    startX = e.clientX;
-    startW = leftCol.getBoundingClientRect().width;
-    resizer.classList.add('dragging');
-    document.body.style.cursor = 'col-resize';
-    document.body.style.userSelect = 'none';
+    let startX = 0;
+    let startWA = 0;
+    let startWB = 0;
 
-    function onMove(e){
-      const dx = e.clientX - startX;
-      const total = layout.getBoundingClientRect().width - resizer.getBoundingClientRect().width - 36; // padding 양쪽
-      const newW = Math.min(Math.max(startW + dx, 280), total - 280);
-      leftCol.style.width = newW + 'px';
-    }
-    function onUp(){
-      resizer.classList.remove('dragging');
-      document.body.style.cursor = '';
-      document.body.style.userSelect = '';
-      document.removeEventListener('mousemove', onMove);
-      document.removeEventListener('mouseup', onUp);
-    }
-    document.addEventListener('mousemove', onMove);
-    document.addEventListener('mouseup', onUp);
-    e.preventDefault();
-  });
+    resizer.addEventListener('mousedown', function(e){
+      startX = e.clientX;
+      startWA = colA.getBoundingClientRect().width;
+      startWB = colB.getBoundingClientRect().width;
+      resizer.classList.add('dragging');
+      document.body.style.cursor = 'col-resize';
+      document.body.style.userSelect = 'none';
 
-  // 더블클릭: 50:50 리셋
-  resizer.addEventListener('dblclick', function(){
-    leftCol.style.width = '50%';
-  });
+      function onMove(e){
+        const dx = e.clientX - startX;
+        const minW = 260;
+        let newA = startWA + dx;
+        let newB = startWB - dx;
+        if(newA < minW){ newB -= (minW - newA); newA = minW; }
+        if(newB < minW){ newA -= (minW - newB); newB = minW; }
+        if(newA < minW || newB < minW) return;
+        colA.style.width = newA + 'px';
+        colA.style.flex = '0 0 auto';
+        if(colBIsLast){
+          // 마지막 컬럼은 px로 박지 않고, min-width만 갱신 + flex:1로 남는 공간 자동 채움
+          colB.style.width = '';
+          colB.style.flex = '1 1 ' + newB + 'px';
+        } else {
+          colB.style.width = newB + 'px';
+          colB.style.flex = '0 0 auto';
+        }
+      }
+      function onUp(){
+        resizer.classList.remove('dragging');
+        document.body.style.cursor = '';
+        document.body.style.userSelect = '';
+        document.removeEventListener('mousemove', onMove);
+        document.removeEventListener('mouseup', onUp);
+      }
+      document.addEventListener('mousemove', onMove);
+      document.addEventListener('mouseup', onUp);
+      e.preventDefault();
+    });
+
+    // 더블클릭: 균등(33.33%) 리셋
+    resizer.addEventListener('dblclick', function(){
+      leftCol.style.width = '33.333%';
+      leftCol.style.flex = '0 0 auto';
+      midCol.style.width = '33.333%';
+      midCol.style.flex = '0 0 auto';
+      rightCol.style.width = '';
+      rightCol.style.flex = '1';
+    });
+  }
+
+  setupResizer('resizer1', leftCol, midCol, false);
+  setupResizer('resizer2', midCol, rightCol, true);
 })();
 
 /* ── 비교 탭 ── */
