@@ -318,7 +318,7 @@ textarea:focus{outline:none;border-color:#3b6ef0}
       <div class="card-title">기본 정보</div>
       <div class="row3">
         <div class="field"><label for="agent-name">상담사 이름</label><input type="text" id="agent-name" placeholder="이름"></div>
-        <div class="field"><label for="cust-name">고객 이름</label><input type="text" id="cust-name" placeholder="고객명"></div>
+        <div class="field"><label for="consult-date">상담 일자</label><input type="text" id="consult-date" readonly style="background:#f5f7fb;color:#3b4a6b;cursor:default"></div>
         <div class="field"><label for="install-date">희망 설치일자</label><input type="text" id="install-date" placeholder="예: 2025-07-15"></div>
       </div>
     </div>
@@ -795,21 +795,18 @@ function resetProductSelection(){
   if(dp){ dp.value=''; dp.style.borderColor='#d0d5e0'; }
   const clr = document.getElementById('install-date-clear');
   if(clr) clr.style.display='none';
-  // 탭 초기화
-  currentTab=1;
-  [1,2,3].forEach(i=>{
-    tabData[i]={};
-    const t=document.getElementById('tab-'+i);
-    if(t){t.classList.toggle('active',i===1);t.classList.remove('has-data');}
-    const f=document.getElementById('tab-fee-'+i); if(f) f.textContent='—';
-    const inf=document.getElementById('tab-info-'+i); if(inf) inf.textContent='상품 '+i;
-  });
+  // 현재 선택된 탭(상품1/2/3 중 하나)만 초기화 - 다른 탭 데이터는 유지
+  tabData[currentTab]={};
+  const t=document.getElementById('tab-'+currentTab);
+  if(t) t.classList.remove('has-data');
+  const f=document.getElementById('tab-fee-'+currentTab); if(f) f.textContent='—';
+  const inf=document.getElementById('tab-info-'+currentTab); if(inf) inf.textContent='상품 '+currentTab;
   calc();
 }
 
 function resetAll(){
   document.getElementById('agent-name').value = '박다현';
-  document.getElementById('cust-name').value = '';
+  // 상담 일자는 항상 오늘 날짜로 자동 표시되므로 별도 초기화 불필요
   document.getElementById('install-date').value = '';
   const dp = document.getElementById('install-date-picker');
   if(dp){ dp.value=''; dp.style.borderColor='#d0d5e0'; }
@@ -1177,7 +1174,7 @@ function calc(){
   updateMsgTabs(isp,inet,tv,hasTv,monthly,installFee,gift,agentName,installDate,bundle,bundleDis,installItem,router);
   updateProdSummary(isp,inet,tv,hasTv,monthly,installFee,gift,bundleDis,bundle,installItem,router);
 }
-function getAll(){const isp=document.getElementById('isp').value;const p=PRODUCTS[isp]||{};const inet=document.getElementById('internet').value||'';const tv=document.getElementById('tv').value||'미가입';const tvEx=document.getElementById('tv-extra').value||'없음';const router=document.getElementById('router').value||'';const bundle=document.getElementById('bundle').value||'없음';const installItem=document.getElementById('install').value||'';const agentName=document.getElementById('agent-name').value||'박다현';const custName=document.getElementById('cust-name').value||'고객님';const installDate=document.getElementById('install-date').value||'미정';const inetFee=p.internet?.[inet]||0;const tvFee=p.tv?.[tv]||0;const tvExFee=p['tv-extra']?.[tvEx]||0;const routerFee=p.router?.[router]||0;const phoneFee=p.phone?.[document.getElementById('phone').value]||0;const addonFee=p.addon?.[document.getElementById('addon').value]||0;const bundleDis=p.bundle?.[bundle]||0;const installFee=p.install?.[installItem]||0;const monthly=inetFee+tvFee+tvExFee+routerFee+phoneFee+addonFee-bundleDis;const hasTv=tv&&tv!=='미가입';const gift=getGift(isp,inet,hasTv);const gt=giftTotal(gift);return{isp,inet,tv,hasTv,agentName,custName,installDate,monthly,installFee,gift,gt};}
+function getAll(){const isp=document.getElementById('isp').value;const p=PRODUCTS[isp]||{};const inet=document.getElementById('internet').value||'';const tv=document.getElementById('tv').value||'미가입';const tvEx=document.getElementById('tv-extra').value||'없음';const router=document.getElementById('router').value||'';const bundle=document.getElementById('bundle').value||'없음';const installItem=document.getElementById('install').value||'';const agentName=document.getElementById('agent-name').value||'박다현';const installDate=document.getElementById('install-date').value||'미정';const inetFee=p.internet?.[inet]||0;const tvFee=p.tv?.[tv]||0;const tvExFee=p['tv-extra']?.[tvEx]||0;const routerFee=p.router?.[router]||0;const phoneFee=p.phone?.[document.getElementById('phone').value]||0;const addonFee=p.addon?.[document.getElementById('addon').value]||0;const bundleDis=p.bundle?.[bundle]||0;const installFee=p.install?.[installItem]||0;const monthly=inetFee+tvFee+tvExFee+routerFee+phoneFee+addonFee-bundleDis;const hasTv=tv&&tv!=='미가입';const gift=getGift(isp,inet,hasTv);const gt=giftTotal(gift);return{isp,inet,tv,hasTv,agentName,installDate,monthly,installFee,gift,gt};}
 let _toastTimer;
 function showToast(msg){
   const t=document.getElementById('copy-toast');
@@ -1567,6 +1564,26 @@ function resetFrom(changedId){
 }
 
 document.getElementById('isp').addEventListener('change', onIspChange);
+
+/* ── 상담 일자: 항상 오늘 날짜로 자동 표시 (자정 경과 시에도 자동 갱신) ── */
+(function(){
+  const WEEKDAYS = ['일','월','화','수','목','금','토'];
+  function formatToday(){
+    const d = new Date();
+    const y = d.getFullYear();
+    const m = String(d.getMonth()+1).padStart(2,'0');
+    const day = String(d.getDate()).padStart(2,'0');
+    return `${y}.${m}.${day} (${WEEKDAYS[d.getDay()]})`;
+  }
+  function updateConsultDate(){
+    const el = document.getElementById('consult-date');
+    if(el) el.value = formatToday();
+  }
+  updateConsultDate();
+  // 자정이 지나면 날짜가 바뀌도록 1분마다 체크
+  setInterval(updateConsultDate, 60000);
+})();
+
 onIspChange();
 initMsgTabs();
 ['internet','tv','tv-extra','router','phone','addon','bundle','install'].forEach(id=>{
@@ -1581,7 +1598,7 @@ initMsgTabs();
 ['mobile-isp','mobile-bundle'].forEach(id=>{
   document.getElementById(id).addEventListener('change', function(){ updateWrapState(id); });
 });
-['agent-name','cust-name','install-date'].forEach(id=>{
+['agent-name','install-date'].forEach(id=>{
   document.getElementById(id).addEventListener('input', calc);
 });
 
@@ -1809,17 +1826,14 @@ function updateComboCard(bundleValue){
 <script>
 // ── 에이전트별 localStorage 저장/불러오기 ──
 (function(){
-  const AGENTS = { '박다현': '박다현', '김미진': '김미진' };
-  const _agentParam = new URLSearchParams(window.location.search).get('agent');
-  const AGENT_KEY = (_agentParam && AGENTS[_agentParam]) ? 'agent_' + _agentParam : null;
+  const rawParam = new URLSearchParams(window.location.search).get('agent');
+  // 이름에 공백/특수문자가 있어도 저장키로 쓸 수 있게 트림만 적용 (화이트리스트 제한 없음)
+  const _agentParam = rawParam ? rawParam.trim() : null;
+  const AGENT_KEY = _agentParam ? 'agent_' + _agentParam : null;
 
-  // 헤더 배지 표시
-  if(AGENT_KEY){
-    const badge = document.getElementById('agent-badge');
-    if(badge) badge.textContent = _agentParam;
-  }
+  // 헤더 배지는 "인터넷 부서" 고정 표시 유지 (상담사 이름으로 덮어쓰지 않음)
 
-  const SAVE_FIELDS = ['isp','internet','tv','tv-extra','router','phone','addon','bundle','install','agent-name','cust-name','install-date','mobile-isp','mobile-bundle'];
+  const SAVE_FIELDS = ['isp','internet','tv','tv-extra','router','phone','addon','bundle','install','agent-name','install-date','mobile-isp','mobile-bundle'];
 
   function saveToStorage(){
     if(!AGENT_KEY) return;
@@ -1852,7 +1866,7 @@ function updateComboCard(bundleValue){
       if(nameEl) nameEl.value = data['agent-name'] || _agentParam;
 
       // 텍스트 필드
-      ['cust-name','install-date'].forEach(id => {
+      ['install-date'].forEach(id => {
         const el = document.getElementById(id);
         if(el && data[id] !== undefined) el.value = data[id];
       });
