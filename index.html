@@ -2468,6 +2468,23 @@ function updateComboCard(bundleValue){
 
   const SAVE_FIELDS = ['isp','internet','tv','tv-extra','router','phone','addon','bundle','install','agent-name','install-date','mobile-isp','mobile-bundle'];
 
+  // 아직 상품(ISP)을 선택하지 않은 시점에는 calc()가 곧바로 종료되어 문자 템플릿이
+  // 갱신되지 않으므로, 저장되지 않은(msgSaved===null) 기본 템플릿 안의 "박다현" 표기를
+  // 새 상담사 이름으로 직접 치환해 즉시 반영한다.
+  function applyAgentNameToTemplates(name){
+    if(!name) return;
+    if(typeof MSG_DEFAULTS === 'undefined' || typeof msgSaved === 'undefined') return;
+    MSG_DEFAULTS.forEach((txt, i) => {
+      if(msgSaved[i] === null){
+        MSG_DEFAULTS[i] = txt.replace(/박다현/g, name);
+      }
+    });
+    const ta = document.getElementById('msg-textarea-active');
+    if(ta && typeof currentMsgTab !== 'undefined' && msgSaved[currentMsgTab] === null){
+      ta.value = MSG_DEFAULTS[currentMsgTab];
+    }
+  }
+
   function saveToStorage(){
     if(!AGENT_KEY) return;
     try {
@@ -2491,12 +2508,15 @@ function updateComboCard(bundleValue){
       const nameEl = document.getElementById('agent-name');
       if(!raw){
         if(nameEl) nameEl.value = _agentParam;
+        applyAgentNameToTemplates(_agentParam);
         return;
       }
       const data = JSON.parse(raw);
 
       // 에이전트 이름
-      if(nameEl) nameEl.value = data['agent-name'] || _agentParam;
+      const finalAgentName = data['agent-name'] || _agentParam;
+      if(nameEl) nameEl.value = finalAgentName;
+      applyAgentNameToTemplates(finalAgentName);
 
       // 텍스트 필드
       ['install-date'].forEach(id => {
