@@ -1247,8 +1247,8 @@ function calcGift(isp, inet, tv, hasTv, bundle, phone, tvExtra){
     let cash = typeof raw==='object' ? (raw.c||0) : total;
     let voucher = typeof raw==='object' ? (raw.v||0) : 0;
 
-    // KT + 일반전화 있음 → 현금 3만 추가
-    if(isp==='KT' && phone && phone!=='없음' && phone!=='') cash += 30000;
+    // KT + 일반전화 → 상품권 2만 추가 (인터넷전화는 제외)
+    if(isp==='KT' && phone && phone.includes('일반 전화')) voucher += 20000;
 
     // TV 추가(tv-extra) 선택 있음 → 현금 3만 추가
     if(tvExtra && tvExtra!=='없음' && tvExtra!=='') cash += 30000;
