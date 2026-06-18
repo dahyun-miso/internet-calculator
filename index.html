@@ -1028,6 +1028,9 @@ function resetProductSelection(){
   if(dp){ dp.value=''; dp.style.borderColor='#d0d5e0'; }
   const clr = document.getElementById('install-date-clear');
   if(clr) clr.style.display='none';
+  // 희망 설치일자 텍스트 필드도 함께 초기화
+  const installDateEl = document.getElementById('install-date');
+  if(installDateEl) installDateEl.value='';
   // 현재 선택된 탭(상품1/2/3 중 하나)만 초기화 - 다른 탭 데이터는 유지
   tabData[currentTab]={};
   const t=document.getElementById('tab-'+currentTab);
@@ -1353,6 +1356,9 @@ function calc(){
       const el=document.getElementById('amt-'+id);
       if(el){el.textContent='—';el.className='row-amount zero';}
     });
+    // 메모장 상품제안 / 문자 탭(상품안내·가입완료 등) 자동 연동 부분도 초기화
+    if(typeof resetProdSummaryPlaceholder === 'function') resetProdSummaryPlaceholder();
+    if(typeof resetMsgTemplatesToPlaceholder === 'function') resetMsgTemplatesToPlaceholder();
     return;
   }
   const p=PRODUCTS[isp];
@@ -1642,12 +1648,52 @@ const MSG_DEFAULTS = [
   `[미소] 인터넷 가입 혜택 관련 최종 안내드립니다!\n\n고객님께 안내드렸던 조건(통신사, 결합 여부, 월요금, 사은품 등)으로\n지금 가입 가능하신 상태입니다 😊\n\n혜택 적용 및 설치 일정 확정을 위해\n고객님의 최종 의사만 기다리고 있습니다.\n\n👉 간단히 '진행할게요' 또는 '보류할게요'로만 회신 주셔도 괜찮습니다!\n📞 통화 원하시면 시간 남겨주셔도 됩니다.\n\n※ 현재 조건은 통신사 사은품 소진 또는 정책 변경 시 달라질 수 있습니다.\n희망하시는 설치일자에 설치받으시려면 빠른 접수가 필요합니다.\n\n잠깐의 회신으로 가장 좋은 조건으로 마무리 도와드릴 수 있습니다.\n\n감사합니다.\n미소 전담 상담사 박다현 드림.`
 ];
 
+// 상품 선택을 초기화했을 때 되돌릴 "상품 미선택" 원본 문구 스냅샷 (위 배열이 실제 상품 정보로
+// 덮어써지기 전, 최초 상태를 그대로 보관해둔다)
+const MSG_PLACEHOLDERS = MSG_DEFAULTS.slice();
+
 // saved[i]: 저장된 내용 (null이면 default 사용)
 const msgSaved = [null, null, null, null, null];
 // pending[i]: 현재 탭에서 수정 중인 내용 (저장 전)
 const msgPending = [null, null, null, null, null];
 // 커스텀 탭 {name, content, saved}
 const customTabs = [];
+
+// 상품 선택 초기화(새로고침) 시, 저장되지 않은 문자 탭들을 "상품 미선택" 원본 문구로 복원
+function resetMsgTemplatesToPlaceholder(){
+  const agentName = document.getElementById('agent-name').value || '';
+  MSG_PLACEHOLDERS.forEach((txt,i)=>{
+    if(msgSaved[i]===null){
+      const fresh = agentName ? txt.replace(/박다현/g, agentName) : txt;
+      MSG_DEFAULTS[i] = fresh;
+      msgPending[i] = null;
+      if(currentMsgTab===i){
+        document.getElementById('msg-textarea-active').value = fresh;
+        setUnsaved(false);
+      }
+    }
+  });
+}
+
+// 상품 선택 초기화 시, 메모장의 "■ 상품제안 내용"도 자동입력 안내문으로 복원
+function resetProdSummaryPlaceholder(){
+  window._prodSummaryText = null;
+  window._prodSummaryLines = undefined;
+  if(_memoMode === 'proposal'){
+    const el = document.getElementById('memo-pad');
+    if(el){
+      const marker = '■ 상품제안 내용\n';
+      const startIdx = el.value.indexOf(marker);
+      if(startIdx !== -1){
+        const contentStart = startIdx + marker.length;
+        const restIdx = el.value.indexOf('\n\n■ 펜딩사유', contentStart);
+        if(restIdx !== -1){
+          el.value = el.value.slice(0, contentStart) + '(상품 선택 후 자동 입력)' + el.value.slice(restIdx);
+        }
+      }
+    }
+  }
+}
 
 function getMsgContent(idx) {
   if (idx < MSG_DEFAULTS.length) {
@@ -1667,9 +1713,11 @@ function initMsgTabs() {
 
 function switchMsgTab(idx, btn) {
   if (idx === currentMsgTab) return;
-  // 현재 탭 pending 저장 (수정 중이면)
+  // 현재 탭 pending 저장: 실제로 기본값/저장값과 달라진(=직접 수정한) 경우에만 보존.
+  // 그냥 보기만 하고 수정하지 않았다면 pending을 비워서, 나중에 상품/요금 변경 시
+  // 이 탭에 돌아왔을 때 옛 스냅샷이 아니라 항상 최신 자동 생성 내용이 보이게 한다.
   const cur = document.getElementById('msg-textarea-active').value;
-  msgPending[currentMsgTab] = cur;
+  msgPending[currentMsgTab] = (cur !== getMsgContent(currentMsgTab)) ? cur : null;
   // 탭 UI
   document.querySelectorAll('.msg-tab').forEach(t => t.classList.remove('active'));
   btn.classList.add('active');
