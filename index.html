@@ -1250,16 +1250,16 @@ function calcGift(isp, inet, tv, hasTv, bundle, phone, tvExtra){
     let cash = typeof raw==='object' ? (raw.c||0) : total;
     let voucher = typeof raw==='object' ? (raw.v||0) : 0;
 
-    // KT + 일반전화 → 상품권 2만 추가 (인터넷전화는 제외)
-    if(isp==='KT' && phone && phone.includes('일반 전화')) voucher += 20000;
+    // KT + 일반전화 → 농협지류 2만 별도 추가 (인터넷전화는 제외)
+    const naHyup = (isp==='KT' && phone && phone.includes('일반 전화')) ? 20000 : 0;
 
     // TV 추가(tv-extra) 선택 있음 → 현금 3만 추가
     if(tvExtra && tvExtra!=='없음' && tvExtra!=='') cash += 30000;
 
     // KT 오피스넷 → 전액 현금
-    if(isp==='KT 오피스넷') return {t:cash+voucher, c:cash+voucher, v:0};
+    if(isp==='KT 오피스넷') return {t:cash+voucher+naHyup, c:cash+voucher+naHyup, v:0, naHyup:0};
 
-    return {t:cash+voucher, c:cash, v:voucher};
+    return {t:cash+voucher+naHyup, c:cash, v:voucher, naHyup};
   }
 
   // SKY 통신사 상세 로직 (엑셀 수식 기반)
@@ -1314,8 +1314,10 @@ function giftShort(g, isp){
   if(t===0) return '별도 안내';
   if(typeof g==='object' && g.c!==undefined){
     const vLabel = g.coupon ? '쿠폰' : '상품권';
-    if(g.v===0) return `${fmt(t)}원(전액 현금)`;
-    return `${fmt(t)}원(현금 ${fmt(g.c/10000)}만/${vLabel} ${fmt(g.v/10000)}만)`;
+    const naHyupStr = g.naHyup ? `/농협지류${fmt(g.naHyup/10000)}` : '';
+    if(g.v===0 && !g.naHyup) return `${fmt(t)}원(전액 현금)`;
+    if(g.v===0) return `${fmt(t)}원(현금 ${fmt(g.c/10000)}만${naHyupStr}만)`;
+    return `${fmt(t)}원(현금 ${fmt(g.c/10000)}만/${vLabel} ${fmt(g.v/10000)}만${naHyupStr}만)`;
   }
   return `${fmt(t)}원(전액 현금)`;
 }
@@ -1334,8 +1336,10 @@ function giftSub(g,isp,bundle){
       const isFamily = bundleName.includes('패밀리');
       storeNote = isFamily ? ' (이마트 or 다이소)' : ' (이마트 or 롯데마트 or 다이소)';
     }
-    if(g.v===0) return `전액 현금 지급 · 설치 후 7일 이내 자동 지급`;
-    return `현금 ${fmt(g.c/10000)}만 + ${vLabel} ${fmt(g.v/10000)}만${storeNote}`;
+    const naHyupLine = g.naHyup ? ` + 농협지류 ${fmt(g.naHyup/10000)}만` : '';
+    if(g.v===0 && !g.naHyup) return `전액 현금 지급 · 설치 후 7일 이내 자동 지급`;
+    if(g.v===0) return `현금 ${fmt(g.c/10000)}만${naHyupLine}`;
+    return `현금 ${fmt(g.c/10000)}만 + ${vLabel} ${fmt(g.v/10000)}만${storeNote}${naHyupLine}`;
   }
   return '현금 지급 · 설치 후 7일 이내 자동 지급';
 }
@@ -1436,8 +1440,10 @@ function calc(){
         return `${fmt(t)} (현금 ${fmt(gift.c)} + 쿠폰 ${fmt(gift.v)})`;
       }
       if(isp==='KT'||isp==='KT 오피스넷'){
-        if(gift.v===0) return `${fmt(t)} (현금 지급)`;
-        return `${fmt(t)} (현금 ${fmt(gift.c)} + 상품권 ${fmt(gift.v)})`;
+        const naHyupMemo = gift.naHyup ? ` + 농협지류 ${fmt(gift.naHyup)}` : '';
+        if(gift.v===0 && !gift.naHyup) return `${fmt(t)} (현금 지급)`;
+        if(gift.v===0) return `${fmt(t)} (현금 ${fmt(gift.c)}${naHyupMemo})`;
+        return `${fmt(t)} (현금 ${fmt(gift.c)} + 상품권 ${fmt(gift.v)}${naHyupMemo})`;
       }
       if(gift.v===0) return `${fmt(t)} (현금 지급)`;
       return `${fmt(t)} (현금 ${fmt(gift.c)} + 상품권 ${fmt(gift.v)})`;
@@ -1495,8 +1501,10 @@ function giftShortCompact(g){
   if(t===0) return null;
   if(typeof g==='object' && g.c!==undefined){
     const vLabel = g.coupon ? '쿠폰' : '상품권';
-    if(g.v===0) return `${fmt(t)}원(전액 현금)`;
-    return `${fmt(t)}원(현금${fmt(g.c/10000)}/${vLabel}${fmt(g.v/10000)})`;
+    const naHyupPart = g.naHyup ? `/농협지류${fmt(g.naHyup/10000)}` : '';
+    if(g.v===0 && !g.naHyup) return `${fmt(t)}원(전액 현금)`;
+    if(g.v===0) return `${fmt(t)}원(현금${fmt(g.c/10000)}${naHyupPart})`;
+    return `${fmt(t)}원(현금${fmt(g.c/10000)}/${vLabel}${fmt(g.v/10000)}${naHyupPart})`;
   }
   return `${fmt(t)}원(전액 현금)`;
 }
@@ -2168,7 +2176,9 @@ function calcGiftDisplay(){
         const bundleName = bundle&&bundle!=='없음'?(bundle.includes('/')?bundle.split('/').pop().trim():bundle):'';
         const isFamily = bundleName.includes('패밀리');
         const storeNote = (isp==='KT'||isp==='KT 오피스넷') ? (isFamily?' (이마트 or 다이소)':' (이마트 or 롯데마트 or 다이소)') : '';
-        shortSub = `현금 ${fmt(gift.c/10000)}만 + ${vLabel} ${fmt(gift.v/10000)}만${storeNote}`;
+        const naHyupPart = gift.naHyup ? ` + 농협지류 ${fmt(gift.naHyup/10000)}만` : '';
+        if(gift.v===0) shortSub = `현금 ${fmt(gift.c/10000)}만${naHyupPart}`;
+        else shortSub = `현금 ${fmt(gift.c/10000)}만 + ${vLabel} ${fmt(gift.v/10000)}만${storeNote}${naHyupPart}`;
       }
       subEl.textContent='인터넷: 최대 '+fmt(gt)+(shortSub?' ('+shortSub+')':'');
       subEl.style.display='block';
@@ -2237,7 +2247,11 @@ function resetFrom(changedId){
   if(idx === -1) return;
   CASCADE_ORDER.slice(idx+1).forEach(id => {
     const el = document.getElementById(id);
-    if(el && el.options.length > 0) el.selectedIndex = 0;
+    if(!el || el.options.length === 0) return;
+    // 현재 선택값이 옵션 목록에 여전히 존재하면 유지, 없어진 경우에만 초기화
+    const currentVal = el.value;
+    const stillExists = Array.from(el.options).some(o => o.value === currentVal && currentVal !== '');
+    if(!stillExists) el.selectedIndex = 0;
     updateWrapState(id);
   });
 }
