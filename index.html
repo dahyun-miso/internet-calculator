@@ -711,7 +711,11 @@ textarea:focus{outline:none;border-color:#3b6ef0}
         <div class="quick-accordion">
           <button class="qacc-btn open" id="qacc-btn-cov" onclick="toggleAcc('cov')"><span>📍 가용 조회</span><span class="qacc-arrow">▼</span></button>
           <div class="qacc-body open" id="qacc-body-cov" style="flex-direction:column">
-            <a class="qbtn" href="https://www.ius-guide.kr/home#" target="_blank" style="width:100%;justify-content:center;display:flex;background:#eef2ff;border-color:#3b6ef0;color:#1a3a8f;padding:10px 13px;font-size:13px;font-weight:700">🔎 3사 통합 조회</a>
+            <div style="display:flex;gap:6px">
+              <a class="qbtn kt" href="https://help.kt.com/serviceinfo/SearchHomePhone.do" target="_blank" style="flex:1;justify-content:center;display:flex;padding:10px 13px;font-size:13px">KT</a>
+              <a class="qbtn sk" href="https://www.bworld.co.kr/myb/product/join/address/svcAveSearch.do" target="_blank" style="flex:1;justify-content:center;display:flex;padding:10px 13px;font-size:13px">SKB</a>
+              <a class="qbtn lg" href="https://www.lguplus.com/support/online/coverage-check" target="_blank" style="flex:1;justify-content:center;display:flex;padding:10px 13px;font-size:13px">LG</a>
+            </div>
             <a class="qbtn" href="https://www.juso.go.kr/" target="_blank" style="width:100%;justify-content:center;display:flex;background:#f5f7fb;border-color:#d0d5e0;color:#3b4a6b;padding:10px 13px;font-size:13px">🏠 도로명 주소</a>
           </div>
         </div>
@@ -721,7 +725,8 @@ textarea:focus{outline:none;border-color:#3b6ef0}
             <input type="text" inputmode="tel" id="miso-phone" placeholder="고객 전화번호 입력" maxlength="13" oninput="this.value=this.value.replace(/[^0-9-]/g,'')">
             <button class="qbtn copy" onclick="copyMisoLink()" style="padding:10px 16px;font-size:14px;border-radius:9px;white-space:nowrap">🔗 민감정보</button>
           </div>
-          <div style="margin-top:6px">
+          <div style="margin-top:6px;display:flex;flex-direction:column;gap:6px">
+            <a class="qbtn" href="https://docs.google.com/spreadsheets/d/10d21RrhIPBiJr7RZIHnk0h1dB4GvTEcHCuXSyFYw1M4/edit?gid=0#gid=0" target="_blank" style="width:100%;justify-content:center;display:flex;padding:10px 13px;font-size:13px;background:#f0fdf4;border-color:#16a34a33;color:#15803d">📃 고객 정보 폼</a>
             <a class="qbtn kt" href="https://online.kt.com/itg/simple/simpleCustomerInfoPop.do?prdcId=0B843024-18A6-4D09-A228-8A1049E67C51" target="_blank" style="width:100%;justify-content:center;display:flex;padding:10px 13px;font-size:13px">🔐 KT 본인인증</a>
           </div>
         </div>
