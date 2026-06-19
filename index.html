@@ -486,6 +486,7 @@ textarea:focus{outline:none;border-color:#3b6ef0}
                     </select>
                     <button class="clear-btn" onclick="clearUsimField('usim-isp')" title="초기화">✕</button>
                   </div>
+                  <div id="usim-isp-notice" style="display:none;margin-top:5px;font-size:11px;color:#e05050;font-weight:600"></div>
                 </div>
               </td>
             </tr>
@@ -502,21 +503,16 @@ textarea:focus{outline:none;border-color:#3b6ef0}
                 </div>
               </td>
             </tr>
-            <!-- 가족 수 -->
-            <tr><td class="row-label">가족 유심</td>
+            <!-- 가족 유심 -->
+            <tr id="usim-family-row"><td class="row-label">가족 유심</td>
               <td class="row-select" colspan="2">
-                <div class="field-wrap" id="wrap-usim-family">
-                  <div class="select-row">
-                    <select id="usim-family" onchange="calcUsimGift()">
-                      <option value="0">없음</option>
-                      <option value="1">1명</option>
-                      <option value="2">2명</option>
-                      <option value="3">3명</option>
-                      <option value="4">4명</option>
-                    </select>
-                    <button class="clear-btn" onclick="clearUsimField('usim-family')" title="초기화">✕</button>
-                  </div>
-                </div>
+                <!-- 동적으로 추가되는 가족 요금제 드롭다운 목록 -->
+                <div id="usim-family-list" style="display:flex;flex-direction:column;gap:6px"></div>
+                <!-- 추가 버튼 -->
+                <button id="usim-family-add-btn" onclick="addFamilyUsim()"
+                  style="margin-top:6px;width:100%;padding:8px;font-size:13px;font-weight:700;border-radius:8px;border:1.5px dashed #4caf50;background:#f4fbf4;color:#2e7d32;cursor:pointer;letter-spacing:0">
+                  ＋ 가족유심 추가
+                </button>
               </td>
             </tr>
           </tbody>
@@ -683,7 +679,7 @@ textarea:focus{outline:none;border-color:#3b6ef0}
           </table>
           <!-- 번들 표 -->
           <table class="gift-table" id="gtable-bundle" style="display:none">
-            <thead><tr><th>통신사</th><th class="mb-header">100mb</th><th class="mb-header">200mb</th><th class="mb-header">500mb</th><th class="mb-header">기가(1GB)</th></tr></thead>
+            <thead><tr><th>통신사</th><th class="mb-header">100mb</th><th class="mb-header">200mb</th><th class="mb-header">500mb</th><th class="mb-header">1GB</th></tr></thead>
             <tbody>
               <tr><td style="background:#fff0f0;color:#c0001a">KT 베이직</td><td>37(현31/상6)</td><td></td><td>45(현39/상6)</td><td>45(현36/상9)</td></tr>
               <tr><td style="background:#fff0f0;color:#c0001a">KT 베이직이상</td><td>37(현30/상7)</td><td></td><td>45(현38/상7)</td><td>45(현35/상10)</td></tr>
@@ -695,8 +691,6 @@ textarea:focus{outline:none;border-color:#3b6ef0}
             </tbody>
           </table>
           <div class="gift-note">
-            ✅ KT 일반전화 상품권 지류 2만원 추가 / 추가셋톱 3만원<br>
-            ✅ KT [현금 &amp; 이마트 or 롯데마트 금액권] 제공<br>
             ✅ KT 법인 명의로 가입 시 농협 지류 4만원 상품권 제공<br>
             &nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp; ㄴ1GB 이상 시 농협 지류 5만원 상품권 제공<br>
             ✅ 스카이라이프/ 헬로비전 교육자료 확인<br>
@@ -1175,7 +1169,7 @@ function populateSelect(id,options){
   else el.selectedIndex=0;
   updateWrapState(id);
 }
-function onIspChange(){const isp=document.getElementById('isp').value;const ispEl=document.getElementById('isp');if(isp){ispEl.classList.add('isp-selected');}else{ispEl.classList.remove('isp-selected');}if(!isp||!PRODUCTS[isp])return;const p=PRODUCTS[isp];populateSelect('internet',p.internet);populateSelect('tv',p.tv);populateSelect('tv-extra',p['tv-extra']);populateSelect('router',p.router);populateSelect('phone',p.phone);populateSelect('addon',p.addon);populateSelect('bundle',p.bundle);populateSelect('install',p.install);['internet','tv','tv-extra','router','phone','addon','bundle','install'].forEach(updateWrapState);updateWrapState('isp');updateDandokLock();filterBundleOptions();calc();calcUsimGift();}
+function onIspChange(){const isp=document.getElementById('isp').value;const ispEl=document.getElementById('isp');if(isp){ispEl.classList.add('isp-selected');}else{ispEl.classList.remove('isp-selected');}if(!isp||!PRODUCTS[isp])return;const p=PRODUCTS[isp];populateSelect('internet',p.internet);populateSelect('tv',p.tv);populateSelect('tv-extra',p['tv-extra']);populateSelect('router',p.router);populateSelect('phone',p.phone);populateSelect('addon',p.addon);populateSelect('bundle',p.bundle);populateSelect('install',p.install);['internet','tv','tv-extra','router','phone','addon','bundle','install'].forEach(updateWrapState);updateWrapState('isp');updateDandokLock();filterBundleOptions();calc();calcUsimGift();syncUsimIspToInternet();}
 // ⚠️ 저수준 헬퍼: PRODUCTS[isp].gift에서 "인터넷 속도 + TV유무"만으로 단순 조회.
 // TV 종류(베이직/에센스 등)나 결합종류는 전혀 구분하지 않음.
 // → 실제 화면/계산에는 이 함수를 직접 쓰지 않고, 아래 calcGift()를 통해서만 사용할 것.
@@ -1575,17 +1569,9 @@ function updateProdSummary(isp,inet,tv,hasTv,monthly,installFee,gift,bundleDis,b
 let _memoMode = 'proposal'; // 디폴트: 상품 제안
 let _freeMemoBackup = '';
 
-function setMemoMode(mode){
-  const el = document.getElementById('memo-pad');
-  const btnP = document.getElementById('btn-proposal');
-  const btnF = document.getElementById('btn-free');
-
-  if(mode === 'proposal'){
-    // 자유 메모 백업
-    if(_memoMode === 'free') _freeMemoBackup = el.value;
-    _memoMode = 'proposal';
-    const prodText = (window._prodSummaryText) || '(상품 선택 후 자동 입력)';
-    el.value = `[상품제안]
+function buildProposalTemplate(){
+  const prodText = (window._prodSummaryText) || '(상품 선택 후 자동 입력)';
+  return `[상품제안]
 ■ 신규가입 / 통신사변경
 ■ (*통신사변경이면 하기 내용 추가 기재)
 이전통신사 :
@@ -1603,6 +1589,18 @@ ${prodText}
 타사 제안 사은품금액 :
 타사 제안 월요금 :
 ＊추가제안여부 : O / X / 제안형태`;
+}
+
+function setMemoMode(mode){
+  const el = document.getElementById('memo-pad');
+  const btnP = document.getElementById('btn-proposal');
+  const btnF = document.getElementById('btn-free');
+
+  if(mode === 'proposal'){
+    // 자유 메모 백업
+    if(_memoMode === 'free') _freeMemoBackup = el.value;
+    _memoMode = 'proposal';
+    el.value = buildProposalTemplate();
     el.scrollTop = 0;
     btnP.style.background = '#3b6ef0'; btnP.style.color = '#fff'; btnP.style.boxShadow = '0 1px 4px rgba(59,110,240,.3)';
     btnF.style.background = 'transparent'; btnF.style.color = '#7a8499'; btnF.style.boxShadow = 'none';
@@ -1619,7 +1617,15 @@ function insertProposal(){ setMemoMode('proposal'); }
 
 function clearMemoKeepSummary(){
   const el = document.getElementById('memo-pad');
-  el.value = '';
+  if(_memoMode === 'proposal'){
+    // 상품제안 모드: 기본 템플릿(섹션 제목 + 상품 요약)은 유지하고
+    // 사용자가 입력한 값만 비운 깨끗한 템플릿으로 되돌린다.
+    el.value = buildProposalTemplate();
+    el.scrollTop = 0;
+  } else {
+    // 자유 메모 모드: 전체 비우기
+    el.value = '';
+  }
 }
 
 function toggleAcc(key){
@@ -2037,6 +2043,54 @@ function setUsimTableTab(tab){
   bSk.style.background=tab==='sk'?'#e85000':'#f5f7fb'; bSk.style.color=tab==='sk'?'#fff':'#7a8499'; bSk.style.borderColor=tab==='sk'?'#e85000':'#e0e4ee';
 }
 
+const USIM_ISP_MAP = {
+  'KT': ['KT유심'],
+  'KT 오피스넷': ['KT유심'],
+  'SKB': ['SK유심'],
+  'SKT': ['SK유심'],
+};
+
+function syncUsimIspToInternet(){
+  const isp = document.getElementById('isp').value;
+  const usimSel = document.getElementById('usim-isp');
+  const notice = document.getElementById('usim-isp-notice');
+  const allowed = USIM_ISP_MAP[isp] || null;
+
+  // 옵션 재구성
+  const prevVal = usimSel.value;
+  usimSel.innerHTML = '<option value="">-- 선택 --</option>';
+
+  if(!isp){
+    // 인터넷 통신사 미선택 → 전체 노출
+    ['KT유심','SK유심'].forEach(v => {
+      const o = document.createElement('option'); o.value=v; o.textContent=v; usimSel.appendChild(o);
+    });
+    notice.style.display = 'none';
+    usimSel.disabled = false;
+  } else if(!allowed){
+    // LGU, SKY 등 → 유심 판매 불가
+    usimSel.disabled = true;
+    notice.style.display = 'block';
+    notice.textContent = '⚠️ 해당 통신사는 유심 동판 판매 불가';
+    // 기존 선택값/사은품 초기화
+    clearUsimField('usim-isp');
+    return;
+  } else {
+    // 매핑된 유심만 노출
+    allowed.forEach(v => {
+      const o = document.createElement('option'); o.value=v; o.textContent=v; usimSel.appendChild(o);
+    });
+    notice.style.display = 'none';
+    usimSel.disabled = false;
+    // 이전 선택값이 허용 목록에 있으면 유지, 아니면 초기화
+    if(allowed.includes(prevVal)){
+      usimSel.value = prevVal;
+    } else {
+      clearUsimField('usim-isp');
+    }
+  }
+}
+
 function onUsimIspChange(){
   const isp = document.getElementById('usim-isp').value;
   const plan = document.getElementById('usim-plan');
@@ -2051,7 +2105,10 @@ function onUsimIspChange(){
     });
   }
   updateWrapState('usim-isp');
+  updateWrapState('usim-plan');
   document.getElementById('usim-gift-box').classList.remove('show');
+  // ISP 변경 시 가족 유심 전체 초기화
+  clearAllFamilyUsim();
   calcUsimGift();
 }
 
@@ -2077,10 +2134,75 @@ function getUsimProductKey(){
   return speed+' 단독'+suffix;
 }
 
+/* ── 가족유심 동적 추가/삭제 ── */
+const FAMILY_USIM_MAX = 5;
+
+function getFamilyUsimOptions(){
+  const isp = document.getElementById('usim-isp').value;
+  if(isp === 'KT유심') return ['37K 요금제','61K 요금제','90K 요금제'];
+  if(isp === 'SK유심') return ['33K 요금제','43K 요금제','69K 요금제','89K 요금제'];
+  return [];
+}
+
+function getFamilyUsimCount(){
+  return document.querySelectorAll('.usim-family-item').length;
+}
+
+function updateFamilyAddBtn(){
+  const btn = document.getElementById('usim-family-add-btn');
+  if(!btn) return;
+  const count = getFamilyUsimCount();
+  btn.disabled = count >= FAMILY_USIM_MAX;
+  btn.style.opacity = btn.disabled ? '0.4' : '1';
+  btn.style.cursor = btn.disabled ? 'not-allowed' : 'pointer';
+}
+
+function addFamilyUsim(){
+  const opts = getFamilyUsimOptions();
+  if(!opts.length){ alert('통신사를 먼저 선택해주세요.'); return; }
+  if(getFamilyUsimCount() >= FAMILY_USIM_MAX) return;
+
+  const list = document.getElementById('usim-family-list');
+  const idx = Date.now();
+  const row = document.createElement('div');
+  row.className = 'usim-family-item';
+  row.style.cssText = 'display:flex;gap:4px;align-items:stretch';
+  row.dataset.id = idx;
+
+  const sel = document.createElement('select');
+  sel.style.cssText = 'flex:1;font-size:13px;padding:7px 10px;border:1.5px solid #d0d5e0;border-radius:8px;background:#fafbfd;color:#1a1a1a';
+  const blank = document.createElement('option');
+  blank.value = ''; blank.textContent = '-- 가족 요금제 선택 --';
+  sel.appendChild(blank);
+  opts.forEach(v => {
+    const o = document.createElement('option'); o.value = v; o.textContent = v; sel.appendChild(o);
+  });
+  sel.onchange = calcUsimGift;
+
+  const delBtn = document.createElement('button');
+  delBtn.title = '삭제';
+  delBtn.textContent = '✕';
+  delBtn.style.cssText = 'flex-shrink:0;width:34px;border-radius:7px;background:#eaecf0;border:1.5px solid #d0d5e0;color:#e05050;font-size:13px;font-weight:700;cursor:pointer;display:flex;align-items:center;justify-content:center;padding:0;line-height:1';
+  delBtn.onmouseenter = () => { delBtn.style.background='#fde8e8'; delBtn.style.borderColor='#e05050'; };
+  delBtn.onmouseleave = () => { delBtn.style.background='#eaecf0'; delBtn.style.borderColor='#d0d5e0'; };
+  delBtn.onclick = () => { row.remove(); updateFamilyAddBtn(); calcUsimGift(); };
+
+  row.appendChild(sel);
+  row.appendChild(delBtn);
+  list.appendChild(row);
+  updateFamilyAddBtn();
+  calcUsimGift();
+}
+
+function clearAllFamilyUsim(){
+  const list = document.getElementById('usim-family-list');
+  if(list) list.innerHTML = '';
+  updateFamilyAddBtn();
+}
+
 function calcUsimGift(){
   const ispEl = document.getElementById('usim-isp').value;
   const planEl = document.getElementById('usim-plan').value;
-  const familyCount = parseInt(document.getElementById('usim-family').value)||0;
   const box = document.getElementById('usim-gift-box');
 
   if(!ispEl || !planEl){ box.classList.remove('show'); calcGiftDisplay(); return; }
@@ -2096,7 +2218,6 @@ function calcUsimGift(){
   } else {
     const tbl = USIM_SK_GIFT[planKey];
     if(tbl){
-      // SK는 TV 종류로 키 매핑
       const tv = document.getElementById('tv').value||'';
       const inet = document.getElementById('internet').value||'';
       let speed = '';
@@ -2107,7 +2228,8 @@ function calcUsimGift(){
       if(tv.includes('이코노미')) tvType=' + 이코노미';
       else if(tv.includes('스탠다드')) tvType=' + 스탠다드';
       else if(tv.includes('ALL')||tv.includes('all')) tvType=' + all';
-      const key = speed + (tv ? tvType : ' 단독');
+      const hasTv = tv && tv !== '' && tv !== '미가입';
+      const key = speed + (hasTv ? tvType : ' 단독');
       giftData = tbl[key.toLowerCase()] || null;
     }
   }
@@ -2115,18 +2237,54 @@ function calcUsimGift(){
   if(!giftData){ box.classList.remove('show'); calcGiftDisplay(); return; }
 
   const ownerGift = giftData.owner || 0;
-  const familyGift = (giftData.family||0) * familyCount;
-  const total = ownerGift + familyGift;
 
-  if(total === 0){ box.classList.remove('show'); calcGiftDisplay(); return; }
+  // 가족 요금제별 개별 사은품 합산
+  const familyItems = document.querySelectorAll('.usim-family-item select');
+  let familyTotal = 0;
+  const familyLines = [];
+
+  familyItems.forEach((sel, i) => {
+    const fPlanKey = sel.value ? sel.value.replace(' 요금제','') : '';
+    if(!fPlanKey){ familyLines.push(`가족 ${i+1}: 요금제 미선택`); return; }
+
+    let fGiftData = null;
+    if(ispEl === 'KT유심'){
+      const prodKey = getUsimProductKey();
+      if(prodKey){
+        const tbl = USIM_KT_GIFT[fPlanKey];
+        if(tbl) fGiftData = tbl[prodKey.toLowerCase()] || tbl[prodKey.toLowerCase().replace(' 일반','').replace(' 패밀리','')] || null;
+      }
+    } else {
+      const tbl = USIM_SK_GIFT[fPlanKey];
+      if(tbl){
+        const tv = document.getElementById('tv').value||'';
+        const inet = document.getElementById('internet').value||'';
+        let speed='',tvType='';
+        if(inet.includes('100mb')) speed='100mb';
+        else if(inet.includes('500mb')) speed='500mb';
+        else if(inet.includes('1gb')||inet.includes('1GB')) speed='1gb';
+        if(tv.includes('이코노미')) tvType=' + 이코노미';
+        else if(tv.includes('스탠다드')) tvType=' + 스탠다드';
+        else if(tv.includes('ALL')||tv.includes('all')) tvType=' + all';
+        const hasFTv = tv && tv !== '' && tv !== '미가입';
+        const key = speed + (hasFTv ? tvType : ' 단독');
+        fGiftData = tbl[key.toLowerCase()] || null;
+      }
+    }
+    const fAmt = fGiftData ? (fGiftData.family || 0) : 0;
+    familyTotal += fAmt;
+    familyLines.push(`가족 ${i+1}(${fPlanKey}) ${fAmt > 0 ? fmt(fAmt) : '해당없음'}`);
+  });
+
+  const total = ownerGift + familyTotal;
+  if(total === 0 && familyItems.length === 0){ box.classList.remove('show'); calcGiftDisplay(); return; }
 
   box.classList.add('show');
   document.getElementById('usim-gift-amount').textContent = '최대 '+fmt(total);
   let sub = '인터넷 명의자 '+fmt(ownerGift);
-  if(familyCount > 0 && giftData.family) sub += ' + 가족 '+fmt(giftData.family)+' × '+familyCount+'명';
+  if(familyLines.length > 0) sub += '\n' + familyLines.join('\n');
   document.getElementById('usim-gift-sub').textContent = sub;
 
-  // 기존 사은품 카드 재계산
   calcGiftDisplay();
 }
 
@@ -2136,6 +2294,7 @@ function clearUsimField(id){
   if(id==='usim-isp'){
     document.getElementById('usim-plan').innerHTML='<option value="">-- 선택 --</option>';
     updateWrapState('usim-plan');
+    clearAllFamilyUsim();
   }
   document.getElementById('usim-gift-box').classList.remove('show');
   calcGiftDisplay();
@@ -2284,7 +2443,10 @@ document.getElementById('isp').addEventListener('change', onIspChange);
 
 onIspChange();
 initMsgTabs();
-setTimeout(()=>setMemoMode('proposal'), 50);
+setTimeout(()=>{
+  // 저장된 메모를 복원한 경우엔 빈 템플릿으로 덮어쓰지 않는다
+  if(!window._memoRestored) setMemoMode('proposal');
+}, 50);
 ['internet','tv','tv-extra','router','phone','addon','bundle','install'].forEach(id=>{
   document.getElementById(id).addEventListener('change', function(){
     resetFrom(id);
@@ -2577,9 +2739,9 @@ function updateComboCard(bundleValue){
         if(el && data[id] !== undefined) el.value = data[id];
       });
 
-      // 메모패드
+      // 메모패드 (calc()가 상품요약을 덮어쓰므로 복원은 calc 이후에 수행)
       const memo = document.getElementById('memo-pad');
-      if(memo && data['memo-pad'] !== undefined) memo.value = data['memo-pad'];
+      const savedMemo = data['memo-pad'];
 
       // ISP → 드롭다운 순서대로
       const isp = data['isp'];
@@ -2605,6 +2767,12 @@ function updateComboCard(bundleValue){
       }
 
       if(typeof calc === 'function') calc();
+
+      // 저장된 메모장 값 복원 (calc 이후에 마지막으로 덮어써서 사용자가 적은 내용 보존)
+      if(memo && savedMemo !== undefined && savedMemo !== ''){
+        memo.value = savedMemo;
+        window._memoRestored = true; // 이후 setMemoMode 초기화가 덮어쓰지 않도록 표시
+      }
     } catch(e){}
   }
 
