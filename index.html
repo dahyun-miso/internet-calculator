@@ -1452,8 +1452,8 @@ function calc(){
   document.getElementById('memo-text').value=`1. 상품 : ${isp} ${inet}${routerLine}${tvLine}${tvExLine}\n2. 요금 : ${fmt(monthly)}\n3. 사은품 : ${buildGiftMemoText(gift,isp)}\n4. 설치비 : ${installFee>0?fmt(installFee)+' (첫 달 부과)':'없음'}\n5. 설치 희망일자 : ${installDate}\n6. 기타 : 기존 가족 또는 본인 명의 회선있는 경우 유지 필요 안내 / 수긍 이사 고객 Y / 추후 소명 발생 시 관련 서류 제출 동의 인터넷 설치 후 고객센터로 후결합 요청 안내`;
 
   // 문자 탭 자동 업데이트
-  updateMsgTabs(isp,inet,tv,hasTv,monthly,installFee,gift,agentName,installDate,bundle,bundleDis,installItem,router,tvEx);
-  updateProdSummary(isp,inet,tv,hasTv,monthly,installFee,gift,bundleDis,bundle,installItem,router,tvEx);
+  updateMsgTabs(isp,inet,tv,hasTv,monthly,installFee,gift,agentName,installDate,bundle,bundleDis,installItem,router,tvEx,phone,addon);
+  updateProdSummary(isp,inet,tv,hasTv,monthly,installFee,gift,bundleDis,bundle,installItem,router,tvEx,phone,addon);
 }
 function getAll(){const isp=document.getElementById('isp').value;const p=PRODUCTS[isp]||{};const inet=document.getElementById('internet').value||'';const tv=document.getElementById('tv').value||'미가입';const tvEx=document.getElementById('tv-extra').value||'없음';const router=document.getElementById('router').value||'';const bundle=document.getElementById('bundle').value||'없음';const installItem=document.getElementById('install').value||'';const agentName=document.getElementById('agent-name').value||'박다현';const installDate=document.getElementById('install-date').value||'미정';const inetFee=p.internet?.[inet]||0;const tvFee=p.tv?.[tv]||0;const tvExFee=p['tv-extra']?.[tvEx]||0;const routerFee=p.router?.[router]||0;const phoneFee=p.phone?.[document.getElementById('phone').value]||0;const addonFee=p.addon?.[document.getElementById('addon').value]||0;const bundleDis=p.bundle?.[bundle]||0;const installFee=p.install?.[installItem]||0;const hasTv=tv&&tv!=='미가입';const routerExtra=(routerFee>0&&(isp==='SKT'||isp==='SKB')&&inet==='100mb'&&!bundleDis&&router==='공유기')?1100:0;const routerFeeDisplay=routerFee+routerExtra;const monthly=inetFee+tvFee+tvExFee+routerFeeDisplay+phoneFee+addonFee-bundleDis;const gift=getGiftRaw(isp,inet,hasTv);const gt=giftTotal(gift);return{isp,inet,tv,hasTv,agentName,installDate,monthly,installFee,gift,gt};}
 let _toastTimer;
@@ -1509,7 +1509,7 @@ function giftShortCompact(g){
 }
 
 // 상품제안/문자탭이 공통으로 사용하는 상품 요약 라인 빌더 (단일 소스: 한 곳만 고치면 양쪽 다 반영됨)
-function buildProductLines(isp,inet,tv,hasTv,monthly,installFee,gift,bundleDis,bundle,installItem,router,tvExtra){
+function buildProductLines(isp,inet,tv,hasTv,monthly,installFee,gift,bundleDis,bundle,installItem,router,tvExtra,phone,addon){
   const gt = giftTotal(gift);
   const giftStr = gt>0 ? giftShortCompact(gift) : null;
   // 설치비 수식: ="▶️ 설치비 "&TEXTJOIN("",TRUE,설치비,"원")&" 첫 달 부과"&IF(주말 설치비," (주말 설치비)"," (평일 18시 이후 & 주말 및 공휴일 설치 시 할증료 25% 부과)")
@@ -1525,7 +1525,19 @@ function buildProductLines(isp,inet,tv,hasTv,monthly,installFee,gift,bundleDis,b
   const routerName = (router && !router.includes('공유기 X')) ? router : '';
   const productLine = (isp && inet) ? ('▶️ '+isp+' '+inet+(routerName?' '+routerName:'')) : '';
   const tvExtraName = (tvExtra && tvExtra!=='없음' && tvExtra!=='') ? tvExtra : '';
-  const tvLine = (hasTv && tv) ? ('▶️ '+tv+(tvExtraName?' + '+tvExtraName:'')) : '';
+  const phoneName = (phone && phone!=='없음' && phone!=='') ? phone : '';
+  const addonName = (addon && addon!=='없음' && addon!=='') ? addon : '';
+  // TV 줄에 TV추가 + 전화 + 부가서비스를 +로 이어 붙임
+  const tvExtras = [tvExtraName, phoneName, addonName].filter(Boolean).join(' + ');
+  let tvLine;
+  if(hasTv && tv){
+    tvLine = '▶️ '+tv+(tvExtras?' + '+tvExtras:'');
+  } else if(tvExtras){
+    // TV 미가입이지만 전화/부가서비스가 있으면 별도 줄로 표시
+    tvLine = '▶️ '+tvExtras;
+  } else {
+    tvLine = '';
+  }
   const monthlyLine = '▶️ 월 '+fmt(beforeBundle)+'원';
   const bundleLine = bundleDis>0 ? '▶️ '+(bundleName?bundleName+' ':'')+'시 월 '+fmt(monthly)+'원' : '';
   const installLine = installFee>0 ? '▶️ 설치비 '+instStr : '';
@@ -1534,8 +1546,8 @@ function buildProductLines(isp,inet,tv,hasTv,monthly,installFee,gift,bundleDis,b
   return {productLine, tvLine, monthlyLine, bundleLine, installLine, giftLine, giftStr, beforeBundle, bundleName, routerName};
 }
 
-function updateProdSummary(isp,inet,tv,hasTv,monthly,installFee,gift,bundleDis,bundle,installItem,router,tvExtra){
-  const L = buildProductLines(isp,inet,tv,hasTv,monthly,installFee,gift,bundleDis,bundle,installItem,router,tvExtra);
+function updateProdSummary(isp,inet,tv,hasTv,monthly,installFee,gift,bundleDis,bundle,installItem,router,tvExtra,phone,addon){
+  const L = buildProductLines(isp,inet,tv,hasTv,monthly,installFee,gift,bundleDis,bundle,installItem,router,tvExtra,phone,addon);
   let parts = ['[3년약정/VAT포함]'];
   if(L.productLine) parts.push(L.productLine);
   if(L.tvLine) parts.push(L.tvLine);
@@ -1831,6 +1843,24 @@ function confirmAddTab() {
   document.getElementById('add-modal-overlay').classList.remove('open');
   switchMsgTab(idx, btn);
 }
+/* localStorage에서 커스텀 탭 복원 */
+function restoreCustomTabs(saved){
+  if(!Array.isArray(saved) || saved.length === 0) return;
+  const row = document.getElementById('msg-tabs-row');
+  const addBtn = row.querySelector('.msg-tab-add');
+  saved.forEach(tab => {
+    const idx = MSG_DEFAULTS.length + customTabs.length;
+    customTabs.push({ name: tab.name, content: tab.content, saved: tab.saved !== undefined ? tab.saved : null });
+    msgPending.push(null);
+    const btn = document.createElement('button');
+    btn.className = 'msg-tab custom-tab';
+    btn.dataset.idx = idx;
+    btn.innerHTML = `${tab.name} <span class="del-tab" onclick="deleteCustomTab(${idx}, event)">✕</span>`;
+    btn.onclick = function(){ switchMsgTab(idx, btn); };
+    row.insertBefore(btn, addBtn);
+  });
+}
+
 function deleteCustomTab(idx, e) {
   e.stopPropagation();
   const cIdx = idx - MSG_DEFAULTS.length;
@@ -1847,13 +1877,13 @@ function deleteCustomTab(idx, e) {
   if (firstTab) { document.querySelectorAll('.msg-tab').forEach(t=>t.classList.remove('active')); firstTab.classList.add('active'); document.getElementById('msg-textarea-active').value = getMsgContent(currentMsgTab); setUnsaved(false); }
 }
 
-function updateMsgTabs(isp,inet,tv,hasTv,monthly,installFee,gift,agentName,installDate,bundle,bundleDis,installItem,router,tvExtra){
-  const L = buildProductLines(isp,inet,tv,hasTv,monthly,installFee,gift,bundleDis,bundle,installItem,router,tvExtra);
+function updateMsgTabs(isp,inet,tv,hasTv,monthly,installFee,gift,agentName,installDate,bundle,bundleDis,installItem,router,tvExtra,phone,addon){
+  const L = buildProductLines(isp,inet,tv,hasTv,monthly,installFee,gift,bundleDis,bundle,installItem,router,tvExtra,phone,addon);
   const giftStr = L.giftStr;
   const tvStr=hasTv?tv:'미가입';
   const monthlyStr=fmt(L.beforeBundle)+'원';
   const bundleLine = L.bundleLine ? '\n'+L.bundleLine : '';
-  const inetTv=hasTv?`${L.productLine}\n▶️ ${tv}${hasTv?' 셋톱 임대 포함':''}`:`${L.productLine}`;
+  const inetTv = L.tvLine ? `${L.productLine}\n${L.tvLine}` : `${L.productLine}`;
 
   // 0: 상품 안내
   const _instLine = L.installLine ? '\n'+L.installLine : '';
@@ -2443,10 +2473,7 @@ document.getElementById('isp').addEventListener('change', onIspChange);
 
 onIspChange();
 initMsgTabs();
-setTimeout(()=>{
-  // 저장된 메모를 복원한 경우엔 빈 템플릿으로 덮어쓰지 않는다
-  if(!window._memoRestored) setMemoMode('proposal');
-}, 50);
+setTimeout(()=>setMemoMode('proposal'), 50);
 ['internet','tv','tv-extra','router','phone','addon','bundle','install'].forEach(id=>{
   document.getElementById(id).addEventListener('change', function(){
     resetFrom(id);
@@ -2708,8 +2735,17 @@ function updateComboCard(bundleValue){
         const el = document.getElementById(id);
         if(el) data[id] = el.value;
       });
+      // 메모장: 자유 메모 내용만 저장 (상품 제안 모드는 새로고침 시 초기화)
       const memo = document.getElementById('memo-pad');
-      if(memo) data['memo-pad'] = memo.value;
+      let freeMemo = (typeof _freeMemoBackup !== 'undefined') ? _freeMemoBackup : '';
+      if(memo && typeof _memoMode !== 'undefined' && _memoMode === 'free'){
+        freeMemo = memo.value; // 현재 자유 메모 화면이면 화면값이 최신
+      }
+      data['free-memo'] = freeMemo;
+      // 커스텀 문자 탭(+로 추가한 탭) 저장
+      if(typeof customTabs !== 'undefined'){
+        data['customTabs'] = JSON.stringify(customTabs);
+      }
       data['tabData'] = JSON.stringify(typeof tabData !== 'undefined' ? tabData : {});
       localStorage.setItem(AGENT_KEY, JSON.stringify(data));
     } catch(e){}
@@ -2739,9 +2775,16 @@ function updateComboCard(bundleValue){
         if(el && data[id] !== undefined) el.value = data[id];
       });
 
-      // 메모패드 (calc()가 상품요약을 덮어쓰므로 복원은 calc 이후에 수행)
-      const memo = document.getElementById('memo-pad');
-      const savedMemo = data['memo-pad'];
+      // 메모패드: 자유 메모 백업만 복원 (상품 제안 모드는 매번 초기화)
+      const savedFreeMemo = data['free-memo'];
+      if(savedFreeMemo !== undefined && typeof _freeMemoBackup !== 'undefined'){
+        _freeMemoBackup = savedFreeMemo;
+      }
+
+      // 커스텀 문자 탭(+로 추가한 탭) 복원
+      if(data['customTabs'] && typeof customTabs !== 'undefined' && typeof restoreCustomTabs === 'function'){
+        try { restoreCustomTabs(JSON.parse(data['customTabs'])); } catch(e){}
+      }
 
       // ISP → 드롭다운 순서대로
       const isp = data['isp'];
@@ -2767,12 +2810,6 @@ function updateComboCard(bundleValue){
       }
 
       if(typeof calc === 'function') calc();
-
-      // 저장된 메모장 값 복원 (calc 이후에 마지막으로 덮어써서 사용자가 적은 내용 보존)
-      if(memo && savedMemo !== undefined && savedMemo !== ''){
-        memo.value = savedMemo;
-        window._memoRestored = true; // 이후 setMemoMode 초기화가 덮어쓰지 않도록 표시
-      }
     } catch(e){}
   }
 
