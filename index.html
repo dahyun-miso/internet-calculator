@@ -1175,7 +1175,7 @@ function onIspChange(){const isp=document.getElementById('isp').value;const ispE
 // → 실제 화면/계산에는 이 함수를 직접 쓰지 않고, 아래 calcGift()를 통해서만 사용할 것.
 // → calcGift()가 KT 등 통신사별로 TV종류/결합종류에 따라 더 정확한 테이블(KT_GIFT_BASIC_TV 등)을
 //   먼저 확인하고, 거기 없을 때만 이 함수로 fallback함.
-function getGiftRaw(isp,inet,hasTv){const g=PRODUCTS[isp]?.gift;if(!g)return null;if(hasTv){const c=inet+'+tv';if(g[c]!==undefined)return g[c];for(const k of Object.keys(g)){if(k.endsWith('+tv')&&inet.includes(k.replace('+tv','').trim()))return g[k];}}if(g[inet]!==undefined)return g[inet];for(const k of Object.keys(g)){if(!k.endsWith('+tv')&&inet.includes(k))return g[k];}return null;}
+function getGiftRaw(isp,inet,hasTv){const g=PRODUCTS[isp]?.gift;if(!g)return null;if(hasTv){const c=inet+'+tv';if(g[c]!==undefined)return g[c];if(!inet.includes('(단독)')){for(const k of Object.keys(g)){if(k.endsWith('+tv')&&inet.includes(k.replace('+tv','').trim()))return g[k];}}}if(g[inet]!==undefined)return g[inet];for(const k of Object.keys(g)){if(!k.endsWith('+tv')&&inet.includes(k))return g[k];}return null;}
 function giftTotal(g){if(!g)return 0;return typeof g==='object'?g.t:g;}
 
 /* KT 사은품 테이블 (사은품 표 2026/6 기준) */
@@ -1252,8 +1252,8 @@ function calcGift(isp, inet, tv, hasTv, bundle, phone, tvExtra){
     // KT + 일반전화 → 농협지류 2만 별도 추가 (인터넷전화는 제외)
     const naHyup = (isp==='KT' && phone && phone.includes('일반 전화')) ? 20000 : 0;
 
-    // TV 추가(tv-extra) 선택 있음 → 현금 3만 추가
-    if(tvExtra && tvExtra!=='없음' && tvExtra!=='') cash += 30000;
+    // TV 추가(tv-extra) 선택 있음 → 현금 3만 추가 (KT만 해당, KT 오피스넷 제외)
+    if(isp==='KT' && tvExtra && tvExtra!=='없음' && tvExtra!=='') cash += 30000;
 
     // KT 오피스넷 → 전액 현금
     if(isp==='KT 오피스넷') return {t:cash+voucher+naHyup, c:cash+voucher+naHyup, v:0, naHyup:0};
@@ -1273,8 +1273,8 @@ function calcGift(isp, inet, tv, hasTv, bundle, phone, tvExtra){
     const total = giftTotal(raw);
     if(total > 1000000) return {t:0,c:0,v:0,coupon:true};
 
-    // TV 추가(tv-extra) 선택 있음 → 현금 3만 추가
-    const tvExBonusSky = (tvExtra && tvExtra!=='없음' && tvExtra!=='') ? 30000 : 0;
+    // SKY는 TV 추가 사은품 없음
+    const tvExBonusSky = 0;
 
     // 결합 있을 때: 현금(c)/쿠폰(v) 분리
     // SKY gift 데이터에 c/v가 있으면 사용, 없으면 전액 현금
