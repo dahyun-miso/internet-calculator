@@ -2728,6 +2728,7 @@ const TAB_FIELDS=['isp','internet','tv','tv-extra','router','phone','addon','bun
 function saveTab(n){
   const d={};
   TAB_FIELDS.forEach(id=>{const el=document.getElementById(id);d[id]=el?el.value:'';});
+  d['ongajok']=ongajokMode;
   tabData[n]=d;
 }
 
@@ -2776,6 +2777,12 @@ function switchTab(n){
     const t=document.getElementById('tab-'+i);
     if(t)t.classList.toggle('active',i===n);
   });
+  const targetOngajok=tabData[n].ongajok||false;
+  if(targetOngajok!==ongajokMode){
+    const savedDest=Object.assign({},tabData[n]);
+    toggleOngajok();
+    tabData[n]=savedDest;
+  }
   loadTab(n);
 }
 
