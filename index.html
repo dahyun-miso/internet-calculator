@@ -16,7 +16,8 @@ html,body{height:100%;font-family:-apple-system,BlinkMacSystemFont,'Apple SD Got
 .left-col{overflow-y:auto;display:flex;flex-direction:column;gap:14px;padding-right:4px;width:33.333%;min-width:260px;flex-shrink:0}
 .mid-col{overflow-y:auto;display:flex;flex-direction:column;gap:14px;padding:0 14px;width:33.333%;min-width:260px;flex-shrink:0}
 .right-col{overflow-y:auto;display:flex;flex-direction:column;gap:14px;flex:1;min-width:260px;padding-left:4px}
-.card{background:#fff;border:1px solid #dde1e8;border-radius:12px;padding:18px 20px}
+.card{background:#fff;border:1px solid #dde1e8;border-radius:12px;padding:18px 20px;transition:border-color .2s,box-shadow .2s}
+.card-ongajok{border:2px solid #00875A !important;box-shadow:0 0 0 3px rgba(0,135,90,0.12)}
 .card-title{font-size:14px;font-weight:700;color:#1a1a1a;letter-spacing:0;text-transform:none;margin-bottom:14px;display:flex;align-items:center;gap:6px}
 .card-title::before{content:none}
 .card-title .ct-icon{font-size:14px}
@@ -342,10 +343,11 @@ textarea:focus{outline:none;border-color:#3b6ef0}
     </div>
 
     <!-- 상품 선택 -->
-    <div class="card">
+    <div class="card" id="prod-card">
       <div class="card-title">
         <span class="ct-icon">📦</span><span>상품 선택</span>
         <span class="ct-spacer"></span>
+        <button id="btn-ongajok" onclick="toggleOngajok()" style="padding:4px 11px;font-size:12px;font-weight:700;border-radius:7px;border:1.5px solid #d0d5e0;background:#f5f7fb;color:#7a8499;cursor:pointer;transition:all .2s;margin-right:6px;letter-spacing:0">온가족할인</button>
         <button onclick="resetProductSelection()" title="상품 선택 초기화" style="background:#fff5f5;border:1.5px solid #e05050;cursor:pointer;font-size:15px;color:#e05050;padding:4px 9px;border-radius:7px;line-height:1;transition:transform .3s,background .15s" onmouseenter="this.style.transform='rotate(180deg)'" onmouseleave="this.style.transform='rotate(0deg)'">↺</button>
       </div>
       <div class="compare-tabs">
@@ -460,6 +462,7 @@ textarea:focus{outline:none;border-color:#3b6ef0}
         </tbody>
       </table>
       <div class="promo-note" id="promo-note">✅ 1GB 인터넷 가입 시 설치비 면제 프로모션 확인 (25.04.14 ~ 25.10.13)</div>
+      <div id="ongajok-note" style="display:none;font-size:12px;font-weight:600;color:#145a32;background:#eafaf1;border:1.5px solid #1a3d2b;border-radius:8px;padding:8px 12px;margin-top:8px;line-height:1.6">★ 일반전화/인터넷 전화 가입 시 온할 50% 할인 적용된 금액 노출<br>★ 백메가 접수 당시 일반전화/인터넷 전화에도 온할 50% 결합 요청 기재 必</div>
     </div>
 
 
@@ -932,6 +935,8 @@ textarea:focus{outline:none;border-color:#3b6ef0}
 /* 비교 탭 전역 변수 - 최상단 선언 */
 let currentTab = 1;
 const tabData = {1:{}, 2:{}, 3:{}};
+let ongajokMode = false;
+let _ongajokSaved = null;
 
 /* ── 단독 선택 시 TV/TV추가 비활성화 ── */
 function updateDandokLock(){
@@ -1090,6 +1095,156 @@ const BUNDLE_SPEED_MAP={
 "SKT":{"100mb + TV/요즘가족결합":["100mb"],"100mb + TV/패밀리결합":["100mb"],"500mb + TV/요즘가족결합":["500mb"],"500mb + TV/패밀리결합":["500mb"],"1GB + TV/요즘가족결합":["1GB"],"1GB + TV/패밀리결합":["1GB"],"(단독) 100mb/요즘가족결합":["(단독) 100mb"],"(단독) 100mb/패밀리결합":["(단독) 100mb"],"(단독) 500mb/요즘가족결합":["(단독) 500mb"],"(단독) 500mb/패밀리결합":["(단독) 500mb"],"(단독) 1GB/요즘가족결합":["(단독) 1GB"],"(단독) 1GB/패밀리결합":["(단독) 1GB"]},
 "SKY":{"(100MB사은품 없음) 30% 할인":["100mb(IPTV)","100mb(SKY)"],"(200MB사은품 없음) 30% 할인":["200mb(IPTV)","200mb(SKY)"]}
 };
+
+const ONGAJOK_BUNDLE = {
+  "(단독) 100mb/온가족할인(30년 이상)": 2200,
+  "(단독) 100mb/온가족할인(20~30년 미만)": 1100,
+  "(단독) 100mb+공유기/온가족할인(30년 이상)": 2310,
+  "(단독) 100mb+공유기/온가족할인(20~30년 미만)": 1155,
+  "(단독) 500mb/온가족할인(30년 이상)": 3300,
+  "(단독) 500mb/온가족할인(20~30년 미만)": 1650,
+  "(단독) 500mb+공유기/온가족할인(30년 이상)": 3410,
+  "(단독) 500mb+공유기/온가족할인(20~30년 미만)": 1705,
+  "(단독) 1GB/온가족할인(30년 이상)": 3850,
+  "(단독) 1GB/온가족할인(20~30년 미만)": 1925,
+  "(단독) 1GB+공유기/온가족할인(30년 이상)": 3960,
+  "(단독) 1GB+공유기/온가족할인(20~30년 미만)": 1980,
+  "100mb + TV/온가족할인(30년 이상)": 2200,
+  "100mb + TV/온가족할인(20~30년 미만)(★★요우결이 유리★★)": 0,
+  "100mb + 공유기 + TV/온가족할인(30년 이상)": 2310,
+  "100mb + 공유기 + TV/온가족할인(20~30년 미만)": 1155,
+  "500mb + TV/온가족할인(30년 이상)(★★요우결이 유리★★)": 0,
+  "500mb + TV/온가족할인(20~30년 미만)(★★요우결이 유리★★)": 0,
+  "500mb + 공유기 + TV/온가족할인(30년 이상)(★★요우결이 유리★★)": 0,
+  "500mb + 공유기 + TV/온가족할인(20~30년 미만)(★★요우결이 유리★★)": 0,
+  "1GB + TV/온가족할인(30년 이상)(★★요우결이 유리★★)": 0,
+  "1GB + TV/온가족할인(20~30년 미만)(★★요우결이 유리★★)": 0,
+  "1GB + 공유기 +TV/온가족할인(30년 이상)(★★요우결이 유리★★)": 0,
+  "1GB + 공유기 +TV/온가족할인(20~30년 미만)(★★요우결이 유리★★)": 0
+};
+
+const ONGAJOK_SPEED_MAP = {
+  "(단독) 100mb/온가족할인(30년 이상)": ["(단독) 100mb"],
+  "(단독) 100mb/온가족할인(20~30년 미만)": ["(단독) 100mb"],
+  "(단독) 100mb+공유기/온가족할인(30년 이상)": ["(단독) 100mb+공유기"],
+  "(단독) 100mb+공유기/온가족할인(20~30년 미만)": ["(단독) 100mb+공유기"],
+  "(단독) 500mb/온가족할인(30년 이상)": ["(단독) 500mb"],
+  "(단독) 500mb/온가족할인(20~30년 미만)": ["(단독) 500mb"],
+  "(단독) 500mb+공유기/온가족할인(30년 이상)": ["(단독) 500mb+공유기"],
+  "(단독) 500mb+공유기/온가족할인(20~30년 미만)": ["(단독) 500mb+공유기"],
+  "(단독) 1GB/온가족할인(30년 이상)": ["(단독) 1GB"],
+  "(단독) 1GB/온가족할인(20~30년 미만)": ["(단독) 1GB"],
+  "(단독) 1GB+공유기/온가족할인(30년 이상)": ["(단독) 1GB+공유기"],
+  "(단독) 1GB+공유기/온가족할인(20~30년 미만)": ["(단독) 1GB+공유기"],
+  "100mb + TV/온가족할인(30년 이상)": ["100mb"],
+  "100mb + TV/온가족할인(20~30년 미만)(★★요우결이 유리★★)": ["100mb"],
+  "100mb + 공유기 + TV/온가족할인(30년 이상)": ["100mb+공유기"],
+  "100mb + 공유기 + TV/온가족할인(20~30년 미만)": ["100mb+공유기"],
+  "500mb + TV/온가족할인(30년 이상)(★★요우결이 유리★★)": ["500mb"],
+  "500mb + TV/온가족할인(20~30년 미만)(★★요우결이 유리★★)": ["500mb"],
+  "500mb + 공유기 + TV/온가족할인(30년 이상)(★★요우결이 유리★★)": ["500mb+공유기"],
+  "500mb + 공유기 + TV/온가족할인(20~30년 미만)(★★요우결이 유리★★)": ["500mb+공유기"],
+  "1GB + TV/온가족할인(30년 이상)(★★요우결이 유리★★)": ["1GB"],
+  "1GB + TV/온가족할인(20~30년 미만)(★★요우결이 유리★★)": ["1GB"],
+  "1GB + 공유기 +TV/온가족할인(30년 이상)(★★요우결이 유리★★)": ["1GB+공유기"],
+  "1GB + 공유기 +TV/온가족할인(20~30년 미만)(★★요우결이 유리★★)": ["1GB+공유기"]
+};
+
+const ONGAJOK_TV = {
+  "미가입": 0,
+  "이코노미 (182채널) + 스마트3": 14300,
+  "스탠다드 (236채널) + 스마트3": 17600,
+  "ALL (256채널) + 스마트3": 20900,
+  "스탠다드 넷플릭스 29,900원 (동시시청 2인/해상도 1080p)": 29900,
+  "스탠다드 넷플릭스 프리미엄 32,900원 (동시시청 4인/해상도 4K+HDR)": 32900,
+  "ALL 넷플릭스 32,400원 (동시시청 2인/해상도 1080p)": 32400,
+  "ALL 넷플릭스 프리미엄 35,400원 (동시시청 4인/해상도 4K+HDR)": 35400
+};
+
+const ONGAJOK_INTERNET = {
+  "(단독) 100mb": 22000,
+  "(단독) 100mb+공유기": 23100,
+  "(단독) 500mb": 33000,
+  "(단독) 500mb+공유기": 34100,
+  "(단독) 1GB": 38500,
+  "(단독) 1GB+공유기": 39600,
+  "100mb": 19800,
+  "100mb+공유기": 22000,
+  "500mb": 27500,
+  "500mb+공유기": 28600,
+  "1GB": 33000,
+  "1GB+공유기": 34100
+};
+
+const ONGAJOK_PHONE = {
+  "일반 전화": 550,
+  "070 전화 (인터넷+전화 기본 요금제 / 단말기 대여 X)": 1100,
+  "070 전화 (인터넷+집전화 프리 요금제 / 단말기 대여 X)": 4400,
+  "070 전화 (인터넷+TV+집전화 프리 요금제 / 단말기 대여 X)": 2200
+};
+
+function toggleOngajok() {
+  ongajokMode = !ongajokMode;
+  const btn = document.getElementById('btn-ongajok');
+  const routerRow = document.querySelector('tr.row-router');
+  const ojNote = document.getElementById('ongajok-note');
+  const prodCard = document.getElementById('prod-card');
+  if (ongajokMode) {
+    btn.style.cssText = 'padding:4px 11px;font-size:12px;font-weight:700;border-radius:7px;border:2px solid #00875A;background:#00875A;color:#fff;cursor:pointer;transition:all .2s;margin-right:6px;letter-spacing:0;box-shadow:0 2px 10px rgba(0,135,90,0.45)';
+    btn.textContent = '✓ 온가족할인';
+    _ongajokSaved = {
+      skbBundle: PRODUCTS.SKB.bundle,
+      sktBundle: PRODUCTS.SKT.bundle,
+      skbMap: BUNDLE_SPEED_MAP.SKB,
+      sktMap: BUNDLE_SPEED_MAP.SKT,
+      skbPhone: PRODUCTS.SKB.phone,
+      sktPhone: PRODUCTS.SKT.phone,
+      skbInternet: PRODUCTS.SKB.internet,
+      sktInternet: PRODUCTS.SKT.internet,
+      skbTv: PRODUCTS.SKB.tv,
+      sktTv: PRODUCTS.SKT.tv
+    };
+    PRODUCTS.SKB.bundle = Object.assign({}, ONGAJOK_BUNDLE);
+    PRODUCTS.SKT.bundle = Object.assign({}, ONGAJOK_BUNDLE);
+    BUNDLE_SPEED_MAP.SKB = Object.assign({}, ONGAJOK_SPEED_MAP);
+    BUNDLE_SPEED_MAP.SKT = Object.assign({}, ONGAJOK_SPEED_MAP);
+    PRODUCTS.SKB.phone = Object.assign({}, ONGAJOK_PHONE);
+    PRODUCTS.SKT.phone = Object.assign({}, ONGAJOK_PHONE);
+    PRODUCTS.SKB.internet = Object.assign({}, ONGAJOK_INTERNET);
+    PRODUCTS.SKT.internet = Object.assign({}, ONGAJOK_INTERNET);
+    PRODUCTS.SKB.tv = Object.assign({}, ONGAJOK_TV);
+    PRODUCTS.SKT.tv = Object.assign({}, ONGAJOK_TV);
+    if (routerRow) routerRow.style.display = 'none';
+    if (ojNote) ojNote.style.display = 'block';
+    if (prodCard) prodCard.classList.add('card-ongajok');
+    resetProductSelection();
+    Array.from(document.getElementById('isp').options).forEach(function(opt) {
+      if (opt.value && opt.value !== 'SKB' && opt.value !== 'SKT') opt.hidden = true;
+    });
+  } else {
+    btn.style.cssText = 'padding:4px 11px;font-size:12px;font-weight:700;border-radius:7px;border:1.5px solid #d0d5e0;background:#f5f7fb;color:#7a8499;cursor:pointer;transition:all .2s;margin-right:6px;letter-spacing:0';
+    btn.textContent = '온가족할인';
+    if (_ongajokSaved) {
+      PRODUCTS.SKB.bundle = _ongajokSaved.skbBundle;
+      PRODUCTS.SKT.bundle = _ongajokSaved.sktBundle;
+      BUNDLE_SPEED_MAP.SKB = _ongajokSaved.skbMap;
+      BUNDLE_SPEED_MAP.SKT = _ongajokSaved.sktMap;
+      PRODUCTS.SKB.phone = _ongajokSaved.skbPhone;
+      PRODUCTS.SKT.phone = _ongajokSaved.sktPhone;
+      PRODUCTS.SKB.internet = _ongajokSaved.skbInternet;
+      PRODUCTS.SKT.internet = _ongajokSaved.sktInternet;
+      PRODUCTS.SKB.tv = _ongajokSaved.skbTv;
+      PRODUCTS.SKT.tv = _ongajokSaved.sktTv;
+      _ongajokSaved = null;
+    }
+    if (routerRow) routerRow.style.display = '';
+    if (ojNote) ojNote.style.display = 'none';
+    if (prodCard) prodCard.classList.remove('card-ongajok');
+    document.querySelectorAll('#isp option').forEach(function(opt) { opt.hidden = false; });
+    resetProductSelection();
+  }
+}
+
 function fmt(n){return n.toLocaleString('ko-KR');}
 
 /* ── 결합할인 동적 필터링 (매핑 테이블 기반, 추론은 fallback) ── */
