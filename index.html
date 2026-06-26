@@ -1175,6 +1175,16 @@ const ONGAJOK_INTERNET = {
   "1GB": 33000,
   "1GB+공유기": 34100
 };
+// 온가족할인 + 결합할인 선택 시 사용하는 인터넷 기본 요금 (엑셀 E컬럼)
+// 번들 항목만 D컬럼과 다름. 결합할인이 이 가격에서 차감되어 최종 요금 산출
+const ONGAJOK_INTERNET_E = {
+  "100mb": 22000,
+  "100mb+공유기": 23100,
+  "500mb": 33000,
+  "500mb+공유기": 34100,
+  "1GB": 38500,
+  "1GB+공유기": 39600
+};
 
 const ONGAJOK_PHONE = {
   "일반 전화": 550,
@@ -1528,7 +1538,7 @@ function calc(){
   const addon=document.getElementById('addon').value||'없음';
   const bundle=document.getElementById('bundle').value||'없음';
   const installItem=document.getElementById('install').value||'';
-  const inetFee=p.internet[inet]||0;
+  const inetFee=(ongajokMode&&bundle&&bundle!=='없음'&&ONGAJOK_INTERNET_E[inet]!==undefined)?ONGAJOK_INTERNET_E[inet]:(p.internet[inet]||0);
   const tvFee=(tv&&p.tv[tv])||0;
   const tvExFee=(tvEx&&p['tv-extra'][tvEx])||0;
   const routerFee=(router&&p.router[router])||0;
@@ -1614,7 +1624,7 @@ function calc(){
   updateMsgTabs(isp,inet,tv,hasTv,monthly,installFee,gift,agentName,installDate,bundle,bundleDis,installItem,router,tvEx,phone,addon);
   updateProdSummary(isp,inet,tv,hasTv,monthly,installFee,gift,bundleDis,bundle,installItem,router,tvEx,phone,addon);
 }
-function getAll(){const isp=document.getElementById('isp').value;const p=PRODUCTS[isp]||{};const inet=document.getElementById('internet').value||'';const tv=document.getElementById('tv').value||'미가입';const tvEx=document.getElementById('tv-extra').value||'없음';const router=document.getElementById('router').value||'';const bundle=document.getElementById('bundle').value||'없음';const installItem=document.getElementById('install').value||'';const agentName=document.getElementById('agent-name').value||'박다현';const installDate=document.getElementById('install-date').value||'미정';const inetFee=p.internet?.[inet]||0;const tvFee=p.tv?.[tv]||0;const tvExFee=p['tv-extra']?.[tvEx]||0;const routerFee=p.router?.[router]||0;const phoneFee=p.phone?.[document.getElementById('phone').value]||0;const addonFee=p.addon?.[document.getElementById('addon').value]||0;const bundleDis=p.bundle?.[bundle]||0;const installFee=p.install?.[installItem]||0;const hasTv=tv&&tv!=='미가입';const routerExtra=(routerFee>0&&(isp==='SKT'||isp==='SKB')&&inet==='100mb'&&!bundleDis&&router==='공유기')?1100:0;const routerFeeDisplay=routerFee+routerExtra;const monthly=inetFee+tvFee+tvExFee+routerFeeDisplay+phoneFee+addonFee-bundleDis;const gift=getGiftRaw(isp,inet,hasTv);const gt=giftTotal(gift);return{isp,inet,tv,hasTv,agentName,installDate,monthly,installFee,gift,gt};}
+function getAll(){const isp=document.getElementById('isp').value;const p=PRODUCTS[isp]||{};const inet=document.getElementById('internet').value||'';const tv=document.getElementById('tv').value||'미가입';const tvEx=document.getElementById('tv-extra').value||'없음';const router=document.getElementById('router').value||'';const bundle=document.getElementById('bundle').value||'없음';const installItem=document.getElementById('install').value||'';const agentName=document.getElementById('agent-name').value||'박다현';const installDate=document.getElementById('install-date').value||'미정';const inetFee=(ongajokMode&&bundle&&bundle!=='없음'&&ONGAJOK_INTERNET_E[inet]!==undefined)?ONGAJOK_INTERNET_E[inet]:(p.internet?.[inet]||0);const tvFee=p.tv?.[tv]||0;const tvExFee=p['tv-extra']?.[tvEx]||0;const routerFee=p.router?.[router]||0;const phoneFee=p.phone?.[document.getElementById('phone').value]||0;const addonFee=p.addon?.[document.getElementById('addon').value]||0;const bundleDis=p.bundle?.[bundle]||0;const installFee=p.install?.[installItem]||0;const hasTv=tv&&tv!=='미가입';const routerExtra=(routerFee>0&&(isp==='SKT'||isp==='SKB')&&inet==='100mb'&&!bundleDis&&router==='공유기')?1100:0;const routerFeeDisplay=routerFee+routerExtra;const monthly=inetFee+tvFee+tvExFee+routerFeeDisplay+phoneFee+addonFee-bundleDis;const gift=getGiftRaw(isp,inet,hasTv);const gt=giftTotal(gift);return{isp,inet,tv,hasTv,agentName,installDate,monthly,installFee,gift,gt};}
 let _toastTimer;
 function showToast(msg){
   const t=document.getElementById('copy-toast');
@@ -1677,7 +1687,7 @@ function buildProductLines(isp,inet,tv,hasTv,monthly,installFee,gift,bundleDis,b
   const bundleName = (bundle && bundle!=='없음') ? (bundle.includes('/')?bundle.split('/').pop().trim():bundle) : '';
   // monthly는 이미 결합할인이 차감된 "결합 후" 금액. 결합 전 금액 = monthly + bundleDis
   // (SKT/SKB 100mb+공유기 조합은 화면 표시(calc())와 동일하게 공유기 보정값을 결합 전 금액에 추가)
-  const beforeRouterExtra = ((isp==='SKT'||isp==='SKB')&&inet==='100mb'&&router==='공유기') ? 1100 : 0;
+  const beforeRouterExtra = (bundleDis>0&&(isp==='SKT'||isp==='SKB')&&inet==='100mb'&&router==='공유기') ? 1100 : 0;
   const beforeBundle = monthly + bundleDis + beforeRouterExtra;
 
   // 공유기 선택 시 상품 줄 뒤에 공유기명 추가 ("공유기 X" 류는 제외)
