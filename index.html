@@ -6,6 +6,10 @@
 <title>미소 인터넷 결합 계산기</title>
 <style>
 *{box-sizing:border-box;margin:0;padding:0}
+.tip-wrap{position:relative;cursor:default}
+.tip-wrap .tip-box{display:none;position:absolute;left:0;top:100%;margin-top:4px;z-index:999;background:#fffde7;border:1px solid #f0c040;border-radius:6px;padding:8px 10px;font-size:11px;color:#333;white-space:nowrap;box-shadow:2px 3px 8px rgba(0,0,0,.15);line-height:1.7;pointer-events:none}
+.tip-wrap:hover .tip-box{display:block}
+.tip-icon{font-size:11px;color:#e8a000;margin-left:4px;cursor:help}
 html,body{height:100%;font-family:-apple-system,BlinkMacSystemFont,'Apple SD Gothic Neo','Noto Sans KR','Malgun Gothic',sans-serif;background:#eef0f4;color:#1a1a1a;font-size:16px}
 .header{background:#1e2b3a;color:#fff;padding:14px 28px;display:flex;align-items:center;gap:14px;position:sticky;top:0;z-index:100;box-shadow:0 2px 8px rgba(0,0,0,.25)}
 .header h1{font-size:19px;font-weight:700;letter-spacing:-.3px;display:flex;align-items:center;gap:8px}
@@ -843,89 +847,237 @@ textarea:focus{outline:none;border-color:#3b6ef0}
   <div style="background:#fff;border-radius:14px;padding:22px;width:min(700px,92vw);max-height:88vh;overflow-y:auto;box-shadow:0 8px 40px rgba(0,0,0,.25)">
     <div style="display:flex;align-items:center;margin-bottom:14px">
       <div style="display:flex;gap:8px;flex:1">
-        <button onclick="setUsimTableTab('kt')" id="utab-kt" style="padding:6px 14px;border-radius:7px;font-size:13px;font-weight:700;border:1.5px solid #e8001c;background:#e8001c;color:#fff;cursor:pointer">KT유심</button>
-        <button onclick="setUsimTableTab('sk')" id="utab-sk" style="padding:6px 14px;border-radius:7px;font-size:13px;font-weight:700;border:1.5px solid #e0e4ee;background:#f5f7fb;color:#7a8499;cursor:pointer">SK유심</button>
+        <button onclick="setUsimTableTab('kt')" id="utab-kt" style="padding:5px 11px;border-radius:7px;font-size:13px;font-weight:700;border:1.5px solid #e8001c;background:#e8001c;color:#fff;cursor:pointer">KT유심</button>
+        <button onclick="setUsimTableTab('sk')" id="utab-sk" style="padding:5px 11px;border-radius:7px;font-size:13px;font-weight:700;border:1.5px solid #e0e4ee;background:#f5f7fb;color:#7a8499;cursor:pointer">SK유심</button>
+        <button onclick="setUsimTableTab('ktgift')" id="utab-ktgift" style="padding:5px 11px;border-radius:7px;font-size:13px;font-weight:700;border:1.5px solid #e0e4ee;background:#f5f7fb;color:#7a8499;cursor:pointer">KT사은품</button>
+        <button onclick="setUsimTableTab('skgift')" id="utab-skgift" style="padding:5px 11px;border-radius:7px;font-size:13px;font-weight:700;border:1.5px solid #e0e4ee;background:#f5f7fb;color:#7a8499;cursor:pointer">SK사은품</button>
       </div>
       <button onclick="closeUsimTableBtn()" style="background:none;border:none;font-size:18px;cursor:pointer;color:#aaa;padding:2px 6px">✕</button>
     </div>
     <div id="utbl-kt">
+      <div style="margin-bottom:6px"><a href="https://product.kt.com/wDic/index.do?CateCode=6002" target="_blank" style="color:#1a6fe8;font-size:12px;font-weight:600;text-decoration:underline">https://product.kt.com/wDic/index.do?CateCode=6002</a></div>
       <p style="font-size:11px;color:#e05050;font-weight:600;margin-bottom:6px">⚠️ 접수 가능한 요금제는 변경될 수 있습니다. 정확한 요금제는 신청서를 통해 확인 부탁드립니다.</p>
+      <div style="margin-bottom:8px;display:flex;gap:16px;flex-wrap:wrap"><a href="http://online.kt.com/index.jsp?prdcID=6C463388-3BDF-4E68-BE73-975E05BDA182" target="_blank" style="color:#1a6fe8;font-size:12px;font-weight:600;text-decoration:underline">✅ 신청서</a><a href="https://online.kt.com/itg/simple/simpleCustomerInfoPop.do?prdcId=0B843024-18A6-4D09-A228-8A1049E67C51" target="_blank" style="color:#1a6fe8;font-size:12px;font-weight:600;text-decoration:underline">✅ 동판 본인인증 (결합만 체크)</a></div>
       <p style="font-size:11px;color:#e05050;font-weight:600;margin-bottom:6px">⚠️ 인 단독 +유심동판+가족유심2회선 까지 총 3회선까지 가능 (가족 유심 동판 시 가족관계증명서 + 가족 각각 신분증 필요)</p>
       <p style="font-size:11px;color:#e05050;font-weight:600;margin-bottom:8px">ㄴ단, 인 단독 + 유심동판 진행 시 가족 유심에 대한 수수료는 미지급되다 보니 번들 가입 시 가족 유심 권유 必</p>
+      <div style="border:1.5px solid #e0e4ee;border-radius:7px;padding:10px 12px;margin-bottom:10px;background:#f8f9fb;font-size:11px;color:#444;line-height:1.7">
+        <div style="font-weight:700;margin-bottom:4px">📋 접수 방법</div>
+        <div>1. 위 신청서 링크로 인증(PASS or 신용카드) 후 신청서 작성</div>
+        <div>2. 아래 두번째 URL의 동판결합 문자 인증 (동판결합인증은 "결합" 부분만 체크하시어 인증 부탁 드립니다.)</div>
+        <div>3. 백메가 접수웹(speedonline.kr)의 KT(일반) ⇒ 모바일 탭으로 접수 부탁 드리겠습니다.</div>
+        <div>4. 접수 시 아래 기타메모 양식 기재 필수</div>
+      </div>
       <table style="width:100%;border-collapse:collapse;font-size:12px">
         <thead><tr style="background:#f0f3fa"><th style="padding:7px 10px;border:1px solid #e0e4ee;width:60px">구간</th><th style="padding:7px 10px;border:1px solid #e0e4ee;text-align:left">상품</th><th style="padding:7px 10px;border:1px solid #e0e4ee;width:50px">구분</th><th style="padding:7px 10px;border:1px solid #e0e4ee;width:80px;text-align:right">월요금</th></tr></thead>
         <tbody>
-          <tr><td rowspan="8" style="padding:7px 10px;border:1px solid #e0e4ee;font-weight:800;background:#fff9e0;color:#e05050;text-align:center;vertical-align:top">90K</td><td style="padding:6px 10px;border:1px solid #e0e4ee">디즈니+ 초이스 스페셜</td><td style="padding:6px 10px;border:1px solid #e0e4ee;text-align:center;color:#666">5G</td><td style="padding:6px 10px;border:1px solid #e0e4ee;text-align:right;font-weight:600">₩110,000</td></tr>
-          <tr><td style="padding:6px 10px;border:1px solid #e0e4ee">(유튜브 프리미엄) 초이스 스페셜</td><td style="padding:6px 10px;border:1px solid #e0e4ee;text-align:center;color:#666">5G</td><td style="padding:6px 10px;border:1px solid #e0e4ee;text-align:right;font-weight:600">₩110,000</td></tr>
-          <tr><td style="padding:6px 10px;border:1px solid #e0e4ee">넷플릭스 초이스 스페셜</td><td style="padding:6px 10px;border:1px solid #e0e4ee;text-align:center;color:#666">5G</td><td style="padding:6px 10px;border:1px solid #e0e4ee;text-align:right;font-weight:600">₩110,000</td></tr>
-          <tr><td style="padding:6px 10px;border:1px solid #e0e4ee">티빙/지니/밀리 초이스 스페셜</td><td style="padding:6px 10px;border:1px solid #e0e4ee;text-align:center;color:#666">5G</td><td style="padding:6px 10px;border:1px solid #e0e4ee;text-align:right;font-weight:600">₩110,000</td></tr>
-          <tr><td style="padding:6px 10px;border:1px solid #e0e4ee">넷플릭스 초이스 베이직</td><td style="padding:6px 10px;border:1px solid #e0e4ee;text-align:center;color:#666">5G</td><td style="padding:6px 10px;border:1px solid #e0e4ee;text-align:right;font-weight:600">₩90,000</td></tr>
-          <tr><td style="padding:6px 10px;border:1px solid #e0e4ee">티빙/지니/밀리 초이스 베이직</td><td style="padding:6px 10px;border:1px solid #e0e4ee;text-align:center;color:#666">5G</td><td style="padding:6px 10px;border:1px solid #e0e4ee;text-align:right;font-weight:600">₩90,000</td></tr>
-          <tr><td style="padding:6px 10px;border:1px solid #e0e4ee">디즈니+ 초이스 베이직</td><td style="padding:6px 10px;border:1px solid #e0e4ee;text-align:center;color:#666">5G</td><td style="padding:6px 10px;border:1px solid #e0e4ee;text-align:right;font-weight:600">₩90,000</td></tr>
-          <tr><td style="padding:6px 10px;border:1px solid #e0e4ee">(유튜브 프리미엄) 초이스 베이직</td><td style="padding:6px 10px;border:1px solid #e0e4ee;text-align:center;color:#666">5G</td><td style="padding:6px 10px;border:1px solid #e0e4ee;text-align:right;font-weight:600">₩90,000</td></tr>
-          <tr><td colspan="4" style="padding:5px 10px;border:1px solid #e0e4ee;background:#fffbe6;color:#b85000;font-size:11px;font-weight:600">※ 유튜브 프리미엄 요금제들은 +4,450원 추가적으로 계산 필요</td></tr>
-          <tr><td rowspan="8" style="padding:7px 10px;border:1px solid #e0e4ee;font-weight:800;background:#f5f0ff;color:#5c35a0;text-align:center;vertical-align:top">61K</td><td style="padding:6px 10px;border:1px solid #e0e4ee">데이터ON 프리미엄</td><td style="padding:6px 10px;border:1px solid #e0e4ee;text-align:center;color:#666">LTE</td><td style="padding:6px 10px;border:1px solid #e0e4ee;text-align:right;font-weight:600">₩89,000</td></tr>
-          <tr><td style="padding:6px 10px;border:1px solid #e0e4ee">베이직</td><td style="padding:6px 10px;border:1px solid #e0e4ee;text-align:center;color:#666">5G</td><td style="padding:6px 10px;border:1px solid #e0e4ee;text-align:right;font-weight:600">₩80,000</td></tr>
-          <tr><td style="padding:6px 10px;border:1px solid #e0e4ee">5G 심플 110GB</td><td style="padding:6px 10px;border:1px solid #e0e4ee;text-align:center;color:#666">5G</td><td style="padding:6px 10px;border:1px solid #e0e4ee;text-align:right;font-weight:600">₩69,000</td></tr>
-          <tr><td style="padding:6px 10px;border:1px solid #e0e4ee">데이터ON 비디오 플러스</td><td style="padding:6px 10px;border:1px solid #e0e4ee;text-align:center;color:#666">LTE</td><td style="padding:6px 10px;border:1px solid #e0e4ee;text-align:right;font-weight:600">₩69,000</td></tr>
-          <tr><td style="padding:6px 10px;border:1px solid #e0e4ee">5G 심플 90GB</td><td style="padding:6px 10px;border:1px solid #e0e4ee;text-align:center;color:#666">5G</td><td style="padding:6px 10px;border:1px solid #e0e4ee;text-align:right;font-weight:600">₩67,000</td></tr>
-          <tr><td style="padding:6px 10px;border:1px solid #e0e4ee">5G 심플 70GB</td><td style="padding:6px 10px;border:1px solid #e0e4ee;text-align:center;color:#666">5G</td><td style="padding:6px 10px;border:1px solid #e0e4ee;text-align:right;font-weight:600">₩65,000</td></tr>
-          <tr><td style="padding:6px 10px;border:1px solid #e0e4ee">5G 심플 50GB</td><td style="padding:6px 10px;border:1px solid #e0e4ee;text-align:center;color:#666">5G</td><td style="padding:6px 10px;border:1px solid #e0e4ee;text-align:right;font-weight:600">₩63,000</td></tr>
-          <tr><td style="padding:6px 10px;border:1px solid #e0e4ee">5G 심플 30GB</td><td style="padding:6px 10px;border:1px solid #e0e4ee;text-align:center;color:#666">5G</td><td style="padding:6px 10px;border:1px solid #e0e4ee;text-align:right;font-weight:600">₩61,000</td></tr>
-          <tr><td rowspan="15" style="padding:7px 10px;border:1px solid #e0e4ee;font-weight:800;background:#e8f4e8;color:#2e7d32;text-align:center;vertical-align:top">37K</td><td style="padding:6px 10px;border:1px solid #e0e4ee">5G 슬림 21GB</td><td style="padding:6px 10px;border:1px solid #e0e4ee;text-align:center;color:#666">5G</td><td style="padding:6px 10px;border:1px solid #e0e4ee;text-align:right;font-weight:600">₩58,000</td></tr>
-          <tr><td style="padding:6px 10px;border:1px solid #e0e4ee">5G 슬림 21GB (이월)</td><td style="padding:6px 10px;border:1px solid #e0e4ee;text-align:center;color:#666">5G</td><td style="padding:6px 10px;border:1px solid #e0e4ee;text-align:right;font-weight:600">₩58,000</td></tr>
-          <tr><td style="padding:6px 10px;border:1px solid #e0e4ee">5G 슬림 14GB</td><td style="padding:6px 10px;border:1px solid #e0e4ee;text-align:center;color:#666">5G</td><td style="padding:6px 10px;border:1px solid #e0e4ee;text-align:right;font-weight:600">₩55,000</td></tr>
-          <tr><td style="padding:6px 10px;border:1px solid #e0e4ee">5G 슬림 14GB (이월)</td><td style="padding:6px 10px;border:1px solid #e0e4ee;text-align:center;color:#666">5G</td><td style="padding:6px 10px;border:1px solid #e0e4ee;text-align:right;font-weight:600">₩55,000</td></tr>
-          <tr><td style="padding:6px 10px;border:1px solid #e0e4ee">5G 슬림 10GB</td><td style="padding:6px 10px;border:1px solid #e0e4ee;text-align:center;color:#666">5G</td><td style="padding:6px 10px;border:1px solid #e0e4ee;text-align:right;font-weight:600">₩50,000</td></tr>
-          <tr><td style="padding:6px 10px;border:1px solid #e0e4ee">5G 슬림 10GB (이월)</td><td style="padding:6px 10px;border:1px solid #e0e4ee;text-align:center;color:#666">5G</td><td style="padding:6px 10px;border:1px solid #e0e4ee;text-align:right;font-weight:600">₩50,000</td></tr>
-          <tr><td style="padding:6px 10px;border:1px solid #e0e4ee">5G 시니어 베이직</td><td style="padding:6px 10px;border:1px solid #e0e4ee;text-align:center;color:#666">5G</td><td style="padding:6px 10px;border:1px solid #e0e4ee;text-align:right;font-weight:600">₩49,000</td></tr>
-          <tr><td style="padding:6px 10px;border:1px solid #e0e4ee">5G 슬림 7GB</td><td style="padding:6px 10px;border:1px solid #e0e4ee;text-align:center;color:#666">5G</td><td style="padding:6px 10px;border:1px solid #e0e4ee;text-align:right;font-weight:600">₩45,000</td></tr>
-          <tr><td style="padding:6px 10px;border:1px solid #e0e4ee">5G 슬림 7GB (이월)</td><td style="padding:6px 10px;border:1px solid #e0e4ee;text-align:center;color:#666">5G</td><td style="padding:6px 10px;border:1px solid #e0e4ee;text-align:right;font-weight:600">₩45,000</td></tr>
-          <tr><td style="padding:6px 10px;border:1px solid #e0e4ee">5G 시니어 A형</td><td style="padding:6px 10px;border:1px solid #e0e4ee;text-align:center;color:#666">5G</td><td style="padding:6px 10px;border:1px solid #e0e4ee;text-align:right;font-weight:600">₩44,000</td></tr>
-          <tr><td style="padding:6px 10px;border:1px solid #e0e4ee">5G 시니어 B형</td><td style="padding:6px 10px;border:1px solid #e0e4ee;text-align:center;color:#666">5G</td><td style="padding:6px 10px;border:1px solid #e0e4ee;text-align:right;font-weight:600">₩42,000</td></tr>
-          <tr><td style="padding:6px 10px;border:1px solid #e0e4ee">5G 시니어 C형</td><td style="padding:6px 10px;border:1px solid #e0e4ee;text-align:center;color:#666">5G</td><td style="padding:6px 10px;border:1px solid #e0e4ee;text-align:right;font-weight:600">₩41,000</td></tr>
-          <tr><td style="padding:6px 10px;border:1px solid #e0e4ee">5G 슬림 5GB</td><td style="padding:6px 10px;border:1px solid #e0e4ee;text-align:center;color:#666">5G</td><td style="padding:6px 10px;border:1px solid #e0e4ee;text-align:right;font-weight:600">₩37,000</td></tr>
-          <tr><td style="padding:6px 10px;border:1px solid #e0e4ee">5G 슬림 4GB (이월)</td><td style="padding:6px 10px;border:1px solid #e0e4ee;text-align:center;color:#666">5G</td><td style="padding:6px 10px;border:1px solid #e0e4ee;text-align:right;font-weight:600">₩37,000</td></tr>
-          <tr><td style="padding:6px 10px;border:1px solid #e0e4ee">LTE 베이직</td><td style="padding:6px 10px;border:1px solid #e0e4ee;text-align:center;color:#666">LTE</td><td style="padding:6px 10px;border:1px solid #e0e4ee;text-align:right;font-weight:600">₩33,000</td></tr>
+          <tr><td rowspan="4" style="padding:7px 10px;border:1px solid #e0e4ee;font-weight:800;background:#fff9e0;color:#e05050;text-align:center;vertical-align:top">90K</td><td style="padding:6px 10px;border:1px solid #e0e4ee">초이스 130<span class="tip-wrap">ℹ️<span class="tip-box">✅ 티빙 / 지니 / 밀리의서재 / 디즈니+<br>유튜브프리미엄(라이트형/프리미엄형)<br>넷플릭스 광고형 스탠다드 / 광고형 프리미엄 (택1)</span></span></td><td style="padding:6px 10px;border:1px solid #e0e4ee;text-align:center;color:#666">5G</td><td style="padding:6px 10px;border:1px solid #e0e4ee;text-align:right;font-weight:600">₩130,000</td></tr>
+          <tr><td style="padding:6px 10px;border:1px solid #e0e4ee">초이스 110<span class="tip-wrap">ℹ️<span class="tip-box">✅ 티빙 / 지니 / 밀리의서재 / 디즈니+<br>유튜브프리미엄(라이트형/프리미엄형)<br>넷플릭스 광고형 스탠다드 / 광고형 프리미엄 (택1)</span></span></td><td style="padding:6px 10px;border:1px solid #e0e4ee;text-align:center;color:#666">5G</td><td style="padding:6px 10px;border:1px solid #e0e4ee;text-align:right;font-weight:600">₩110,000</td></tr>
+          <tr><td style="padding:6px 10px;border:1px solid #e0e4ee">베이직 100</td><td style="padding:6px 10px;border:1px solid #e0e4ee;text-align:center;color:#666">5G</td><td style="padding:6px 10px;border:1px solid #e0e4ee;text-align:right;font-weight:600">₩100,000</td></tr>
+          <tr><td style="padding:6px 10px;border:1px solid #e0e4ee"><a href="https://product.kt.com/wDic/productDetail.do?ItemCode=1681&CateCode=6002&filter_code=186&option_code=255&pageSize=10" target="_blank" style="color:#1a6fe8;text-decoration:underline">초이스 90</a> <span class="tip-wrap">ℹ️<span class="tip-box">✅ 티빙 / 지니 / 밀리의서재 / 디즈니+<br>유튜브프리미엄(라이트형/프리미엄형)<br>넷플릭스 광고형 스탠다드 / 광고형 프리미엄 (택1)</span></span></td><td style="padding:6px 10px;border:1px solid #e0e4ee;text-align:center;color:#666">5G</td><td style="padding:6px 10px;border:1px solid #e0e4ee;text-align:right;font-weight:600">₩90,000</td></tr>
+          <tr><td rowspan="6" style="padding:7px 10px;border:1px solid #e0e4ee;font-weight:800;background:#f5f0ff;color:#5c35a0;text-align:center;vertical-align:top">61K</td><td style="padding:6px 10px;border:1px solid #e0e4ee">베이직 80</td><td style="padding:6px 10px;border:1px solid #e0e4ee;text-align:center;color:#666">5G</td><td style="padding:6px 10px;border:1px solid #e0e4ee;text-align:right;font-weight:600">₩80,000</td></tr>
+          <tr><td style="padding:6px 10px;border:1px solid #e0e4ee">베이직 (110GB)</td><td style="padding:6px 10px;border:1px solid #e0e4ee;text-align:center;color:#666">5G</td><td style="padding:6px 10px;border:1px solid #e0e4ee;text-align:right;font-weight:600">₩69,000</td></tr>
+          <tr><td style="padding:6px 10px;border:1px solid #e0e4ee">베이직 (90GB)</td><td style="padding:6px 10px;border:1px solid #e0e4ee;text-align:center;color:#666">5G</td><td style="padding:6px 10px;border:1px solid #e0e4ee;text-align:right;font-weight:600">₩67,000</td></tr>
+          <tr><td style="padding:6px 10px;border:1px solid #e0e4ee">베이직 (70GB)</td><td style="padding:6px 10px;border:1px solid #e0e4ee;text-align:center;color:#666">5G</td><td style="padding:6px 10px;border:1px solid #e0e4ee;text-align:right;font-weight:600">₩65,000</td></tr>
+          <tr><td style="padding:6px 10px;border:1px solid #e0e4ee">베이직 (50GB)</td><td style="padding:6px 10px;border:1px solid #e0e4ee;text-align:center;color:#666">5G</td><td style="padding:6px 10px;border:1px solid #e0e4ee;text-align:right;font-weight:600">₩63,000</td></tr>
+          <tr><td style="padding:6px 10px;border:1px solid #e0e4ee">베이직 (30GB)</td><td style="padding:6px 10px;border:1px solid #e0e4ee;text-align:center;color:#666">5G</td><td style="padding:6px 10px;border:1px solid #e0e4ee;text-align:right;font-weight:600">₩61,000</td></tr>
+          <tr><td rowspan="6" style="padding:7px 10px;border:1px solid #e0e4ee;font-weight:800;background:#e8f4e8;color:#2e7d32;text-align:center;vertical-align:top">37K</td><td style="padding:6px 10px;border:1px solid #e0e4ee">베이직 (21GB)</td><td style="padding:6px 10px;border:1px solid #e0e4ee;text-align:center;color:#666">5G</td><td style="padding:6px 10px;border:1px solid #e0e4ee;text-align:right;font-weight:600">₩58,000</td></tr>
+          <tr><td style="padding:6px 10px;border:1px solid #e0e4ee">베이직 (14GB)</td><td style="padding:6px 10px;border:1px solid #e0e4ee;text-align:center;color:#666">5G</td><td style="padding:6px 10px;border:1px solid #e0e4ee;text-align:right;font-weight:600">₩55,000</td></tr>
+          <tr><td style="padding:6px 10px;border:1px solid #e0e4ee">베이직 (10GB)</td><td style="padding:6px 10px;border:1px solid #e0e4ee;text-align:center;color:#666">5G</td><td style="padding:6px 10px;border:1px solid #e0e4ee;text-align:right;font-weight:600">₩50,000</td></tr>
+          <tr><td style="padding:6px 10px;border:1px solid #e0e4ee">베이직 (7GB)</td><td style="padding:6px 10px;border:1px solid #e0e4ee;text-align:center;color:#666">5G</td><td style="padding:6px 10px;border:1px solid #e0e4ee;text-align:right;font-weight:600">₩45,000</td></tr>
+          <tr><td style="padding:6px 10px;border:1px solid #e0e4ee"><a href="https://product.kt.com/wDic/productDetail.do?ItemCode=1693&CateCode=6002&filter_code=186&option_code=255&pageSize=10" target="_blank" style="color:#1a6fe8;text-decoration:underline">베이직 (4GB)</a></td><td style="padding:6px 10px;border:1px solid #e0e4ee;text-align:center;color:#666">5G</td><td style="padding:6px 10px;border:1px solid #e0e4ee;text-align:right;font-weight:600">₩37,000</td></tr>
+          <tr><td style="padding:6px 10px;border:1px solid #e0e4ee"><a href="https://product.kt.com/wDic/productDetail.do?ItemCode=1695&CateCode=6002&filter_code=188&option_code=257&pageSize=10" target="_blank" style="color:#1a6fe8;text-decoration:underline">키즈 38</a></td><td style="padding:6px 10px;border:1px solid #e0e4ee;text-align:center;color:#666">5G</td><td style="padding:6px 10px;border:1px solid #e0e4ee;text-align:right;font-weight:600">₩38,000</td></tr>
         </tbody>
       </table>
+      <div style="border:1.5px solid #e0e4ee;border-radius:7px;padding:10px 12px;margin-top:10px;margin-bottom:10px;background:#f8f9fb;font-size:11px;color:#444;line-height:1.7">
+        <div style="font-weight:700;margin-bottom:4px">📋 접수 후 진행 사항</div>
+        <div>1. 해당 고객 인터넷 개통이 완료되면 [개통 완료 / 유심 발송 요청]으로 웹 회신 필요</div>
+        <div style="color:#888;padding-left:12px">※ 이미 개통된 고객 30일 이내 유심동판 시 [개통완료 일자, 개통번호 기재 / 유심 발송 요청] 으로 웹 회신 필요</div>
+        <div>2. 고객이 유심 수령하신 후 미소로 개통 요청 시 [고객 유심 수령 완료 / 개통 진행 요청] 필요</div>
+        <div style="color:#888;padding-left:12px">※ 개통 요청하면 [사전동의문자: 위약금 확인 및 동의문자]가 고객에게 발송되며, 해당 문자 처리 후 개통 진행 가능</div>
+        <div style="color:#888;padding-left:12px">※ 동의 처리하지 않을 시 문자 발송 후 10분 전산에서 강제로 동의처리 후 개통진행 가능</div>
+        <div>3. 수령한 USIM으로 갈아끼우시고 전원 ON에 성공하시면 선택약정과 유무선 결합 진행 필수</div>
+        <div style="color:#888;padding-left:12px">※ 선약 및 결합 완료시 [개통완료]로 처리됨</div>
+      </div>
+      <div style="border:1.5px solid #e0e4ee;border-radius:7px;padding:10px 12px;margin-bottom:6px;background:#fff9e0;font-size:11px;color:#444;line-height:1.7">
+        <div style="font-weight:700;margin-bottom:4px">⚠️ 개통 필수 안내 사항</div>
+        <div>1. 유심 개통은 순차적으로 진행되어 최대 4시간까지 소요될 수 있습니다.</div>
+        <div>2. 사전 동의 문자 처리가 완료되어야 빠른 개통 처리가 가능합니다.</div>
+        <div>3. KT USIM으로 개통되기 전까지는 기존 USIM을 사용하시다가 기존 USIM의 신호가 끊어질 경우 수령하신 USIM으로 갈아 끼워주세요.</div>
+        <div>4. 기기 재시동을 여러번 해주시면 정상 개통이 완료됩니다.</div>
+        <div>5. 유심보호 서비스 가입되어있는 경우 해제 후 유심 분리 필수 (미해제 시 락 걸릴 수 있음)</div>
+      </div>
+      <div style="border:1.5px solid #ffd0d0;border-radius:7px;padding:10px 12px;margin-bottom:6px;background:#fff5f5;font-size:11px;color:#444;line-height:1.7">
+        <div style="font-weight:700;margin-bottom:4px;color:#c0001a">⚠️ 주의 사항 ⚠️</div>
+        <div>1. 유심 당일 발송은 15시에 마감됩니다. 이후 요청건 영업일 기준 익일 진행됩니다.</div>
+        <div>2. 유심 비용 7,700원 / 번호 이동 수수료 800원이 첫 달에 청구됩니다. (번호이동 시 총 8,500원 / 신규 개통 시 7,700원)</div>
+        <div>3. 인터넷 / 유심 중 하나라도 설불 및 개통 불가시 수수료 지급 불가합니다.</div>
+        <div>4. 인터넷 개통월 기준 익월말까지 유심 개통시에만 수수료 인정되어 지급됩니다.</div>
+        <div>5. 선택약정 적용 안될 경우 수수료 지급 불가합니다.</div>
+        <div>6. 인터넷 명의자와 유심 명의자가 상이해도 유심 수수료 지급 가능합니다.</div>
+      </div>
     </div>
     <div id="utbl-sk" style="display:none">
       <p style="font-size:11px;color:#e05050;font-weight:600;margin-bottom:6px">⚠️ 인단독 &gt; 33K 판매 불가 / 가족 유심 판매 불가, 번들 &gt; 모든 요금제 + 가족 유심 판매 가능</p>
       <p style="font-size:11px;color:#e05050;font-weight:600;margin-bottom:6px">⚠️ [다이렉트] 요금제는 미소에서 가입 불가</p>
+      <div style="margin-bottom:8px"><a href="https://tgateplus.sktelecom.com/main/main.do?p=9d7d8b5b0b339b80214797b42ff596a914f9d2a8103175f5b4e3a208ea7e3cab" target="_blank" style="color:#1a6fe8;font-size:12px;font-weight:600;text-decoration:underline">✅ 신청서</a></div>
       <p style="font-size:11px;color:#e05050;font-weight:600;margin-bottom:6px">⚠️ 인터넷+TV 번들 가입 시에만 가족 유심동판 신청 가능 (본인1+가족4 = 총 5회선 가능)</p>
       <p style="font-size:11px;color:#e05050;font-weight:600;margin-bottom:8px">⚠️ 인터넷 단독 가입 시 &gt; 33K 요금제 판매 불가(본인 및 가족 유심 판매 불가), 가족 유심 판매 불가(인터넷 단독은 무조건 가족 불가)</p>
       <table style="width:100%;border-collapse:collapse;font-size:12px">
         <thead><tr style="background:#f0f3fa"><th style="padding:7px 8px;border:1px solid #e0e4ee;text-align:left">구간</th><th style="padding:7px 8px;border:1px solid #e0e4ee">상품</th><th style="padding:7px 8px;border:1px solid #e0e4ee">구분</th><th style="padding:7px 8px;border:1px solid #e0e4ee;text-align:right">월요금</th></tr></thead>
         <tbody>
-          <tr><td rowspan="10" style="padding:7px 8px;border:1px solid #e0e4ee;font-weight:800;background:#fff4e0;color:#b85000;vertical-align:top">89K</td><td style="padding:6px 8px;border:1px solid #e0e4ee">5GX 플래티넘(티빙)</td><td style="padding:6px 8px;border:1px solid #e0e4ee;text-align:center;color:#666">5G</td><td style="padding:6px 8px;border:1px solid #e0e4ee;text-align:right">₩125,000</td></tr>
-          <tr><td style="padding:6px 8px;border:1px solid #e0e4ee">5GX 플래티넘(넷플릭스)</td><td style="padding:6px 8px;border:1px solid #e0e4ee;text-align:center;color:#666">5G</td><td style="padding:6px 8px;border:1px solid #e0e4ee;text-align:right">₩125,000</td></tr>
-          <tr><td style="padding:6px 8px;border:1px solid #e0e4ee">5GX 프리미엄(디즈니+)</td><td style="padding:6px 8px;border:1px solid #e0e4ee;text-align:center;color:#666">5G</td><td style="padding:6px 8px;border:1px solid #e0e4ee;text-align:right">₩109,000</td></tr>
-          <tr><td style="padding:6px 8px;border:1px solid #e0e4ee">5GX 프리미엄(티빙)</td><td style="padding:6px 8px;border:1px solid #e0e4ee;text-align:center;color:#666">5G</td><td style="padding:6px 8px;border:1px solid #e0e4ee;text-align:right">₩109,000</td></tr>
-          <tr><td style="padding:6px 8px;border:1px solid #e0e4ee">5GX 프리미엄(넷플릭스)</td><td style="padding:6px 8px;border:1px solid #e0e4ee;text-align:center;color:#666">5G</td><td style="padding:6px 8px;border:1px solid #e0e4ee;text-align:right">₩109,000</td></tr>
-          <tr><td style="padding:6px 8px;border:1px solid #e0e4ee">5GX 프리미엄(유튜브 프리미엄)</td><td style="padding:6px 8px;border:1px solid #e0e4ee;text-align:center;color:#666">5G</td><td style="padding:6px 8px;border:1px solid #e0e4ee;text-align:right">₩109,000</td></tr>
-          <tr><td style="padding:6px 8px;border:1px solid #e0e4ee">5GX 프라임플러스(티빙)</td><td style="padding:6px 8px;border:1px solid #e0e4ee;text-align:center;color:#666">5G</td><td style="padding:6px 8px;border:1px solid #e0e4ee;text-align:right">₩99,000</td></tr>
-          <tr><td style="padding:6px 8px;border:1px solid #e0e4ee">5GX 프라임플러스(넷플릭스)</td><td style="padding:6px 8px;border:1px solid #e0e4ee;text-align:center;color:#666">5G</td><td style="padding:6px 8px;border:1px solid #e0e4ee;text-align:right">₩99,000</td></tr>
-          <tr><td style="padding:6px 8px;border:1px solid #e0e4ee">0 청년 89</td><td style="padding:6px 8px;border:1px solid #e0e4ee;text-align:center;color:#666">5G</td><td style="padding:6px 8px;border:1px solid #e0e4ee;text-align:right">₩89,000</td></tr>
-          <tr><td style="padding:6px 8px;border:1px solid #e0e4ee">5GX 프라임</td><td style="padding:6px 8px;border:1px solid #e0e4ee;text-align:center;color:#666">5G</td><td style="padding:6px 8px;border:1px solid #e0e4ee;text-align:right">₩89,000</td></tr>
-          <tr><td rowspan="5" style="padding:7px 8px;border:1px solid #e0e4ee;font-weight:800;background:#f5f0ff;color:#5c35a0;vertical-align:top">69K</td><td style="padding:6px 8px;border:1px solid #e0e4ee">0 청년 79</td><td style="padding:6px 8px;border:1px solid #e0e4ee;text-align:center;color:#666">5G</td><td style="padding:6px 8px;border:1px solid #e0e4ee;text-align:right">₩79,000</td></tr>
-          <tr><td style="padding:6px 8px;border:1px solid #e0e4ee">5GX 레귤러플러스</td><td style="padding:6px 8px;border:1px solid #e0e4ee;text-align:center;color:#666">5G</td><td style="padding:6px 8px;border:1px solid #e0e4ee;text-align:right">₩79,000</td></tr>
-          <tr><td style="padding:6px 8px;border:1px solid #e0e4ee">T플랜 스페셜</td><td style="padding:6px 8px;border:1px solid #e0e4ee;text-align:center;color:#666">5G</td><td style="padding:6px 8px;border:1px solid #e0e4ee;text-align:right">₩79,000</td></tr>
-          <tr><td style="padding:6px 8px;border:1px solid #e0e4ee">0 청년 69</td><td style="padding:6px 8px;border:1px solid #e0e4ee;text-align:center;color:#666">5G</td><td style="padding:6px 8px;border:1px solid #e0e4ee;text-align:right">₩69,000</td></tr>
-          <tr><td style="padding:6px 8px;border:1px solid #e0e4ee">5GX 레귤러</td><td style="padding:6px 8px;border:1px solid #e0e4ee;text-align:center;color:#666">5G</td><td style="padding:6px 8px;border:1px solid #e0e4ee;text-align:right">₩69,000</td></tr>
-          <tr><td rowspan="10" style="padding:7px 8px;border:1px solid #e0e4ee;font-weight:800;background:#e8f4e8;color:#2e7d32;vertical-align:top">43K</td><td style="padding:6px 8px;border:1px solid #e0e4ee">베이직플러스 75GB업</td><td style="padding:6px 8px;border:1px solid #e0e4ee;text-align:center;color:#666">5G</td><td style="padding:6px 8px;border:1px solid #e0e4ee;text-align:right">₩68,000</td></tr>
-          <tr><td style="padding:6px 8px;border:1px solid #e0e4ee">베이직플러스 30GB업</td><td style="padding:6px 8px;border:1px solid #e0e4ee;text-align:center;color:#666">5G</td><td style="padding:6px 8px;border:1px solid #e0e4ee;text-align:right">₩64,000</td></tr>
-          <tr><td style="padding:6px 8px;border:1px solid #e0e4ee">베이직플러스</td><td style="padding:6px 8px;border:1px solid #e0e4ee;text-align:center;color:#666">5G</td><td style="padding:6px 8px;border:1px solid #e0e4ee;text-align:right">₩59,000</td></tr>
-          <tr><td style="padding:6px 8px;border:1px solid #e0e4ee">슬림</td><td style="padding:6px 8px;border:1px solid #e0e4ee;text-align:center;color:#666">5G</td><td style="padding:6px 8px;border:1px solid #e0e4ee;text-align:right">₩55,000</td></tr>
-          <tr><td style="padding:6px 8px;border:1px solid #e0e4ee">0 청년 49</td><td style="padding:6px 8px;border:1px solid #e0e4ee;text-align:center;color:#666">5G</td><td style="padding:6px 8px;border:1px solid #e0e4ee;text-align:right">₩49,000</td></tr>
-          <tr><td style="padding:6px 8px;border:1px solid #e0e4ee">베이직</td><td style="padding:6px 8px;border:1px solid #e0e4ee;text-align:center;color:#666">5G</td><td style="padding:6px 8px;border:1px solid #e0e4ee;text-align:right">₩49,000</td></tr>
-          <tr><td style="padding:6px 8px;border:1px solid #e0e4ee">5G 시니어 A형</td><td style="padding:6px 8px;border:1px solid #e0e4ee;text-align:center;color:#666">5G</td><td style="padding:6px 8px;border:1px solid #e0e4ee;text-align:right">₩45,000</td></tr>
-          <tr><td style="padding:6px 8px;border:1px solid #e0e4ee">컴팩트플러스</td><td style="padding:6px 8px;border:1px solid #e0e4ee;text-align:center;color:#666">5G</td><td style="padding:6px 8px;border:1px solid #e0e4ee;text-align:right">₩45,000</td></tr>
-          <tr><td style="padding:6px 8px;border:1px solid #e0e4ee">5G 시니어 B형</td><td style="padding:6px 8px;border:1px solid #e0e4ee;text-align:center;color:#666">5G</td><td style="padding:6px 8px;border:1px solid #e0e4ee;text-align:right">₩44,000</td></tr>
-          <tr><td style="padding:6px 8px;border:1px solid #e0e4ee">0 청년 43</td><td style="padding:6px 8px;border:1px solid #e0e4ee;text-align:center;color:#666">5G</td><td style="padding:6px 8px;border:1px solid #e0e4ee;text-align:right">₩43,000</td></tr>
-          <tr><td rowspan="3" style="padding:7px 8px;border:1px solid #e0e4ee;font-weight:800;background:#fff0f0;color:#c0001a;vertical-align:top">33K</td><td style="padding:6px 8px;border:1px solid #e0e4ee">5G 시니어 C형</td><td style="padding:6px 8px;border:1px solid #e0e4ee;text-align:center;color:#666">5G</td><td style="padding:6px 8px;border:1px solid #e0e4ee;text-align:right">₩42,000</td></tr>
-          <tr><td style="padding:6px 8px;border:1px solid #e0e4ee">컴팩트</td><td style="padding:6px 8px;border:1px solid #e0e4ee;text-align:center;color:#666">5G</td><td style="padding:6px 8px;border:1px solid #e0e4ee;text-align:right">₩39,000</td></tr>
-          <tr><td style="padding:6px 8px;border:1px solid #e0e4ee">0 청년 37</td><td style="padding:6px 8px;border:1px solid #e0e4ee;text-align:center;color:#666">5G</td><td style="padding:6px 8px;border:1px solid #e0e4ee;text-align:right">₩37,000</td></tr>
+          <tr><td rowspan="5" style="padding:7px 8px;border:1px solid #e0e4ee;font-weight:800;background:#fff4e0;color:#b85000;vertical-align:top;text-align:center">89K</td><td style="padding:6px 8px;border:1px solid #e0e4ee"><a href="https://m.tworld.co.kr/product/callplan?prod_id=NA00007622" target="_blank" style="color:#1a6fe8;text-decoration:underline">베스트 Max</a> <span class="tip-wrap">ℹ️<span class="tip-box">✅ 스마트기기 / Google AI / 티빙&amp;웨이브<br>디즈니+ / 유튜브 프리미엄 / T우주 (택1)</span></span></td><td style="padding:6px 8px;border:1px solid #e0e4ee;text-align:center;color:#666">5G</td><td style="padding:6px 8px;border:1px solid #e0e4ee;text-align:right">₩129,000</td></tr>
+          <tr><td style="padding:6px 8px;border:1px solid #e0e4ee"><a href="https://www.tworld.co.kr/web/product/callplan/NA00009809" target="_blank" style="color:#1a6fe8;text-decoration:underline">베스트 Pro</a> <span class="tip-wrap">ℹ️<span class="tip-box">✅ 스마트기기 / Google AI / 티빙&amp;웨이브<br>디즈니+ / 유튜브 프리미엄 / T우주 (택1)</span></span></td><td style="padding:6px 8px;border:1px solid #e0e4ee;text-align:center;color:#666">5G</td><td style="padding:6px 8px;border:1px solid #e0e4ee;text-align:right">₩119,000</td></tr>
+          <tr><td style="padding:6px 8px;border:1px solid #e0e4ee"><a href="https://www.tworld.co.kr/web/product/callplan/NA00009803" target="_blank" style="color:#1a6fe8;text-decoration:underline">베스트 109</a> <span class="tip-wrap">ℹ️<span class="tip-box">✅ 스마트기기 / Google AI / 티빙&amp;웨이브<br>디즈니+ / 유튜브 프리미엄 / T우주 (택1)</span></span></td><td style="padding:6px 8px;border:1px solid #e0e4ee;text-align:center;color:#666">5G</td><td style="padding:6px 8px;border:1px solid #e0e4ee;text-align:right">₩109,000</td></tr>
+          <tr><td style="padding:6px 8px;border:1px solid #e0e4ee"><a href="https://www.tworld.co.kr/web/product/callplan/NA00009798" target="_blank" style="color:#1a6fe8;text-decoration:underline">베스트 99</a> <span class="tip-wrap">ℹ️<span class="tip-box">✅ 스마트기기 / Google AI / 티빙&amp;웨이브<br>디즈니+ / 유튜브 프리미엄 / T우주 (택1)</span></span></td><td style="padding:6px 8px;border:1px solid #e0e4ee;text-align:center;color:#666">5G</td><td style="padding:6px 8px;border:1px solid #e0e4ee;text-align:right">₩99,000</td></tr>
+          <tr><td style="padding:6px 8px;border:1px solid #e0e4ee"><a href="https://www.tworld.co.kr/web/product/callplan/NA00009794" target="_blank" style="color:#1a6fe8;text-decoration:underline">베스트 89</a> <span class="tip-wrap">ℹ️<span class="tip-box">✅ 스마트기기 / Google AI / 티빙&amp;웨이브<br>디즈니+ / 유튜브 프리미엄 / T우주 (택1)</span></span></td><td style="padding:6px 8px;border:1px solid #e0e4ee;text-align:center;color:#666">5G</td><td style="padding:6px 8px;border:1px solid #e0e4ee;text-align:right">₩89,000</td></tr>
+          <tr><td rowspan="4" style="padding:7px 8px;border:1px solid #e0e4ee;font-weight:800;background:#f5f0ff;color:#5c35a0;vertical-align:top;text-align:center">69K</td><td style="padding:6px 8px;border:1px solid #e0e4ee"><a href="https://www.tworld.co.kr/web/product/callplan/NA00009791" target="_blank" style="color:#1a6fe8;text-decoration:underline">라이트 79</a></td><td style="padding:6px 8px;border:1px solid #e0e4ee;text-align:center;color:#666">5G</td><td style="padding:6px 8px;border:1px solid #e0e4ee;text-align:right">₩79,000</td></tr>
+          <tr><td style="padding:6px 8px;border:1px solid #e0e4ee"><a href="https://www.tworld.co.kr/web/product/callplan/NA00009790" target="_blank" style="color:#1a6fe8;text-decoration:underline">라이트 69</a></td><td style="padding:6px 8px;border:1px solid #e0e4ee;text-align:center;color:#666">5G</td><td style="padding:6px 8px;border:1px solid #e0e4ee;text-align:right">₩69,000</td></tr>
+          <tr><td style="padding:6px 8px;border:1px solid #e0e4ee"><a href="https://www.tworld.co.kr/web/product/callplan/NA00009789" target="_blank" style="color:#1a6fe8;text-decoration:underline">라이트 59 (75GB업)</a></td><td style="padding:6px 8px;border:1px solid #e0e4ee;text-align:center;color:#666">5G</td><td style="padding:6px 8px;border:1px solid #e0e4ee;text-align:right">₩68,000</td></tr>
+          <tr><td style="padding:6px 8px;border:1px solid #e0e4ee"><a href="https://www.tworld.co.kr/web/product/callplan/NA00009788" target="_blank" style="color:#1a6fe8;text-decoration:underline">라이트 59 (50GB업)</a></td><td style="padding:6px 8px;border:1px solid #e0e4ee;text-align:center;color:#666">5G</td><td style="padding:6px 8px;border:1px solid #e0e4ee;text-align:right">₩66,000</td></tr>
+          <tr><td rowspan="10" style="padding:7px 8px;border:1px solid #e0e4ee;font-weight:800;background:#e8f4e8;color:#2e7d32;vertical-align:top;text-align:center">43K</td><td style="padding:6px 8px;border:1px solid #e0e4ee"><a href="https://www.tworld.co.kr/web/product/callplan/NA00009787" target="_blank" style="color:#1a6fe8;text-decoration:underline">라이트 59 (30GB업)</a></td><td style="padding:6px 8px;border:1px solid #e0e4ee;text-align:center;color:#666">5G</td><td style="padding:6px 8px;border:1px solid #e0e4ee;text-align:right">₩62,000</td></tr>
+          <tr><td style="padding:6px 8px;border:1px solid #e0e4ee"><a href="https://www.tworld.co.kr/web/product/callplan/NA00009786" target="_blank" style="color:#1a6fe8;text-decoration:underline">라이트 59 (13GB업)</a></td><td style="padding:6px 8px;border:1px solid #e0e4ee;text-align:center;color:#666">5G</td><td style="padding:6px 8px;border:1px solid #e0e4ee;text-align:right">₩62,000</td></tr>
+          <tr><td style="padding:6px 8px;border:1px solid #e0e4ee"><a href="https://www.tworld.co.kr/web/product/callplan/NA00009785" target="_blank" style="color:#1a6fe8;text-decoration:underline">라이트 59</a></td><td style="padding:6px 8px;border:1px solid #e0e4ee;text-align:center;color:#666">5G</td><td style="padding:6px 8px;border:1px solid #e0e4ee;text-align:right">₩59,000</td></tr>
+          <tr><td style="padding:6px 8px;border:1px solid #e0e4ee"><a href="https://www.tworld.co.kr/web/product/callplan/NA00009784" target="_blank" style="color:#1a6fe8;text-decoration:underline">라이트 55</a></td><td style="padding:6px 8px;border:1px solid #e0e4ee;text-align:center;color:#666">5G</td><td style="padding:6px 8px;border:1px solid #e0e4ee;text-align:right">₩55,000</td></tr>
+          <tr><td style="padding:6px 8px;border:1px solid #e0e4ee"><a href="https://www.tworld.co.kr/web/product/callplan/NA00009783" target="_blank" style="color:#1a6fe8;text-decoration:underline">라이트 49</a></td><td style="padding:6px 8px;border:1px solid #e0e4ee;text-align:center;color:#666">5G</td><td style="padding:6px 8px;border:1px solid #e0e4ee;text-align:right">₩49,000</td></tr>
+          <tr><td style="padding:6px 8px;border:1px solid #e0e4ee"><a href="https://www.tworld.co.kr/web/product/callplan/NA00009782" target="_blank" style="color:#1a6fe8;text-decoration:underline">라이트 45</a></td><td style="padding:6px 8px;border:1px solid #e0e4ee;text-align:center;color:#666">5G</td><td style="padding:6px 8px;border:1px solid #e0e4ee;text-align:right">₩45,000</td></tr>
+          <tr><td style="padding:6px 8px;border:1px solid #e0e4ee"><a href="https://www.tworld.co.kr/web/product/callplan/NA00009781" target="_blank" style="color:#1a6fe8;text-decoration:underline">라이트 39</a></td><td style="padding:6px 8px;border:1px solid #e0e4ee;text-align:center;color:#666">5G</td><td style="padding:6px 8px;border:1px solid #e0e4ee;text-align:right">₩39,000</td></tr>
+          <tr><td style="padding:6px 8px;border:1px solid #e0e4ee"><a href="https://www.tworld.co.kr/web/product/callplan/NA00008235" target="_blank" style="color:#1a6fe8;text-decoration:underline">5G 시니어 C형</a><span style="font-size:10px;color:#e05050;font-weight:600;margin-left:4px">⛔ 만 80세 이상 가입가능</span></td><td style="padding:6px 8px;border:1px solid #e0e4ee;text-align:center;color:#666">5G</td><td style="padding:6px 8px;border:1px solid #e0e4ee;text-align:right">₩42,000</td></tr>
+          <tr><td style="padding:6px 8px;border:1px solid #e0e4ee"><a href="https://www.tworld.co.kr/web/product/callplan/NA00008234" target="_blank" style="color:#1a6fe8;text-decoration:underline">5G 시니어 B형</a><span style="font-size:10px;color:#e05050;font-weight:600;margin-left:4px">⛔ 만 70세 이상 가입가능</span></td><td style="padding:6px 8px;border:1px solid #e0e4ee;text-align:center;color:#666">5G</td><td style="padding:6px 8px;border:1px solid #e0e4ee;text-align:right">₩44,000</td></tr>
+          <tr><td style="padding:6px 8px;border:1px solid #e0e4ee"><a href="https://www.tworld.co.kr/web/product/callplan/NA00007493" target="_blank" style="color:#1a6fe8;text-decoration:underline">5G ZEM 베스트</a><span style="font-size:10px;color:#e05050;font-weight:600;margin-left:4px">⛔ 만 12세 이하 가입가능</span></td><td style="padding:6px 8px;border:1px solid #e0e4ee;text-align:center;color:#666">5G</td><td style="padding:6px 8px;border:1px solid #e0e4ee;text-align:right">₩26,000</td></tr>
+          <tr><td rowspan="3" style="padding:7px 8px;border:1px solid #e0e4ee;font-weight:800;background:#fff0f0;color:#c0001a;vertical-align:top;text-align:center">33K</td><td style="padding:6px 8px;border:1px solid #e0e4ee"><a href="https://www.tworld.co.kr/web/product/callplan/NA00004934" target="_blank" style="color:#1a6fe8;text-decoration:underline">T끼리 어르신</a><span style="font-size:10px;color:#e05050;font-weight:600;margin-left:4px">⛔ 만 65세 이상 가입가능</span></td><td style="padding:6px 8px;border:1px solid #e0e4ee;text-align:center;color:#666">5G</td><td style="padding:6px 8px;border:1px solid #e0e4ee;text-align:right">₩19,800</td></tr>
+          <tr><td style="padding:6px 8px;border:1px solid #e0e4ee"><a href="https://www.tworld.co.kr/web/product/callplan/NA00006534" target="_blank" style="color:#1a6fe8;text-decoration:underline">T플랜 세이브</a></td><td style="padding:6px 8px;border:1px solid #e0e4ee;text-align:center;color:#666">5G</td><td style="padding:6px 8px;border:1px solid #e0e4ee;text-align:right">₩33,000</td></tr>
+          <tr><td style="padding:6px 8px;border:1px solid #e0e4ee"><a href="https://www.tworld.co.kr/web/product/callplan/NA00004891" target="_blank" style="color:#1a6fe8;text-decoration:underline">ZEM플랜 스마트</a><span style="font-size:10px;color:#e05050;font-weight:600;margin-left:4px">⛔ 만 12세 이하 가입가능</span></td><td style="padding:6px 8px;border:1px solid #e0e4ee;text-align:center;color:#666">5G</td><td style="padding:6px 8px;border:1px solid #e0e4ee;text-align:right">₩19,800</td></tr>
+        </tbody>
+      </table>
+      <div style="border:1.5px solid #e0e4ee;border-radius:7px;padding:10px 12px;margin-top:10px;margin-bottom:10px;background:#f8f9fb;font-size:11px;color:#444;line-height:1.7">
+        <div style="font-weight:700;margin-bottom:4px">📋 접수 방법</div>
+        <div>1. 위 신청서 링크로 인증(PASS or 신용카드) 후 신청서 작성</div>
+        <div>2. 백메가 접수웹(speedonline.kr)의 SK(일반) ⇒ 모바일 탭으로 접수 부탁 드리겠습니다.</div>
+      </div>
+      <div style="border:1.5px solid #e0e4ee;border-radius:7px;padding:10px 12px;margin-bottom:10px;background:#f8f9fb;font-size:11px;color:#444;line-height:1.7">
+        <div style="font-weight:700;margin-bottom:4px">📋 접수 후 진행 사항</div>
+        <div>1. 해당 고객 인터넷 개통이 완료되면 [개통 완료 / 유심 발송 요청]으로 웹 회신 필요</div>
+        <div style="color:#888;padding-left:12px">※ 이미 개통된 고객 30일 이내 유심동판 시 [개통완료 일자, 개통번호 기재 / 유심 발송 요청] 으로 웹 회신 필요</div>
+        <div>2. 고객이 유심 수령하신 후 미소로 개통 요청 시 [고객 유심 수령 완료 / 개통 진행 요청] 필요</div>
+        <div style="color:#888;padding-left:12px">※ 개통 요청하면 [사전동의문자: 위약금 확인 및 동의문자]가 고객에게 발송되며, 해당 문자 처리 후 개통 진행 가능</div>
+        <div style="color:#888;padding-left:12px">※ 동의 처리하지 않을 시 문자 발송 후 10분 전산에서 강제로 동의처리 후 개통진행 가능</div>
+        <div>3. 수령한 USIM으로 갈아끼우시고 전원 ON에 성공하시면 선택약정과 유무선 결합 진행 필수</div>
+        <div style="color:#888;padding-left:12px">※ 선약 및 결합 완료시 [개통완료]로 처리됨</div>
+      </div>
+      <div style="border:1.5px solid #e0e4ee;border-radius:7px;padding:10px 12px;margin-bottom:10px;background:#fff9e0;font-size:11px;color:#444;line-height:1.7">
+        <div style="font-weight:700;margin-bottom:4px">⚠️ 개통 필수 안내 사항</div>
+        <div>1. 유심 개통은 순차적으로 진행되어 최대 1시간까지 소요될 수 있습니다.</div>
+        <div>2. 사전 동의 문자 처리가 완료되어야 빠른 개통 처리가 가능합니다.</div>
+        <div>3. SK USIM으로 개통되기 전까지는 기존 USIM을 사용하시다가 기존 USIM의 신호가 끊어질 경우 수령하신 USIM으로 갈아 끼워주세요.</div>
+        <div>4. 기기 재시동을 여러번 해주시면 정상 개통이 완료됩니다.</div>
+      </div>
+      <div style="border:1.5px solid #ffd0d0;border-radius:7px;padding:10px 12px;margin-bottom:6px;background:#fff5f5;font-size:11px;color:#444;line-height:1.7">
+        <div style="font-weight:700;margin-bottom:4px;color:#c0001a">⚠️ 주의 사항 ⚠️</div>
+        <div>1. 유심 당일 발송은 15시에 마감됩니다. 이후 요청건 영업일 기준 익일 진행됩니다.</div>
+        <div>2. 유심 비용 7,700원 / 번호 이동 수수료 800원이 첫 달에 청구됩니다. (번호이동 시 총 8,500원)</div>
+        <div>3. 인터넷 / 유심 중 하나라도 설불 및 개통 불가시 수수료 지급 불가합니다.</div>
+        <div>4. 인터넷 개통월 기준 익월말까지 유심 개통시에만 수수료 인정되어 지급됩니다.</div>
+        <div>5. 선택약정 적용 안될 경우 수수료 지급 불가합니다.</div>
+        <div>6. 인터넷 명의자와 유심 명의자가 상이해도 유심 수수료 지급 가능합니다.</div>
+      </div>
+    </div>
+    <div id="utbl-ktgift" style="display:none">
+      <p style="font-size:11px;color:#888;margin-bottom:8px">※ 인터넷 명의자 사은품 + 가족 사은품 기준 (KT 유심 동판)</p>
+      <table style="width:100%;border-collapse:collapse;font-size:12px">
+        <thead><tr style="background:#f0f3fa"><th style="padding:6px 8px;border:1px solid #e0e4ee;width:50px;text-align:center">요금제</th><th style="padding:6px 8px;border:1px solid #e0e4ee;text-align:left">상품</th><th style="padding:6px 8px;border:1px solid #e0e4ee;width:95px;text-align:right">명의자 사은품</th><th style="padding:6px 8px;border:1px solid #e0e4ee;width:80px;text-align:right">가족 사은품</th></tr></thead>
+        <tbody>
+          <tr><td rowspan="12" style="padding:6px 8px;border:1px solid #e0e4ee;font-weight:800;background:#e8f4e8;color:#2e7d32;text-align:center;vertical-align:top">37K</td><td style="padding:5px 8px;border:1px solid #e0e4ee">100Mb 단독 일반 / 유심</td><td style="padding:5px 8px;border:1px solid #e0e4ee;text-align:right;font-weight:600">₩150,000</td><td style="padding:5px 8px;border:1px solid #e0e4ee;text-align:right;color:#bbb">-</td></tr>
+          <tr><td style="padding:5px 8px;border:1px solid #e0e4ee">100Mb 단독 패밀리 / 유심</td><td style="padding:5px 8px;border:1px solid #e0e4ee;text-align:right;font-weight:600">₩150,000</td><td style="padding:5px 8px;border:1px solid #e0e4ee;text-align:right;color:#bbb">-</td></tr>
+          <tr><td style="padding:5px 8px;border:1px solid #e0e4ee">500Mb 단독 일반 / 유심</td><td style="padding:5px 8px;border:1px solid #e0e4ee;text-align:right;font-weight:600">₩160,000</td><td style="padding:5px 8px;border:1px solid #e0e4ee;text-align:right;color:#bbb">-</td></tr>
+          <tr><td style="padding:5px 8px;border:1px solid #e0e4ee">500Mb 단독 패밀리 / 유심</td><td style="padding:5px 8px;border:1px solid #e0e4ee;text-align:right;font-weight:600">₩160,000</td><td style="padding:5px 8px;border:1px solid #e0e4ee;text-align:right;color:#bbb">-</td></tr>
+          <tr><td style="padding:5px 8px;border:1px solid #e0e4ee">1Gb 단독 일반 / 유심</td><td style="padding:5px 8px;border:1px solid #e0e4ee;text-align:right;font-weight:600">₩170,000</td><td style="padding:5px 8px;border:1px solid #e0e4ee;text-align:right;color:#bbb">-</td></tr>
+          <tr><td style="padding:5px 8px;border:1px solid #e0e4ee">1Gb 단독 패밀리 / 유심</td><td style="padding:5px 8px;border:1px solid #e0e4ee;text-align:right;font-weight:600">₩170,000</td><td style="padding:5px 8px;border:1px solid #e0e4ee;text-align:right;color:#bbb">-</td></tr>
+          <tr><td style="padding:5px 8px;border:1px solid #e0e4ee">100Mb+TV 일반 / 유심</td><td style="padding:5px 8px;border:1px solid #e0e4ee;text-align:right;font-weight:600">₩200,000</td><td style="padding:5px 8px;border:1px solid #e0e4ee;text-align:right;font-weight:600">₩60,000</td></tr>
+          <tr><td style="padding:5px 8px;border:1px solid #e0e4ee">100Mb+TV 패밀리 / 유심</td><td style="padding:5px 8px;border:1px solid #e0e4ee;text-align:right;font-weight:600">₩200,000</td><td style="padding:5px 8px;border:1px solid #e0e4ee;text-align:right;font-weight:600">₩60,000</td></tr>
+          <tr><td style="padding:5px 8px;border:1px solid #e0e4ee">500Mb+TV 일반 / 유심</td><td style="padding:5px 8px;border:1px solid #e0e4ee;text-align:right;font-weight:600">₩220,000</td><td style="padding:5px 8px;border:1px solid #e0e4ee;text-align:right;font-weight:600">₩60,000</td></tr>
+          <tr><td style="padding:5px 8px;border:1px solid #e0e4ee">500Mb+TV 패밀리 / 유심</td><td style="padding:5px 8px;border:1px solid #e0e4ee;text-align:right;font-weight:600">₩220,000</td><td style="padding:5px 8px;border:1px solid #e0e4ee;text-align:right;font-weight:600">₩60,000</td></tr>
+          <tr><td style="padding:5px 8px;border:1px solid #e0e4ee">1Gb+TV 일반 / 유심</td><td style="padding:5px 8px;border:1px solid #e0e4ee;text-align:right;font-weight:600">₩240,000</td><td style="padding:5px 8px;border:1px solid #e0e4ee;text-align:right;font-weight:600">₩60,000</td></tr>
+          <tr><td style="padding:5px 8px;border:1px solid #e0e4ee">1Gb+TV 패밀리 / 유심</td><td style="padding:5px 8px;border:1px solid #e0e4ee;text-align:right;font-weight:600">₩240,000</td><td style="padding:5px 8px;border:1px solid #e0e4ee;text-align:right;font-weight:600">₩60,000</td></tr>
+          <tr><td rowspan="12" style="padding:6px 8px;border:1px solid #e0e4ee;font-weight:800;background:#f5f0ff;color:#5c35a0;text-align:center;vertical-align:top">61K</td><td style="padding:5px 8px;border:1px solid #e0e4ee">100Mb 단독 일반 / 유심</td><td style="padding:5px 8px;border:1px solid #e0e4ee;text-align:right;font-weight:600">₩270,000</td><td style="padding:5px 8px;border:1px solid #e0e4ee;text-align:right;color:#bbb">-</td></tr>
+          <tr><td style="padding:5px 8px;border:1px solid #e0e4ee">100Mb 단독 패밀리 / 유심</td><td style="padding:5px 8px;border:1px solid #e0e4ee;text-align:right;font-weight:600">₩270,000</td><td style="padding:5px 8px;border:1px solid #e0e4ee;text-align:right;color:#bbb">-</td></tr>
+          <tr><td style="padding:5px 8px;border:1px solid #e0e4ee">500Mb 단독 일반 / 유심</td><td style="padding:5px 8px;border:1px solid #e0e4ee;text-align:right;font-weight:600">₩280,000</td><td style="padding:5px 8px;border:1px solid #e0e4ee;text-align:right;color:#bbb">-</td></tr>
+          <tr><td style="padding:5px 8px;border:1px solid #e0e4ee">500Mb 단독 패밀리 / 유심</td><td style="padding:5px 8px;border:1px solid #e0e4ee;text-align:right;font-weight:600">₩280,000</td><td style="padding:5px 8px;border:1px solid #e0e4ee;text-align:right;color:#bbb">-</td></tr>
+          <tr><td style="padding:5px 8px;border:1px solid #e0e4ee">1Gb 단독 일반 / 유심</td><td style="padding:5px 8px;border:1px solid #e0e4ee;text-align:right;font-weight:600">₩290,000</td><td style="padding:5px 8px;border:1px solid #e0e4ee;text-align:right;color:#bbb">-</td></tr>
+          <tr><td style="padding:5px 8px;border:1px solid #e0e4ee">1Gb 단독 패밀리 / 유심</td><td style="padding:5px 8px;border:1px solid #e0e4ee;text-align:right;font-weight:600">₩290,000</td><td style="padding:5px 8px;border:1px solid #e0e4ee;text-align:right;color:#bbb">-</td></tr>
+          <tr><td style="padding:5px 8px;border:1px solid #e0e4ee">100Mb+TV 일반 / 유심</td><td style="padding:5px 8px;border:1px solid #e0e4ee;text-align:right;font-weight:600">₩320,000</td><td style="padding:5px 8px;border:1px solid #e0e4ee;text-align:right;font-weight:600">₩120,000</td></tr>
+          <tr><td style="padding:5px 8px;border:1px solid #e0e4ee">100Mb+TV 패밀리 / 유심</td><td style="padding:5px 8px;border:1px solid #e0e4ee;text-align:right;font-weight:600">₩320,000</td><td style="padding:5px 8px;border:1px solid #e0e4ee;text-align:right;font-weight:600">₩120,000</td></tr>
+          <tr><td style="padding:5px 8px;border:1px solid #e0e4ee">500Mb+TV 일반 / 유심</td><td style="padding:5px 8px;border:1px solid #e0e4ee;text-align:right;font-weight:600">₩340,000</td><td style="padding:5px 8px;border:1px solid #e0e4ee;text-align:right;font-weight:600">₩130,000</td></tr>
+          <tr><td style="padding:5px 8px;border:1px solid #e0e4ee">500Mb+TV 패밀리 / 유심</td><td style="padding:5px 8px;border:1px solid #e0e4ee;text-align:right;font-weight:600">₩340,000</td><td style="padding:5px 8px;border:1px solid #e0e4ee;text-align:right;font-weight:600">₩120,000</td></tr>
+          <tr><td style="padding:5px 8px;border:1px solid #e0e4ee">1Gb+TV 일반 / 유심</td><td style="padding:5px 8px;border:1px solid #e0e4ee;text-align:right;font-weight:600">₩360,000</td><td style="padding:5px 8px;border:1px solid #e0e4ee;text-align:right;font-weight:600">₩130,000</td></tr>
+          <tr><td style="padding:5px 8px;border:1px solid #e0e4ee">1Gb+TV 패밀리 / 유심</td><td style="padding:5px 8px;border:1px solid #e0e4ee;text-align:right;font-weight:600">₩360,000</td><td style="padding:5px 8px;border:1px solid #e0e4ee;text-align:right;font-weight:600">₩120,000</td></tr>
+          <tr><td rowspan="12" style="padding:6px 8px;border:1px solid #e0e4ee;font-weight:800;background:#fff9e0;color:#e05050;text-align:center;vertical-align:top">90K</td><td style="padding:5px 8px;border:1px solid #e0e4ee">100Mb 단독 / 유심</td><td style="padding:5px 8px;border:1px solid #e0e4ee;text-align:right;font-weight:600">₩310,000</td><td style="padding:5px 8px;border:1px solid #e0e4ee;text-align:right;color:#bbb">-</td></tr>
+          <tr><td style="padding:5px 8px;border:1px solid #e0e4ee">100Mb 단독 패밀리 / 유심</td><td style="padding:5px 8px;border:1px solid #e0e4ee;text-align:right;font-weight:600">₩310,000</td><td style="padding:5px 8px;border:1px solid #e0e4ee;text-align:right;color:#bbb">-</td></tr>
+          <tr><td style="padding:5px 8px;border:1px solid #e0e4ee">500Mb 단독 일반 / 유심</td><td style="padding:5px 8px;border:1px solid #e0e4ee;text-align:right;font-weight:600">₩320,000</td><td style="padding:5px 8px;border:1px solid #e0e4ee;text-align:right;color:#bbb">-</td></tr>
+          <tr><td style="padding:5px 8px;border:1px solid #e0e4ee">500Mb 단독 패밀리 / 유심</td><td style="padding:5px 8px;border:1px solid #e0e4ee;text-align:right;font-weight:600">₩320,000</td><td style="padding:5px 8px;border:1px solid #e0e4ee;text-align:right;color:#bbb">-</td></tr>
+          <tr><td style="padding:5px 8px;border:1px solid #e0e4ee">1Gb 단독 일반 / 유심</td><td style="padding:5px 8px;border:1px solid #e0e4ee;text-align:right;font-weight:600">₩330,000</td><td style="padding:5px 8px;border:1px solid #e0e4ee;text-align:right;color:#bbb">-</td></tr>
+          <tr><td style="padding:5px 8px;border:1px solid #e0e4ee">1Gb 단독 패밀리 / 유심</td><td style="padding:5px 8px;border:1px solid #e0e4ee;text-align:right;font-weight:600">₩330,000</td><td style="padding:5px 8px;border:1px solid #e0e4ee;text-align:right;color:#bbb">-</td></tr>
+          <tr><td style="padding:5px 8px;border:1px solid #e0e4ee">100Mb+TV 일반 / 유심</td><td style="padding:5px 8px;border:1px solid #e0e4ee;text-align:right;font-weight:600">₩360,000</td><td style="padding:5px 8px;border:1px solid #e0e4ee;text-align:right;font-weight:600">₩130,000</td></tr>
+          <tr><td style="padding:5px 8px;border:1px solid #e0e4ee">100Mb+TV 패밀리 / 유심</td><td style="padding:5px 8px;border:1px solid #e0e4ee;text-align:right;font-weight:600">₩360,000</td><td style="padding:5px 8px;border:1px solid #e0e4ee;text-align:right;font-weight:600">₩130,000</td></tr>
+          <tr><td style="padding:5px 8px;border:1px solid #e0e4ee">500Mb+TV 일반 / 유심</td><td style="padding:5px 8px;border:1px solid #e0e4ee;text-align:right;font-weight:600">₩380,000</td><td style="padding:5px 8px;border:1px solid #e0e4ee;text-align:right;font-weight:600">₩140,000</td></tr>
+          <tr><td style="padding:5px 8px;border:1px solid #e0e4ee">500Mb+TV 패밀리 / 유심</td><td style="padding:5px 8px;border:1px solid #e0e4ee;text-align:right;font-weight:600">₩380,000</td><td style="padding:5px 8px;border:1px solid #e0e4ee;text-align:right;font-weight:600">₩130,000</td></tr>
+          <tr><td style="padding:5px 8px;border:1px solid #e0e4ee">1Gb+TV 일반 / 유심</td><td style="padding:5px 8px;border:1px solid #e0e4ee;text-align:right;font-weight:600">₩400,000</td><td style="padding:5px 8px;border:1px solid #e0e4ee;text-align:right;font-weight:600">₩140,000</td></tr>
+          <tr><td style="padding:5px 8px;border:1px solid #e0e4ee">1Gb+TV 패밀리 / 유심</td><td style="padding:5px 8px;border:1px solid #e0e4ee;text-align:right;font-weight:600">₩400,000</td><td style="padding:5px 8px;border:1px solid #e0e4ee;text-align:right;font-weight:600">₩130,000</td></tr>
+        </tbody>
+      </table>
+    </div>
+    <div id="utbl-skgift" style="display:none">
+      <p style="font-size:11px;color:#888;margin-bottom:8px">※ 사은품 최대 기준 (SK 유심 동판) — 33K 구간 단독 상품 판매불가</p>
+      <table style="width:100%;border-collapse:collapse;font-size:12px">
+        <thead><tr style="background:#f0f3fa"><th style="padding:6px 8px;border:1px solid #e0e4ee;width:50px;text-align:center">요금제</th><th style="padding:6px 8px;border:1px solid #e0e4ee;text-align:left">상품</th><th style="padding:6px 8px;border:1px solid #e0e4ee;width:90px;text-align:right">사은품 (max)</th></tr></thead>
+        <tbody>
+          <tr><td rowspan="12" style="padding:6px 8px;border:1px solid #e0e4ee;font-weight:800;background:#fff0f0;color:#c0001a;text-align:center;vertical-align:top">33K</td><td style="padding:5px 8px;border:1px solid #e0e4ee">100Mb 단독</td><td style="padding:5px 8px;border:1px solid #e0e4ee;text-align:right;color:#bbb">판매불가</td></tr>
+          <tr><td style="padding:5px 8px;border:1px solid #e0e4ee">500Mb 단독</td><td style="padding:5px 8px;border:1px solid #e0e4ee;text-align:right;color:#bbb">판매불가</td></tr>
+          <tr><td style="padding:5px 8px;border:1px solid #e0e4ee">1Gb 단독</td><td style="padding:5px 8px;border:1px solid #e0e4ee;text-align:right;color:#bbb">판매불가</td></tr>
+          <tr><td style="padding:5px 8px;border:1px solid #e0e4ee">100Mb + 이코노미</td><td style="padding:5px 8px;border:1px solid #e0e4ee;text-align:right;font-weight:600">₩100,000</td></tr>
+          <tr><td style="padding:5px 8px;border:1px solid #e0e4ee">500Mb + 이코노미</td><td style="padding:5px 8px;border:1px solid #e0e4ee;text-align:right;font-weight:600">₩150,000</td></tr>
+          <tr><td style="padding:5px 8px;border:1px solid #e0e4ee">1Gb + 이코노미</td><td style="padding:5px 8px;border:1px solid #e0e4ee;text-align:right;font-weight:600">₩150,000</td></tr>
+          <tr><td style="padding:5px 8px;border:1px solid #e0e4ee">100Mb + 스탠다드</td><td style="padding:5px 8px;border:1px solid #e0e4ee;text-align:right;font-weight:600">₩100,000</td></tr>
+          <tr><td style="padding:5px 8px;border:1px solid #e0e4ee">500Mb + 스탠다드</td><td style="padding:5px 8px;border:1px solid #e0e4ee;text-align:right;font-weight:600">₩150,000</td></tr>
+          <tr><td style="padding:5px 8px;border:1px solid #e0e4ee">1Gb + 스탠다드</td><td style="padding:5px 8px;border:1px solid #e0e4ee;text-align:right;font-weight:600">₩150,000</td></tr>
+          <tr><td style="padding:5px 8px;border:1px solid #e0e4ee">100Mb + ALL</td><td style="padding:5px 8px;border:1px solid #e0e4ee;text-align:right;font-weight:600">₩150,000</td></tr>
+          <tr><td style="padding:5px 8px;border:1px solid #e0e4ee">500Mb + ALL</td><td style="padding:5px 8px;border:1px solid #e0e4ee;text-align:right;font-weight:600">₩200,000</td></tr>
+          <tr><td style="padding:5px 8px;border:1px solid #e0e4ee">1Gb + ALL</td><td style="padding:5px 8px;border:1px solid #e0e4ee;text-align:right;font-weight:600">₩200,000</td></tr>
+          <tr><td rowspan="12" style="padding:6px 8px;border:1px solid #e0e4ee;font-weight:800;background:#e8f4e8;color:#2e7d32;text-align:center;vertical-align:top">43K</td><td style="padding:5px 8px;border:1px solid #e0e4ee">100Mb 단독</td><td style="padding:5px 8px;border:1px solid #e0e4ee;text-align:right;font-weight:600">₩100,000</td></tr>
+          <tr><td style="padding:5px 8px;border:1px solid #e0e4ee">500Mb 단독</td><td style="padding:5px 8px;border:1px solid #e0e4ee;text-align:right;font-weight:600">₩150,000</td></tr>
+          <tr><td style="padding:5px 8px;border:1px solid #e0e4ee">1Gb 단독</td><td style="padding:5px 8px;border:1px solid #e0e4ee;text-align:right;font-weight:600">₩150,000</td></tr>
+          <tr><td style="padding:5px 8px;border:1px solid #e0e4ee">100Mb + 이코노미</td><td style="padding:5px 8px;border:1px solid #e0e4ee;text-align:right;font-weight:600">₩150,000</td></tr>
+          <tr><td style="padding:5px 8px;border:1px solid #e0e4ee">500Mb + 이코노미</td><td style="padding:5px 8px;border:1px solid #e0e4ee;text-align:right;font-weight:600">₩200,000</td></tr>
+          <tr><td style="padding:5px 8px;border:1px solid #e0e4ee">1Gb + 이코노미</td><td style="padding:5px 8px;border:1px solid #e0e4ee;text-align:right;font-weight:600">₩200,000</td></tr>
+          <tr><td style="padding:5px 8px;border:1px solid #e0e4ee">100Mb + 스탠다드</td><td style="padding:5px 8px;border:1px solid #e0e4ee;text-align:right;font-weight:600">₩200,000</td></tr>
+          <tr><td style="padding:5px 8px;border:1px solid #e0e4ee">500Mb + 스탠다드</td><td style="padding:5px 8px;border:1px solid #e0e4ee;text-align:right;font-weight:600">₩200,000</td></tr>
+          <tr><td style="padding:5px 8px;border:1px solid #e0e4ee">1Gb + 스탠다드</td><td style="padding:5px 8px;border:1px solid #e0e4ee;text-align:right;font-weight:600">₩200,000</td></tr>
+          <tr><td style="padding:5px 8px;border:1px solid #e0e4ee">100Mb + ALL</td><td style="padding:5px 8px;border:1px solid #e0e4ee;text-align:right;font-weight:600">₩150,000</td></tr>
+          <tr><td style="padding:5px 8px;border:1px solid #e0e4ee">500Mb + ALL</td><td style="padding:5px 8px;border:1px solid #e0e4ee;text-align:right;font-weight:600">₩250,000</td></tr>
+          <tr><td style="padding:5px 8px;border:1px solid #e0e4ee">1Gb + ALL</td><td style="padding:5px 8px;border:1px solid #e0e4ee;text-align:right;font-weight:600">₩250,000</td></tr>
+          <tr><td rowspan="12" style="padding:6px 8px;border:1px solid #e0e4ee;font-weight:800;background:#f5f0ff;color:#5c35a0;text-align:center;vertical-align:top">69K</td><td style="padding:5px 8px;border:1px solid #e0e4ee">100Mb 단독</td><td style="padding:5px 8px;border:1px solid #e0e4ee;text-align:right;font-weight:600">₩100,000</td></tr>
+          <tr><td style="padding:5px 8px;border:1px solid #e0e4ee">500Mb 단독</td><td style="padding:5px 8px;border:1px solid #e0e4ee;text-align:right;font-weight:600">₩200,000</td></tr>
+          <tr><td style="padding:5px 8px;border:1px solid #e0e4ee">1Gb 단독</td><td style="padding:5px 8px;border:1px solid #e0e4ee;text-align:right;font-weight:600">₩200,000</td></tr>
+          <tr><td style="padding:5px 8px;border:1px solid #e0e4ee">100Mb + 이코노미</td><td style="padding:5px 8px;border:1px solid #e0e4ee;text-align:right;font-weight:600">₩150,000</td></tr>
+          <tr><td style="padding:5px 8px;border:1px solid #e0e4ee">500Mb + 이코노미</td><td style="padding:5px 8px;border:1px solid #e0e4ee;text-align:right;font-weight:600">₩250,000</td></tr>
+          <tr><td style="padding:5px 8px;border:1px solid #e0e4ee">1Gb + 이코노미</td><td style="padding:5px 8px;border:1px solid #e0e4ee;text-align:right;font-weight:600">₩250,000</td></tr>
+          <tr><td style="padding:5px 8px;border:1px solid #e0e4ee">100Mb + 스탠다드</td><td style="padding:5px 8px;border:1px solid #e0e4ee;text-align:right;font-weight:600">₩150,000</td></tr>
+          <tr><td style="padding:5px 8px;border:1px solid #e0e4ee">500Mb + 스탠다드</td><td style="padding:5px 8px;border:1px solid #e0e4ee;text-align:right;font-weight:600">₩300,000</td></tr>
+          <tr><td style="padding:5px 8px;border:1px solid #e0e4ee">1Gb + 스탠다드</td><td style="padding:5px 8px;border:1px solid #e0e4ee;text-align:right;font-weight:600">₩300,000</td></tr>
+          <tr><td style="padding:5px 8px;border:1px solid #e0e4ee">100Mb + ALL</td><td style="padding:5px 8px;border:1px solid #e0e4ee;text-align:right;font-weight:600">₩150,000</td></tr>
+          <tr><td style="padding:5px 8px;border:1px solid #e0e4ee">500Mb + ALL</td><td style="padding:5px 8px;border:1px solid #e0e4ee;text-align:right;font-weight:600">₩300,000</td></tr>
+          <tr><td style="padding:5px 8px;border:1px solid #e0e4ee">1Gb + ALL</td><td style="padding:5px 8px;border:1px solid #e0e4ee;text-align:right;font-weight:600">₩300,000</td></tr>
+          <tr><td rowspan="12" style="padding:6px 8px;border:1px solid #e0e4ee;font-weight:800;background:#fff4e0;color:#b85000;text-align:center;vertical-align:top">89K</td><td style="padding:5px 8px;border:1px solid #e0e4ee">100Mb 단독</td><td style="padding:5px 8px;border:1px solid #e0e4ee;text-align:right;font-weight:600">₩100,000</td></tr>
+          <tr><td style="padding:5px 8px;border:1px solid #e0e4ee">500Mb 단독</td><td style="padding:5px 8px;border:1px solid #e0e4ee;text-align:right;font-weight:600">₩200,000</td></tr>
+          <tr><td style="padding:5px 8px;border:1px solid #e0e4ee">1Gb 단독</td><td style="padding:5px 8px;border:1px solid #e0e4ee;text-align:right;font-weight:600">₩200,000</td></tr>
+          <tr><td style="padding:5px 8px;border:1px solid #e0e4ee">100Mb + 이코노미</td><td style="padding:5px 8px;border:1px solid #e0e4ee;text-align:right;font-weight:600">₩150,000</td></tr>
+          <tr><td style="padding:5px 8px;border:1px solid #e0e4ee">500Mb + 이코노미</td><td style="padding:5px 8px;border:1px solid #e0e4ee;text-align:right;font-weight:600">₩300,000</td></tr>
+          <tr><td style="padding:5px 8px;border:1px solid #e0e4ee">1Gb + 이코노미</td><td style="padding:5px 8px;border:1px solid #e0e4ee;text-align:right;font-weight:600">₩300,000</td></tr>
+          <tr><td style="padding:5px 8px;border:1px solid #e0e4ee">100Mb + 스탠다드</td><td style="padding:5px 8px;border:1px solid #e0e4ee;text-align:right;font-weight:600">₩150,000</td></tr>
+          <tr><td style="padding:5px 8px;border:1px solid #e0e4ee">500Mb + 스탠다드</td><td style="padding:5px 8px;border:1px solid #e0e4ee;text-align:right;font-weight:600">₩300,000</td></tr>
+          <tr><td style="padding:5px 8px;border:1px solid #e0e4ee">1Gb + 스탠다드</td><td style="padding:5px 8px;border:1px solid #e0e4ee;text-align:right;font-weight:600">₩300,000</td></tr>
+          <tr><td style="padding:5px 8px;border:1px solid #e0e4ee">100Mb + ALL</td><td style="padding:5px 8px;border:1px solid #e0e4ee;text-align:right;font-weight:600">₩150,000</td></tr>
+          <tr><td style="padding:5px 8px;border:1px solid #e0e4ee">500Mb + ALL</td><td style="padding:5px 8px;border:1px solid #e0e4ee;text-align:right;font-weight:600">₩350,000</td></tr>
+          <tr><td style="padding:5px 8px;border:1px solid #e0e4ee">1Gb + ALL</td><td style="padding:5px 8px;border:1px solid #e0e4ee;text-align:right;font-weight:600">₩350,000</td></tr>
         </tbody>
       </table>
     </div>
@@ -2094,12 +2246,12 @@ document.addEventListener('DOMContentLoaded', function(){
 /* ── 유심 동판 ── */
 const USIM_KT_GIFT = {
   '37K': {
-    '100mb 단독 일반':  {owner:150000, family:50000},
-    '100mb 단독 패밀리':{owner:150000, family:50000},
-    '500mb 단독 일반':  {owner:160000, family:50000},
-    '500mb 단독 패밀리':{owner:160000, family:50000},
-    '1gb 단독 일반':    {owner:170000, family:50000},
-    '1gb 단독 패밀리':  {owner:170000, family:50000},
+    '100mb 단독 일반':  {owner:150000},
+    '100mb 단독 패밀리':{owner:150000},
+    '500mb 단독 일반':  {owner:160000},
+    '500mb 단독 패밀리':{owner:160000},
+    '1gb 단독 일반':    {owner:170000},
+    '1gb 단독 패밀리':  {owner:170000},
     '100mb+tv 일반':    {owner:200000, family:60000},
     '100mb+tv 패밀리':  {owner:200000, family:60000},
     '500mb+tv 일반':    {owner:220000, family:60000},
@@ -2108,12 +2260,12 @@ const USIM_KT_GIFT = {
     '1gb+tv 패밀리':    {owner:240000, family:60000},
   },
   '61K': {
-    '100mb 단독 일반':  {owner:270000, family:100000},
-    '100mb 단독 패밀리':{owner:270000, family:100000},
-    '500mb 단독 일반':  {owner:280000, family:110000},
-    '500mb 단독 패밀리':{owner:280000, family:100000},
-    '1gb 단독 일반':    {owner:290000, family:100000},
-    '1gb 단독 패밀리':  {owner:290000, family:110000},
+    '100mb 단독 일반':  {owner:270000},
+    '100mb 단독 패밀리':{owner:270000},
+    '500mb 단독 일반':  {owner:280000},
+    '500mb 단독 패밀리':{owner:280000},
+    '1gb 단독 일반':    {owner:290000},
+    '1gb 단독 패밀리':  {owner:290000},
     '100mb+tv 일반':    {owner:320000, family:120000},
     '100mb+tv 패밀리':  {owner:320000, family:120000},
     '500mb+tv 일반':    {owner:340000, family:130000},
@@ -2122,12 +2274,12 @@ const USIM_KT_GIFT = {
     '1gb+tv 패밀리':    {owner:360000, family:120000},
   },
   '90K': {
-    '100mb 단독':       {owner:310000, family:110000},
-    '100mb 단독 패밀리':{owner:310000, family:110000},
-    '500mb 단독 일반':  {owner:320000, family:120000},
-    '500mb 단독 패밀리':{owner:320000, family:110000},
-    '1gb 단독 일반':    {owner:330000, family:120000},
-    '1gb 단독 패밀리':  {owner:330000, family:110000},
+    '100mb 단독':       {owner:310000},
+    '100mb 단독 패밀리':{owner:310000},
+    '500mb 단독 일반':  {owner:320000},
+    '500mb 단독 패밀리':{owner:320000},
+    '1gb 단독 일반':    {owner:330000},
+    '1gb 단독 패밀리':  {owner:330000},
     '100mb+tv 일반':    {owner:360000, family:130000},
     '100mb+tv 패밀리':  {owner:360000, family:130000},
     '500mb+tv 일반':    {owner:380000, family:140000},
@@ -2143,42 +2295,55 @@ const USIM_SK_GIFT = {
     '1gb 단독':         null,
     '100mb + 이코노미': {owner:100000},
     '500mb + 이코노미': {owner:150000},
-    '100mb + 스탠다드': {owner:150000},
-    '500mb + 스탠다드': {owner:300000},
+    '1gb + 이코노미':   {owner:150000},
+    '100mb + 스탠다드': {owner:100000},
+    '500mb + 스탠다드': {owner:150000},
+    '1gb + 스탠다드':   {owner:150000},
     '100mb + all':      {owner:150000},
-    '500mb + all':      {owner:300000},
+    '500mb + all':      {owner:200000},
+    '1gb + all':        {owner:200000},
   },
   '43K': {
     '100mb 단독':       {owner:100000},
     '500mb 단독':       {owner:150000},
-    '1gb 단독':         null,
+    '1gb 단독':         {owner:150000},
     '100mb + 이코노미': {owner:150000},
     '500mb + 이코노미': {owner:200000},
+    '1gb + 이코노미':   {owner:200000},
     '100mb + 스탠다드': {owner:200000},
+    '500mb + 스탠다드': {owner:200000},
+    '1gb + 스탠다드':   {owner:200000},
     '100mb + all':      {owner:150000},
     '500mb + all':      {owner:250000},
+    '1gb + all':        {owner:250000},
   },
   '69K': {
     '100mb 단독':       {owner:100000},
     '500mb 단독':       {owner:200000},
-    '1gb 단독':         null,
+    '1gb 단독':         {owner:200000},
     '100mb + 이코노미': {owner:150000},
-    '500mb + 이코노미': null,
-    '100mb + 스탠다드': null,
-    '500mb + 스탠다드': null,
+    '500mb + 이코노미': {owner:250000},
+    '1gb + 이코노미':   {owner:250000},
+    '100mb + 스탠다드': {owner:150000},
+    '500mb + 스탠다드': {owner:300000},
+    '1gb + 스탠다드':   {owner:300000},
     '100mb + all':      {owner:150000},
-    '500mb + all':      {owner:200000},
+    '500mb + all':      {owner:300000},
+    '1gb + all':        {owner:300000},
   },
   '89K': {
     '100mb 단독':       {owner:100000},
     '500mb 단독':       {owner:200000},
-    '1gb 단독':         null,
+    '1gb 단독':         {owner:200000},
     '100mb + 이코노미': {owner:150000},
     '500mb + 이코노미': {owner:300000},
+    '1gb + 이코노미':   {owner:300000},
     '100mb + 스탠다드': {owner:150000},
     '500mb + 스탠다드': {owner:300000},
+    '1gb + 스탠다드':   {owner:300000},
     '100mb + all':      {owner:150000},
     '500mb + all':      {owner:350000},
+    '1gb + all':        {owner:350000},
   }
 };
 
@@ -2193,9 +2358,21 @@ function closeUsimTableBtn(){ document.getElementById('usim-table-modal').style.
 function setUsimTableTab(tab){
   document.getElementById('utbl-kt').style.display = tab==='kt'?'block':'none';
   document.getElementById('utbl-sk').style.display = tab==='sk'?'block':'none';
-  const bKt=document.getElementById('utab-kt'), bSk=document.getElementById('utab-sk');
-  bKt.style.background=tab==='kt'?'#e8001c':'#f5f7fb'; bKt.style.color=tab==='kt'?'#fff':'#7a8499'; bKt.style.borderColor=tab==='kt'?'#e8001c':'#e0e4ee';
-  bSk.style.background=tab==='sk'?'#e85000':'#f5f7fb'; bSk.style.color=tab==='sk'?'#fff':'#7a8499'; bSk.style.borderColor=tab==='sk'?'#e85000':'#e0e4ee';
+  document.getElementById('utbl-ktgift').style.display = tab==='ktgift'?'block':'none';
+  document.getElementById('utbl-skgift').style.display = tab==='skgift'?'block':'none';
+  const tabs = {
+    'kt':     {id:'utab-kt',      active:'#e8001c'},
+    'sk':     {id:'utab-sk',      active:'#e85000'},
+    'ktgift': {id:'utab-ktgift',  active:'#e8001c'},
+    'skgift': {id:'utab-skgift',  active:'#e85000'},
+  };
+  Object.entries(tabs).forEach(([key, cfg]) => {
+    const b = document.getElementById(cfg.id);
+    const on = tab===key;
+    b.style.background = on ? cfg.active : '#f5f7fb';
+    b.style.color = on ? '#fff' : '#7a8499';
+    b.style.borderColor = on ? cfg.active : '#e0e4ee';
+  });
 }
 
 const USIM_ISP_MAP = {
