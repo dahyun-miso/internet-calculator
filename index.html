@@ -242,7 +242,7 @@ textarea:focus{outline:none;border-color:#3b6ef0}
 .qacc-btn.open{background:#eef1ff;color:#3b6ef0;border-bottom:1.5px solid #e0e8ff}
 .qacc-arrow{font-size:11px;color:#aaa;transition:transform .2s}
 .qacc-btn.open .qacc-arrow{transform:rotate(180deg);color:#3b6ef0}
-.qacc-body{display:none;padding:10px 12px;gap:7px;flex-wrap:wrap;background:#fff}
+.qacc-body{display:none;padding:10px 12px;gap:7px;flex-wrap:wrap;background:#e9edf5;box-shadow:inset 0 2px 5px rgba(15,23,42,.08)}
 .qacc-body.open{display:flex}
 .qacc-body .qbtn{flex:1;justify-content:center;text-align:center;min-width:60px}
 .quick-card-header{width:100%;background:none;border:none;cursor:pointer;display:flex;align-items:center;justify-content:space-between;padding:0;font-size:13px;font-weight:700;color:#7a8499}
@@ -300,8 +300,8 @@ textarea:focus{outline:none;border-color:#3b6ef0}
 .combo-card-desc .disc-tbl th{background:rgba(255,255,255,.15);color:#fff;font-weight:600}
 .combo-card-desc .disc-tbl .rh{background:rgba(255,255,255,.08);font-weight:500;text-align:left}
 /* ── 우측 메인 탭 ── */
-.right-tabs{display:flex;gap:4px;margin-bottom:0}
-.right-tab{flex:1;padding:9px 0;border-radius:10px 10px 0 0;font-size:13px;font-weight:700;cursor:pointer;border:1.5px solid #e0e4ee;border-bottom:none;background:#f5f7fb;color:#7a8499;text-align:center;transition:all .15s}
+.right-tabs{display:flex;gap:6px;margin-bottom:0}
+.right-tab{flex:1;padding:16px 0;border-radius:12px 12px 0 0;font-size:17px;font-weight:800;cursor:pointer;border:1.5px solid #e0e4ee;border-bottom:none;background:#f5f7fb;color:#7a8499;text-align:center;transition:all .15s}
 .right-tab.active{background:#3b6ef0;color:#fff;border-color:#3b6ef0;box-shadow:0 2px 8px rgba(59,110,240,.2)}
 .right-tab:hover:not(.active){background:#eef1ff;color:#3b6ef0}
 .right-tab-panel{border:1.5px solid #e0e4ee;border-radius:0 10px 10px 10px;background:transparent;padding:14px 0 0 0;margin-top:-1px;display:flex;flex-direction:column;gap:14px}
@@ -332,7 +332,7 @@ textarea:focus{outline:none;border-color:#3b6ef0}
 <div class="header">
   <h1><img src="data:image/jpeg;base64,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" alt="miso">미소 인터넷 결합 계산기</h1>
   <span class="badge" id="agent-badge">인터넷 부서</span>
-  <span class="upd">최종 업데이트: 2025.03.30</span>
+  <span class="upd" id="last-updated">최종 업데이트: -</span>
 </div>
 <div class="layout">
   <div class="left-col">
@@ -534,8 +534,8 @@ textarea:focus{outline:none;border-color:#3b6ef0}
         </div>
       </div>
     </div>
-    <!-- 결합 할인 -->
-    <div class="card">
+    <!-- 결합 할인 (추후 고도화 예정, 임시로 숨김) -->
+    <div class="card" style="display:none">
       <div class="card-title"><span class="ct-icon">🔗</span><span>결합 할인</span></div>
       <table class="prod-table">
         <colgroup><col style="width:88px"><col><col style="width:80px"></colgroup>
@@ -1894,7 +1894,7 @@ function updateProdSummary(isp,inet,tv,hasTv,monthly,installFee,gift,bundleDis,b
       const startIdx = el.value.indexOf(marker);
       if(startIdx !== -1){
         const contentStart = startIdx + marker.length;
-        const restIdx = el.value.indexOf('\n\n■ 펜딩사유', contentStart);
+        const restIdx = el.value.indexOf('\n\n■ 현재 인터넷 통신사', contentStart);
         if(restIdx !== -1){
           el.value = el.value.slice(0, contentStart) + window._prodSummaryText + el.value.slice(restIdx);
         }
@@ -1909,25 +1909,31 @@ let _memoMode = 'proposal'; // 디폴트: 상품 제안
 let _freeMemoBackup = '';
 
 function buildProposalTemplate(){
-  const prodText = (window._prodSummaryText) || '(상품 선택 후 자동 입력)';
-  return `[상품제안]
-■ 신규가입 / 통신사변경
-■ (*통신사변경이면 하기 내용 추가 기재)
-이전통신사 :
-현재월요금:
-남은약정기간 : 없음 / 있으면 기재
+  const prodText = (window._prodSummaryText) || '(계산기에서 복사 붙여넣기)';
+  return `▷ 메모 :
 
-■ 핸드폰 통신사:
-■ 핸드폰 결합 유무 :
+■ 추가제안여부 :
+(ex. O / X / 제안형태 (설치비/공유기/현금5만원)
+■ 펜딩사유 :
+(ex. 타사비교 / 이해관계자논의 / 설치일정남음 / 기타사유작성)
+
+■ 로스트사유가 타사 비교 사은품 차이면 기재해주세요.
+타업체정보 :
+(ex. 본사/대리점/기타)
+타사 제안 사은품금액 :
+타사 제안 월요금 :
+
+----------------------------------------------------------
+
+[상품제안] (없으면 '없음'으로 작성)
 
 ■ 상품제안 내용
 ${prodText}
 
-■ 펜딩사유
-타업체정보 : 본사/대리점/기타
-타사 제안 사은품금액 :
-타사 제안 월요금 :
-＊추가제안여부 : O / X / 제안형태`;
+■ 현재 인터넷 통신사 :
+■ 핸드폰 통신사 :
+■ 핸드폰 결합 유무 :
+(결합 있으면 어떤 결합인지 작성해주세요)`;
 }
 
 function setMemoMode(mode){
@@ -2046,13 +2052,19 @@ function resetProdSummaryPlaceholder(){
       const startIdx = el.value.indexOf(marker);
       if(startIdx !== -1){
         const contentStart = startIdx + marker.length;
-        const restIdx = el.value.indexOf('\n\n■ 펜딩사유', contentStart);
+        const restIdx = el.value.indexOf('\n\n■ 현재 인터넷 통신사', contentStart);
         if(restIdx !== -1){
-          el.value = el.value.slice(0, contentStart) + '(상품 선택 후 자동 입력)' + el.value.slice(restIdx);
+          el.value = el.value.slice(0, contentStart) + '(계산기에서 복사 붙여넣기)' + el.value.slice(restIdx);
         }
       }
     }
   }
+}
+
+// 버튼 클릭(저장/초기화/탭추가/탭삭제)은 input/change 이벤트를 발생시키지 않으므로
+// 상태가 바뀔 때 명시적으로 localStorage 저장을 트리거한다
+function persistAgentState(){
+  if(typeof window.__saveAgentState === 'function') window.__saveAgentState();
 }
 
 function getMsgContent(idx) {
@@ -2107,6 +2119,7 @@ function saveCurrentMsg() {
   }
   msgPending[currentMsgTab] = null;
   setUnsaved(false);
+  persistAgentState();
 }
 
 function resetCurrentMsg() {
@@ -2121,6 +2134,7 @@ function resetCurrentMsg() {
     document.getElementById('msg-textarea-active').value = c.content;
   }
   setUnsaved(false);
+  persistAgentState();
 }
 
 function copyCurrentMsg() {
@@ -2171,6 +2185,7 @@ function confirmAddTab() {
   row.insertBefore(btn, addBtn);
   document.getElementById('add-modal-overlay').classList.remove('open');
   switchMsgTab(idx, btn);
+  persistAgentState();
 }
 /* localStorage에서 커스텀 탭 복원 */
 function restoreCustomTabs(saved){
@@ -2204,6 +2219,7 @@ function deleteCustomTab(idx, e) {
   if (currentMsgTab >= idx) currentMsgTab = Math.max(0, currentMsgTab - 1);
   const targetTab = row.querySelector(`.msg-tab[data-idx="${currentMsgTab}"]`);
   if (targetTab) { document.querySelectorAll('.msg-tab').forEach(t=>t.classList.remove('active')); targetTab.classList.add('active'); document.getElementById('msg-textarea-active').value = getMsgContent(currentMsgTab); setUnsaved(false); }
+  persistAgentState();
 }
 
 function updateMsgTabs(isp,inet,tv,hasTv,monthly,installFee,gift,agentName,installDate,bundle,bundleDis,installItem,router,tvExtra,phone,addon){
@@ -2293,6 +2309,12 @@ document.addEventListener('DOMContentLoaded', function(){
   initResizeHandle('msg-resize-handle', 'msg-textarea-active');
   initResizeHandle('card-msg-resize-handle', 'card-msg-textarea');
   setCardMsg('kt');
+
+  // 파일의 실제 최종 수정일(document.lastModified)로 상단 배지를 자동 갱신
+  const d = new Date(document.lastModified);
+  const pad = n => String(n).padStart(2, '0');
+  document.getElementById('last-updated').textContent =
+    `최종 업데이트: ${d.getFullYear()}.${pad(d.getMonth()+1)}.${pad(d.getDate())}`;
 });
 
 /* ── 유심 동판 ── */
@@ -3125,10 +3147,15 @@ function updateComboCard(bundleValue){
       if(typeof customTabs !== 'undefined'){
         data['customTabs'] = JSON.stringify(customTabs);
       }
+      // 기본 문자 탭(상품 안내/가입 완료 등)에서 "저장" 누른 수정본 저장
+      if(typeof msgSaved !== 'undefined'){
+        data['msgSaved'] = JSON.stringify(msgSaved);
+      }
       data['tabData'] = JSON.stringify(typeof tabData !== 'undefined' ? tabData : {});
       localStorage.setItem(AGENT_KEY, JSON.stringify(data));
     } catch(e){}
   }
+  window.__saveAgentState = saveToStorage;
 
   function loadFromStorage(){
     if(!AGENT_KEY) return;
@@ -3165,6 +3192,14 @@ function updateComboCard(bundleValue){
         try { restoreCustomTabs(JSON.parse(data['customTabs'])); } catch(e){}
       }
 
+      // 기본 문자 탭(상품 안내/가입 완료 등)에서 저장했던 수정본 복원
+      if(data['msgSaved'] && typeof msgSaved !== 'undefined'){
+        try {
+          const savedMsg = JSON.parse(data['msgSaved']);
+          savedMsg.forEach((v,i) => { if(i < msgSaved.length) msgSaved[i] = v; });
+        } catch(e){}
+      }
+
       // ISP → 드롭다운 순서대로
       const isp = data['isp'];
       if(isp && typeof PRODUCTS !== 'undefined' && PRODUCTS[isp]){
@@ -3189,6 +3224,12 @@ function updateComboCard(bundleValue){
       }
 
       if(typeof calc === 'function') calc();
+
+      // 복원된 msgSaved/customTabs 내용을 현재 보이는 탭에 즉시 반영
+      if(typeof currentMsgTab !== 'undefined' && typeof getMsgContent === 'function'){
+        const ta = document.getElementById('msg-textarea-active');
+        if(ta){ ta.value = getMsgContent(currentMsgTab); if(typeof setUnsaved === 'function') setUnsaved(false); }
+      }
     } catch(e){}
   }
 
