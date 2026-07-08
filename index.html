@@ -2605,13 +2605,18 @@ function getUsimProductKey(){
 }
 
 /* ── 가족유심 동적 추가/삭제 ── */
-const FAMILY_USIM_MAX = 5;
+const FAMILY_USIM_MAX = { 'KT유심': 2, 'SK유심': 4 };
 
 function getFamilyUsimOptions(){
   const isp = document.getElementById('usim-isp').value;
   if(isp === 'KT유심') return ['37K 요금제','61K 요금제','90K 요금제'];
   if(isp === 'SK유심') return ['33K 요금제','43K 요금제','69K 요금제','89K 요금제'];
   return [];
+}
+
+function getFamilyUsimMax(){
+  const isp = document.getElementById('usim-isp').value;
+  return FAMILY_USIM_MAX[isp] || 0;
 }
 
 function getFamilyUsimCount(){
@@ -2622,7 +2627,7 @@ function updateFamilyAddBtn(){
   const btn = document.getElementById('usim-family-add-btn');
   if(!btn) return;
   const count = getFamilyUsimCount();
-  btn.disabled = count >= FAMILY_USIM_MAX;
+  btn.disabled = count >= getFamilyUsimMax();
   btn.style.opacity = btn.disabled ? '0.4' : '1';
   btn.style.cursor = btn.disabled ? 'not-allowed' : 'pointer';
 }
@@ -2630,7 +2635,7 @@ function updateFamilyAddBtn(){
 function addFamilyUsim(){
   const opts = getFamilyUsimOptions();
   if(!opts.length){ alert('통신사를 먼저 선택해주세요.'); return; }
-  if(getFamilyUsimCount() >= FAMILY_USIM_MAX) return;
+  if(getFamilyUsimCount() >= getFamilyUsimMax()) return;
 
   const list = document.getElementById('usim-family-list');
   const idx = Date.now();
