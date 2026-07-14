@@ -18,6 +18,7 @@ html,body{height:100%;font-family:-apple-system,BlinkMacSystemFont,'Apple SD Got
 .header .upd{margin-left:auto;font-size:12px;color:rgba(255,255,255,.5)}
 .header .feedback-btn{font-size:12px;background:rgba(255,255,255,.15);padding:3px 10px;border-radius:20px;white-space:nowrap;color:#fff;text-decoration:none;transition:background .15s}
 .header .feedback-btn:hover{background:rgba(255,255,255,.28)}
+.field-compact input,.field-compact select{padding:5px 10px;min-height:30px;font-size:13px}
 .layout{display:flex;flex-direction:row;padding:18px;gap:0;height:calc(100vh - 54px);overflow:hidden}
 .left-col{overflow-y:auto;display:flex;flex-direction:column;gap:14px;padding-right:4px;width:33.333%;min-width:260px;flex-shrink:0}
 .mid-col{overflow-y:auto;display:flex;flex-direction:column;gap:14px;padding:0 14px;width:33.333%;min-width:260px;flex-shrink:0}
@@ -341,14 +342,36 @@ textarea:focus{outline:none;border-color:#3b6ef0}
 <div class="layout">
   <div class="left-col">
 
-    <!-- 기본 정보 -->
+    <!-- 상담사 이름 / 상담 일자 -->
+    <div class="row2">
+      <div class="field field-compact"><input type="text" id="agent-name" placeholder="상담사 이름"></div>
+      <div class="field field-compact"><input type="text" id="consult-date" readonly style="background:#f5f7fb;color:#3b4a6b;cursor:default"></div>
+    </div>
+
+    <!-- 고객 정보 -->
     <div class="card">
-      <div class="card-title">기본 정보</div>
-      <div class="row3">
-        <div class="field"><label for="agent-name">상담사 이름</label><input type="text" id="agent-name" placeholder="이름"></div>
-        <div class="field"><label for="consult-date">상담 일자</label><input type="text" id="consult-date" readonly style="background:#f5f7fb;color:#3b4a6b;cursor:default"></div>
-        <div class="field"><label for="install-date">희망 설치일자</label><input type="text" id="install-date" placeholder="예: 2025-07-15"></div>
-      </div>
+      <div class="card-title"><span class="ct-icon">👤</span><span>고객 정보</span></div>
+      <table class="prod-table">
+        <colgroup><col style="width:88px"><col><col style="width:80px"></colgroup>
+        <tbody>
+          <tr>
+            <td class="row-label">핸드폰 통신사</td>
+            <td class="row-select" colspan="2">
+              <select id="mobile-carrier">
+                <option value="">-- 선택하세요 --</option>
+                <option>KT</option><option>SK</option><option>LG</option>
+                <option>KT 알뜰폰</option><option>SK 알뜰폰</option><option>LG 알뜰폰</option>
+              </select>
+            </td>
+          </tr>
+          <tr>
+            <td class="row-label">결합 유무</td>
+            <td class="row-select" colspan="2">
+              <input type="text" id="bundle-status" placeholder="예: 요즘가족결합">
+            </td>
+          </tr>
+        </tbody>
+      </table>
     </div>
 
     <!-- 상품 선택 -->
@@ -1312,9 +1335,6 @@ function resetProductSelection(){
   if(dp){ dp.value=''; dp.style.borderColor='#d0d5e0'; }
   const clr = document.getElementById('install-date-clear');
   if(clr) clr.style.display='none';
-  // 희망 설치일자 텍스트 필드도 함께 초기화
-  const installDateEl = document.getElementById('install-date');
-  if(installDateEl) installDateEl.value='';
   // 유심동판 섹션도 함께 초기화
   clearUsimField('usim-isp');
   syncUsimIspToInternet();
@@ -1827,7 +1847,7 @@ function calc(){
   // 나중에 다른 프로모션으로 재사용 시: 아래 조건문과 462번 줄 문구만 교체하면 됨.
   document.getElementById('promo-note').style.display='none'; // ((isp==='SKB'||isp==='SKT')&&inet.includes('1GB'))?'block':'none';
   const agentName=document.getElementById('agent-name').value||'';
-  const installDate=document.getElementById('install-date').value||'미정';
+  const installDate=document.getElementById('install-date-picker')?.value||'미정';
   const tvLine=hasTv?` + ${tv}`:'';
   const routerLine=(router && !router.includes('공유기 X'))?` + ${router}`:'';
   const tvExLine=tvEx&&tvEx!=='없음'?` + TV추가: ${tvEx}`:'';
@@ -1862,7 +1882,7 @@ function calc(){
   updateMsgTabs(isp,inet,tv,hasTv,monthly,installFee,gift,agentName,installDate,bundle,bundleDis,installItem,router,tvEx,phone,addon);
   updateProdSummary(isp,inet,tv,hasTv,monthly,installFee,gift,bundleDis,bundle,installItem,router,tvEx,phone,addon);
 }
-function getAll(){const isp=document.getElementById('isp').value;const p=PRODUCTS[isp]||{};const inet=document.getElementById('internet').value||'';const tv=document.getElementById('tv').value||'미가입';const tvEx=document.getElementById('tv-extra').value||'없음';const router=document.getElementById('router').value||'';const bundle=document.getElementById('bundle').value||'없음';const installItem=document.getElementById('install').value||'';const agentName=document.getElementById('agent-name').value||'';const installDate=document.getElementById('install-date').value||'미정';const inetFee=(ongajokMode&&bundle&&bundle!=='없음'&&ONGAJOK_INTERNET_E[inet]!==undefined)?ONGAJOK_INTERNET_E[inet]:(p.internet?.[inet]||0);const tvFee=p.tv?.[tv]||0;const tvExFee=p['tv-extra']?.[tvEx]||0;const routerFee=p.router?.[router]||0;const phoneFee=p.phone?.[document.getElementById('phone').value]||0;const addonFee=p.addon?.[document.getElementById('addon').value]||0;const bundleDis=p.bundle?.[bundle]||0;const installFee=p.install?.[installItem]||0;const hasTv=tv&&tv!=='미가입';const routerExtra=(routerFee>0&&(isp==='SKT'||isp==='SKB')&&inet==='100mb'&&!bundleDis&&router==='공유기')?1100:0;const routerFeeDisplay=routerFee+routerExtra;const monthly=inetFee+tvFee+tvExFee+routerFeeDisplay+phoneFee+addonFee-bundleDis;const gift=getGiftRaw(isp,inet,hasTv);const gt=giftTotal(gift);return{isp,inet,tv,hasTv,agentName,installDate,monthly,installFee,gift,gt};}
+function getAll(){const isp=document.getElementById('isp').value;const p=PRODUCTS[isp]||{};const inet=document.getElementById('internet').value||'';const tv=document.getElementById('tv').value||'미가입';const tvEx=document.getElementById('tv-extra').value||'없음';const router=document.getElementById('router').value||'';const bundle=document.getElementById('bundle').value||'없음';const installItem=document.getElementById('install').value||'';const agentName=document.getElementById('agent-name').value||'';const installDate=document.getElementById('install-date-picker')?.value||'미정';const inetFee=(ongajokMode&&bundle&&bundle!=='없음'&&ONGAJOK_INTERNET_E[inet]!==undefined)?ONGAJOK_INTERNET_E[inet]:(p.internet?.[inet]||0);const tvFee=p.tv?.[tv]||0;const tvExFee=p['tv-extra']?.[tvEx]||0;const routerFee=p.router?.[router]||0;const phoneFee=p.phone?.[document.getElementById('phone').value]||0;const addonFee=p.addon?.[document.getElementById('addon').value]||0;const bundleDis=p.bundle?.[bundle]||0;const installFee=p.install?.[installItem]||0;const hasTv=tv&&tv!=='미가입';const routerExtra=(routerFee>0&&(isp==='SKT'||isp==='SKB')&&inet==='100mb'&&!bundleDis&&router==='공유기')?1100:0;const routerFeeDisplay=routerFee+routerExtra;const monthly=inetFee+tvFee+tvExFee+routerFeeDisplay+phoneFee+addonFee-bundleDis;const gift=getGiftRaw(isp,inet,hasTv);const gt=giftTotal(gift);return{isp,inet,tv,hasTv,agentName,installDate,monthly,installFee,gift,gt};}
 let _toastTimer;
 function showToast(msg){
   const t=document.getElementById('copy-toast');
@@ -1991,6 +2011,8 @@ let _freeMemoBackup = '';
 
 function buildProposalTemplate(){
   const prodText = (window._prodSummaryText) || '(계산기에서 복사 붙여넣기)';
+  const carrier = document.getElementById('mobile-carrier')?.value || '';
+  const bundleStatus = document.getElementById('bundle-status')?.value || '';
   return `▷ 메모 :
 
 ■ 추가제안여부 :
@@ -2012,9 +2034,21 @@ function buildProposalTemplate(){
 ${prodText}
 
 ■ 현재 인터넷 통신사 :
-■ 핸드폰 통신사 :
-■ 핸드폰 결합 유무 :
+■ 핸드폰 통신사 :${carrier ? ' ' + carrier : ''}
+■ 핸드폰 결합 유무 :${bundleStatus ? ' ' + bundleStatus : ''}
 (결합 있으면 어떤 결합인지 작성해주세요)`;
+}
+
+// 핸드폰 통신사 / 결합 유무 입력값을 상담 메모장 해당 줄에 실시간 반영
+function syncMobileInfoToMemo(){
+  if(_memoMode !== 'proposal') return;
+  const el = document.getElementById('memo-pad');
+  if(!el) return;
+  const carrier = document.getElementById('mobile-carrier')?.value || '';
+  const bundleStatus = document.getElementById('bundle-status')?.value || '';
+  el.value = el.value
+    .replace(/■ 핸드폰 통신사 :.*/, '■ 핸드폰 통신사 :' + (carrier ? ' ' + carrier : ''))
+    .replace(/■ 핸드폰 결합 유무 :.*/, '■ 핸드폰 결합 유무 :' + (bundleStatus ? ' ' + bundleStatus : ''));
 }
 
 function setMemoMode(mode){
@@ -2351,8 +2385,6 @@ function updateMsgTabs(isp,inet,tv,hasTv,monthly,installFee,gift,agentName,insta
 }
 
 function syncInstallDate(val){
-  const txt = document.getElementById('install-date');
-  if(txt) txt.value = val;
   const clr = document.getElementById('install-date-clear');
   if(clr) clr.style.display = val ? 'flex' : 'none';
   const dp = document.getElementById('install-date-picker');
@@ -2362,8 +2394,6 @@ function syncInstallDate(val){
 function clearInstallDate(){
   const dp = document.getElementById('install-date-picker');
   if(dp){ dp.value=''; dp.style.borderColor='#d0d5e0'; }
-  const txt = document.getElementById('install-date');
-  if(txt) txt.value='';
   const clr = document.getElementById('install-date-clear');
   if(clr) clr.style.display='none';
   calc();
@@ -2989,9 +3019,11 @@ setTimeout(()=>setMemoMode('proposal'), 50);
 ['mobile-isp','mobile-bundle'].forEach(id=>{
   document.getElementById(id).addEventListener('change', function(){ updateWrapState(id); });
 });
-['agent-name','install-date'].forEach(id=>{
+['agent-name'].forEach(id=>{
   document.getElementById(id).addEventListener('input', calc);
 });
+document.getElementById('mobile-carrier').addEventListener('change', syncMobileInfoToMemo);
+document.getElementById('bundle-status').addEventListener('input', syncMobileInfoToMemo);
 
 /* ── 리사이저 드래그 (3분할: resizer1=left/mid, resizer2=mid/right) ── */
 (function(){
@@ -3257,7 +3289,7 @@ function updateComboCard(bundleValue){
 
   // 헤더 배지는 "인터넷 부서" 고정 표시 유지 (상담사 이름으로 덮어쓰지 않음)
 
-  const SAVE_FIELDS = ['isp','internet','tv','tv-extra','router','phone','addon','bundle','install','agent-name','install-date','mobile-isp','mobile-bundle'];
+  const SAVE_FIELDS = ['isp','internet','tv','tv-extra','router','phone','addon','bundle','install','agent-name','install-date-picker','mobile-carrier','bundle-status','mobile-isp','mobile-bundle'];
 
   // 아직 상품(ISP)을 선택하지 않은 시점에는 calc()가 곧바로 종료되어 문자 템플릿이
   // 갱신되지 않으므로, 저장되지 않은(msgSaved===null) 기본 템플릿의 서명란에
@@ -3324,10 +3356,11 @@ function updateComboCard(bundleValue){
       applyAgentNameToTemplates(finalAgentName);
 
       // 텍스트 필드
-      ['install-date'].forEach(id => {
+      ['install-date-picker','mobile-carrier','bundle-status'].forEach(id => {
         const el = document.getElementById(id);
         if(el && data[id] !== undefined) el.value = data[id];
       });
+      if(data['install-date-picker']) syncInstallDate(data['install-date-picker']);
 
       // 메모패드: 자유 메모 백업만 복원 (상품 제안 모드는 매번 초기화)
       const savedFreeMemo = data['free-memo'];
