@@ -344,13 +344,17 @@ textarea:focus{outline:none;border-color:#3b6ef0}
 
     <!-- 상담사 이름 / 상담 일자 -->
     <div class="row2">
-      <div class="field field-compact"><input type="text" id="agent-name" placeholder="상담사 이름"></div>
-      <div class="field field-compact"><input type="text" id="consult-date" readonly style="background:#f5f7fb;color:#3b4a6b;cursor:default"></div>
+      <div class="field field-compact"><input type="text" id="agent-name" placeholder="상담사 이름" style="background:#f5f7fb;color:#1a1a1a"></div>
+      <div class="field field-compact"><input type="text" id="consult-date" readonly style="background:#f5f7fb;color:#1a1a1a;cursor:default"></div>
     </div>
 
     <!-- 고객 정보 -->
     <div class="card">
-      <div class="card-title"><span class="ct-icon">👤</span><span>고객 정보</span></div>
+      <div class="card-title">
+        <span class="ct-icon">👤</span><span>고객 정보</span>
+        <span class="ct-spacer"></span>
+        <button onclick="resetAll()" title="전체 초기화" style="background:#fff5f5;border:1.5px solid #e05050;cursor:pointer;font-size:15px;color:#e05050;padding:4px 9px;border-radius:7px;line-height:1;transition:transform .3s,background .15s" onmouseenter="this.style.transform='rotate(180deg)'" onmouseleave="this.style.transform='rotate(0deg)'">↺</button>
+      </div>
       <table class="prod-table">
         <colgroup><col style="width:88px"><col><col style="width:80px"></colgroup>
         <tbody>
@@ -1314,7 +1318,17 @@ function clearField(id){
   if(id === 'internet' || id === 'tv' || id === 'bundle' || id === 'isp'){ calcUsimGift(); }
 }
 
-/* ── 전체 초기화 ── */
+/* ── 전체 초기화 (고객 정보 + 상품 선택) ── */
+function resetAll(){
+  const carrierEl = document.getElementById('mobile-carrier');
+  if(carrierEl) carrierEl.value = '';
+  const bundleStatusEl = document.getElementById('bundle-status');
+  if(bundleStatusEl) bundleStatusEl.value = '';
+  syncMobileInfoToMemo();
+  resetProductSelection();
+}
+
+/* ── 상품 선택 초기화 ── */
 function resetProductSelection(){
   // ISP도 -- 선택하세요 -- 로 초기화
   const ispEl = document.getElementById('isp');
