@@ -1,11 +1,15 @@
-import { get } from '@vercel/edge-config';
-import { next } from '@vercel/functions';
+import { getAll } from '@vercel/edge-config';
+import { next, ipAddress } from '@vercel/functions';
 
 function unauthorized() {
   return new Response('Authentication required', {
     status: 401,
     headers: { 'WWW-Authenticate': 'Basic realm="Restricted"' },
   });
+}
+
+function forbidden() {
+  return new Response('Forbidden', { status: 403 });
 }
 
 const ADMIN_USER = '관리자';
@@ -16,6 +20,11 @@ function decodeBasicAuth(base64) {
 }
 
 export default async function middleware(request) {
+  const { agents, allowed_ips } = await getAll(['agents', 'allowed_ips']);
+
+  const ip = ipAddress(request);
+  if (!allowed_ips?.includes(ip)) return forbidden();
+
   const url = new URL(request.url);
   const agentParam = url.searchParams.get('agent')?.trim();
   const expectedUser = agentParam || ADMIN_USER;
@@ -29,8 +38,6 @@ export default async function middleware(request) {
   } catch {
     return unauthorized();
   }
-
-  const agents = await get('agents'); // { 이름: 비번 }
 
   return user === expectedUser && agents?.[user] === pass ? next() : unauthorized();
 }
