@@ -2378,7 +2378,7 @@ function updateMsgTabs(isp,inet,tv,hasTv,monthly,installFee,gift,agentName,insta
 
   // 2: 후결합
   const isp3=isp||'통신사';
-  const ispTel={'KT':'100','KT 오피스넷':'100','LGU':'101','LG 소호':'101','SKB':'106','SKT':'106','헬로비전':'1855-1500','SKY':'1599-0999'};
+  const ispTel={'KT':'100','KT 오피스넷':'100','LGU':'101','LG 소호':'1800-8300','SKB':'106','SKT':'1600-2000','헬로비전':'1855-1500','SKY':'1599-0999'};
   const telNum=ispTel[isp]||'고객센터';
   const combo=`[미소] 결합 방법 안내\n\n고객님, 인터넷 설치 후에 결합을 따로 진행해주셔야 합니다!\n\n■ ${isp3} 본사 고객센터☎️ ${telNum}로 전화하셔서\n■ ${L.bundleName||'결합 상품'} 신청해주시면, 결합 할인 적용됩니다.\n■ 결합 할인 적용 위해 꼭 잊지 말고 결합 신청해주세요!\n\n감사합니다.\n${signOff}`;
 
