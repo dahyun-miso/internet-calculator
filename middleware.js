@@ -10,6 +10,11 @@ function unauthorized() {
 
 const ADMIN_USER = '관리자';
 
+function decodeBasicAuth(base64) {
+  const bytes = Uint8Array.from(atob(base64), (c) => c.charCodeAt(0));
+  return new TextDecoder('utf-8').decode(bytes);
+}
+
 export default async function middleware(request) {
   const url = new URL(request.url);
   const agentParam = url.searchParams.get('agent')?.trim();
@@ -20,7 +25,7 @@ export default async function middleware(request) {
 
   let user, pass;
   try {
-    [user, pass] = atob(auth.slice(6)).split(':');
+    [user, pass] = decodeBasicAuth(auth.slice(6)).split(':');
   } catch {
     return unauthorized();
   }
