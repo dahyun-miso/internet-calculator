@@ -1,0 +1,84 @@
+<!DOCTYPE html>
+<html lang="ko">
+<head>
+<meta charset="UTF-8">
+<title>로그인 기록</title>
+<style>
+  body { font-family: -apple-system, "Malgun Gothic", sans-serif; background:#f5f7fb; margin:0; padding:24px; color:#1a1f2e; }
+  h1 { font-size:18px; margin:0 0 16px; }
+  table { border-collapse:collapse; width:100%; background:#fff; border-radius:8px; overflow:hidden; box-shadow:0 1px 3px rgba(0,0,0,.08); }
+  th, td { padding:10px 12px; border-bottom:1px solid #e5e8f0; text-align:left; font-size:13px; }
+  th { background:#eef1f8; color:#4a5570; }
+  tr:last-child td { border-bottom:none; }
+  .ip { font-family:monospace; }
+  .history { display:none; margin-top:6px; font-size:12px; color:#666; }
+  .history.open { display:block; }
+  .toggle { cursor:pointer; color:#3b6ef0; font-size:12px; }
+  .empty { padding:24px; text-align:center; color:#888; }
+</style>
+</head>
+<body>
+<h1>🔐 계정별 로그인 기록</h1>
+<div id="root">불러오는 중...</div>
+<script>
+async function load(){
+  const root = document.getElementById('root');
+  try {
+    const res = await fetch('/api/logins');
+    if(!res.ok){ root.textContent = '조회 실패 (' + res.status + ')'; return; }
+    const { users } = await res.json();
+    if(!users || !users.length){ root.innerHTML = '<div class="empty">기록이 없습니다.</div>'; return; }
+
+    const table = document.createElement('table');
+    table.innerHTML = '<thead><tr><th>계정</th><th>최근 IP</th><th>최근 로그인 시각</th><th>기록</th></tr></thead>';
+    const tbody = document.createElement('tbody');
+
+    users.forEach((u, i) => {
+      const tr = document.createElement('tr');
+
+      const tdUser = document.createElement('td');
+      tdUser.textContent = u.user;
+
+      const tdIp = document.createElement('td');
+      tdIp.className = 'ip';
+      tdIp.textContent = u.last ? u.last.ip : '-';
+
+      const tdTs = document.createElement('td');
+      tdTs.textContent = u.last ? new Date(u.last.ts).toLocaleString('ko-KR') : '-';
+
+      const tdHistory = document.createElement('td');
+      const toggle = document.createElement('span');
+      toggle.className = 'toggle';
+      toggle.textContent = u.historyTotal > u.history.length
+        ? `최근 ${u.history.length}건 보기 (전체 ${u.historyTotal}건 누적)`
+        : `기록 ${u.history.length}건 보기`;
+      const historyBox = document.createElement('div');
+      historyBox.className = 'history';
+      historyBox.id = 'hist-' + i;
+      historyBox.innerHTML = u.history.map(h =>
+        `${new Date(h.ts).toLocaleString('ko-KR')} — ${h.ip}`
+      ).map(escapeHtml).join('<br>');
+      toggle.onclick = () => historyBox.classList.toggle('open');
+      tdHistory.appendChild(toggle);
+      tdHistory.appendChild(historyBox);
+
+      tr.append(tdUser, tdIp, tdTs, tdHistory);
+      tbody.appendChild(tr);
+    });
+
+    table.appendChild(tbody);
+    root.innerHTML = '';
+    root.appendChild(table);
+  } catch(e) {
+    root.textContent = '조회 중 오류가 발생했습니다.';
+  }
+}
+function escapeHtml(s){
+  const d = document.createElement('div');
+  d.textContent = s;
+  return d.innerHTML;
+}
+load();
+</script>
+</body>
+</html>
