@@ -1,9 +1,13 @@
+import { getAll } from '@vercel/edge-config';
 import { redis, LOGIN_HISTORY_DISPLAY_LIMIT } from '../lib/redis.js';
 
 export const config = { runtime: 'edge' };
 
 export default async function handler() {
-  const users = await redis.smembers('login:users');
+  const [users, { expected_ips }] = await Promise.all([
+    redis.smembers('login:users'),
+    getAll(['expected_ips']),
+  ]);
 
   const results = await Promise.all(
     users.map(async (user) => {
@@ -14,7 +18,7 @@ export default async function handler() {
       ]);
       const last = lastRaw ? JSON.parse(lastRaw) : null;
       const history = (historyRaw || []).map((h) => JSON.parse(h));
-      return { user, last, history, historyTotal };
+      return { user, last, history, historyTotal, expected: expected_ips?.[user] || null };
     })
   );
 

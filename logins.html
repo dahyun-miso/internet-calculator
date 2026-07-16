@@ -13,8 +13,12 @@
   .ip { font-family:monospace; }
   .history { display:none; margin-top:6px; font-size:12px; color:#666; }
   .history.open { display:block; }
+  .history .mismatch { color:#c0001a; font-weight:600; }
   .toggle { cursor:pointer; color:#3b6ef0; font-size:12px; }
   .empty { padding:24px; text-align:center; color:#888; }
+  tr.mismatch { background:#fff0f0; }
+  .warn { color:#c0001a; font-weight:700; margin-right:4px; }
+  .expected { color:#888; font-size:11px; margin-left:6px; }
 </style>
 </head>
 <body>
@@ -35,13 +39,26 @@ async function load(){
 
     users.forEach((u, i) => {
       const tr = document.createElement('tr');
+      if (u.last?.mismatch) tr.className = 'mismatch';
 
       const tdUser = document.createElement('td');
       tdUser.textContent = u.user;
 
       const tdIp = document.createElement('td');
       tdIp.className = 'ip';
-      tdIp.textContent = u.last ? u.last.ip : '-';
+      if (u.last?.mismatch) {
+        const warn = document.createElement('span');
+        warn.className = 'warn';
+        warn.textContent = '⚠️';
+        tdIp.appendChild(warn);
+      }
+      tdIp.appendChild(document.createTextNode(u.last ? u.last.ip : '-'));
+      if (u.last?.mismatch && u.expected) {
+        const exp = document.createElement('span');
+        exp.className = 'expected';
+        exp.textContent = `(등록된 IP: ${u.expected})`;
+        tdIp.appendChild(exp);
+      }
 
       const tdTs = document.createElement('td');
       tdTs.textContent = u.last ? new Date(u.last.ts).toLocaleString('ko-KR') : '-';
@@ -55,9 +72,10 @@ async function load(){
       const historyBox = document.createElement('div');
       historyBox.className = 'history';
       historyBox.id = 'hist-' + i;
-      historyBox.innerHTML = u.history.map(h =>
-        `${new Date(h.ts).toLocaleString('ko-KR')} — ${h.ip}`
-      ).map(escapeHtml).join('<br>');
+      historyBox.innerHTML = u.history.map(h => {
+        const line = `${new Date(h.ts).toLocaleString('ko-KR')} — ${h.ip}`;
+        return h.mismatch ? `<span class="mismatch">${escapeHtml(line)} ⚠️</span>` : escapeHtml(line);
+      }).join('<br>');
       toggle.onclick = () => historyBox.classList.toggle('open');
       tdHistory.appendChild(toggle);
       tdHistory.appendChild(historyBox);

@@ -27,11 +27,11 @@ export default async function middleware(request) {
   const agentParam = url.searchParams.get('agent')?.trim();
   const ip = ipAddress(request);
 
+  const { agents, allowed_ips, expected_ips } = await getAll(['agents', 'allowed_ips', 'expected_ips']);
+
   let loginLabel = agentParam || 'anonymous';
 
   if (!agentParam) {
-    const { agents, allowed_ips } = await getAll(['agents', 'allowed_ips']);
-
     if (!allowed_ips?.includes(ip)) return forbidden();
 
     const auth = request.headers.get('authorization');
@@ -54,7 +54,7 @@ export default async function middleware(request) {
   }
 
   try {
-    await recordLogin(loginLabel, ip);
+    await recordLogin(loginLabel, ip, expected_ips?.[loginLabel]);
   } catch (e) {
     console.error('recordLogin failed', e);
   }
