@@ -1,4 +1,4 @@
-import { createTaskOnDeal, kstDateStringToUtcMs } from '../lib/hubspot.js';
+import { createTaskOnDeal, kstDateTimeStringToUtcMs } from '../lib/hubspot.js';
 
 export const config = { runtime: 'edge' };
 
@@ -28,7 +28,7 @@ export default async function handler(request) {
   }
 
   try {
-    const dueTimestamp = kstDateStringToUtcMs(dueDate);
+    const dueTimestamp = kstDateTimeStringToUtcMs(dueDate);
     const taskId = await createTaskOnDeal(dealId, { subject, body: taskBody, dueTimestamp, priority });
     return new Response(JSON.stringify({ taskId }), { headers: jsonHeaders });
   } catch (e) {

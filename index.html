@@ -353,6 +353,7 @@ textarea:focus{outline:none;border-color:#3b6ef0}
       <div class="card-title"><span class="ct-icon">📋</span><span>오늘 배정된 리드</span></div>
       <div id="hubspot-leads-list" style="font-size:13px;color:#666;padding:6px 2px">불러오는 중...</div>
       <div id="hubspot-note-area" style="display:none;margin-top:8px">
+        <div id="hubspot-notes-history" style="max-height:150px;overflow-y:auto;font-size:12px;color:#444;background:#fafbfc;border:1px solid #eee;border-radius:8px;padding:8px;margin-bottom:8px"></div>
         <textarea id="hubspot-note-text" placeholder="상담 메모를 입력하세요" style="width:100%;min-height:70px;box-sizing:border-box;border:1px solid #dde1e8;border-radius:8px;padding:8px;font-size:13px"></textarea>
         <button id="hubspot-note-send" type="button" style="margin-top:6px;background:#2e7d32;color:#fff;border:none;border-radius:7px;padding:7px 14px;font-size:13px;cursor:pointer">메모 전송</button>
 
@@ -360,7 +361,7 @@ textarea:focus{outline:none;border-color:#3b6ef0}
           <input type="text" id="hubspot-task-subject" placeholder="후속 작업 제목" style="width:100%;box-sizing:border-box;border:1px solid #dde1e8;border-radius:8px;padding:7px 8px;font-size:13px">
           <textarea id="hubspot-task-body" placeholder="작업 내용 (선택)" style="margin-top:6px;width:100%;min-height:50px;box-sizing:border-box;border:1px solid #dde1e8;border-radius:8px;padding:8px;font-size:13px"></textarea>
           <div style="display:flex;gap:8px;margin-top:6px">
-            <input type="date" id="hubspot-task-due" style="flex:1;border:1px solid #dde1e8;border-radius:8px;padding:6px 8px;font-size:13px">
+            <input type="datetime-local" id="hubspot-task-due" style="flex:1;border:1px solid #dde1e8;border-radius:8px;padding:6px 8px;font-size:13px">
             <select id="hubspot-task-priority" style="border:1px solid #dde1e8;border-radius:8px;padding:6px 8px;font-size:13px">
               <option value="LOW">낮음</option>
               <option value="MEDIUM" selected>보통</option>
@@ -3476,6 +3477,34 @@ function updateComboCard(bundleValue){
   const sendBtn = document.getElementById('hubspot-note-send');
 
   let selectedDealId = null;
+  const notesHistory = document.getElementById('hubspot-notes-history');
+
+  function formatKst(ts){
+    if(!ts) return '';
+    return new Date(ts).toLocaleString('ko-KR', { timeZone: 'Asia/Seoul' });
+  }
+
+  function loadNotesHistory(dealId){
+    notesHistory.textContent = '메모 불러오는 중...';
+    fetch('/api/hubspot-deal-notes?dealId=' + encodeURIComponent(dealId))
+      .then(r => { if(!r.ok) throw new Error(); return r.json(); })
+      .then(data => {
+        const notes = data.notes || [];
+        if(!notes.length){ notesHistory.textContent = '등록된 메모가 없습니다.'; return; }
+        notesHistory.innerHTML = '';
+        notes.forEach(n => {
+          const item = document.createElement('div');
+          item.style.cssText = 'padding:5px 0;border-bottom:1px solid #eee;white-space:pre-wrap';
+          const time = document.createElement('div');
+          time.style.cssText = 'color:#999;font-size:11px;margin-bottom:2px';
+          time.textContent = formatKst(n.timestamp);
+          item.appendChild(time);
+          item.appendChild(document.createTextNode(n.body));
+          notesHistory.appendChild(item);
+        });
+      })
+      .catch(() => { notesHistory.textContent = '메모를 불러오지 못했습니다.'; });
+  }
 
   function renderDeals(deals){
     if(!deals.length){
@@ -3494,6 +3523,7 @@ function updateComboCard(bundleValue){
       radio.addEventListener('change', () => {
         selectedDealId = d.id;
         noteArea.style.display = '';
+        loadNotesHistory(d.id);
       });
       label.appendChild(radio);
       const amountText = d.amount ? ` · ${Number(d.amount).toLocaleString()}원` : '';
@@ -3526,7 +3556,11 @@ function updateComboCard(bundleValue){
       body: JSON.stringify({ dealId: selectedDealId, note }),
     })
       .then(r => { if(!r.ok) throw new Error(); return r.json(); })
-      .then(() => { showToast('✅ 메모가 전송되었습니다'); noteText.value=''; })
+      .then(() => {
+        showToast('✅ 메모가 전송되었습니다');
+        noteText.value='';
+        if(selectedDealId) loadNotesHistory(selectedDealId);
+      })
       .catch(() => showToast('❌ 메모 전송 실패'))
       .finally(() => { sendBtn.disabled = false; });
   });
