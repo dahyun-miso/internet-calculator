@@ -3635,7 +3635,8 @@ function updateComboCard(bundleValue){
       });
       label.appendChild(radio);
       const amountText = d.amount ? ` · ${Number(d.amount).toLocaleString()}원` : '';
-      label.appendChild(document.createTextNode(`${d.dealname || '(제목 없음)'}${amountText}`));
+      const noAnswerText = d.noAnswerCount ? ` · 부재 ${d.noAnswerCount}회` : '';
+      label.appendChild(document.createTextNode(`${d.dealname || '(제목 없음)'}${amountText}${noAnswerText}`));
       listEl.appendChild(label);
     });
   }
