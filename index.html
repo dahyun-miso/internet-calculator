@@ -350,13 +350,23 @@ textarea:focus{outline:none;border-color:#3b6ef0}
 
     <!-- 허브스팟 오늘 마감 Task -->
     <div class="card" id="hubspot-tasks-card" style="display:none">
-      <div class="card-title"><span class="ct-icon">✅</span><span>오늘 마감 Task</span></div>
+      <div class="card-title">
+        <span class="ct-icon">✅</span><span>오늘 마감 Task</span>
+        <span id="hubspot-tasks-count" style="color:#888;font-size:12px;margin-left:4px"></span>
+        <span class="ct-spacer"></span>
+        <button id="hubspot-tasks-prev" type="button" style="background:#f5f7fb;border:1px solid #dde1e8;border-radius:6px;padding:3px 9px;font-size:13px;cursor:pointer;line-height:1">&lt;</button>
+        <button id="hubspot-tasks-next" type="button" style="background:#f5f7fb;border:1px solid #dde1e8;border-radius:6px;padding:3px 9px;font-size:13px;cursor:pointer;line-height:1;margin-left:4px">&gt;</button>
+      </div>
       <div id="hubspot-tasks-list" style="font-size:13px;color:#666;padding:6px 2px">불러오는 중...</div>
     </div>
 
     <!-- 허브스팟 오늘 배정 리드 -->
     <div class="card" id="hubspot-leads-card" style="display:none">
-      <div class="card-title"><span class="ct-icon">📋</span><span>오늘 배정된 리드</span></div>
+      <div class="card-title">
+        <span class="ct-icon">📋</span><span>오늘 배정된 리드</span>
+        <span class="ct-spacer"></span>
+        <button id="hubspot-leads-refresh" type="button" title="새로고침" style="background:#f5f7fb;border:1px solid #dde1e8;border-radius:6px;padding:3px 9px;font-size:13px;cursor:pointer;line-height:1">🔄</button>
+      </div>
       <div id="hubspot-leads-list" style="font-size:13px;color:#666;padding:6px 2px">불러오는 중...</div>
       <div id="hubspot-note-area" style="display:none;margin-top:8px">
         <div id="hubspot-notes-history" style="max-height:150px;overflow-y:auto;font-size:12px;color:#444;background:#fafbfc;border:1px solid #eee;border-radius:8px;padding:8px;margin-bottom:8px"></div>
@@ -3492,60 +3502,43 @@ function updateComboCard(bundleValue){
     });
   }
 
-  // ── 오늘 마감 Task 목록 ──
+  // ── 오늘 마감 Task 목록 (페이지당 10개, </> 로 넘겨보기) ──
   const tasksCard = document.getElementById('hubspot-tasks-card');
   const tasksListEl = document.getElementById('hubspot-tasks-list');
+  const tasksCountEl = document.getElementById('hubspot-tasks-count');
+  const tasksPrevBtn = document.getElementById('hubspot-tasks-prev');
+  const tasksNextBtn = document.getElementById('hubspot-tasks-next');
+  const TASKS_PAGE_SIZE = 10;
+  let allTasks = [];
+  let taskPage = 0;
 
-  function completeTask(t, checkbox){
-    checkbox.disabled = true;
-    fetch('/api/hubspot-task-status?agent=' + encodeURIComponent(agent), {
-      method: 'POST',
-      headers: {'Content-Type':'application/json'},
-      body: JSON.stringify({ taskId: t.id }),
-    })
-      .then(r => { if(!r.ok) throw new Error(); return r.json(); })
-      .then(() => {
-        showToast('✅ Task 완료 처리되었습니다');
-        t.status = 'COMPLETED';
-        checkbox.closest('tr').style.color = '#aaa';
-        checkbox.closest('tr').querySelector('.task-subject').style.textDecoration = 'line-through';
-      })
-      .catch(() => { showToast('❌ 완료 처리 실패'); checkbox.checked = false; checkbox.disabled = false; });
-  }
+  function renderTasksPage(){
+    const total = allTasks.length;
+    tasksCountEl.textContent = total ? `(총 ${total}개)` : '';
+    tasksPrevBtn.disabled = taskPage === 0;
+    tasksNextBtn.disabled = (taskPage + 1) * TASKS_PAGE_SIZE >= total;
 
-  function renderTasks(tasks){
-    if(!tasks.length){
+    if(!total){
       tasksListEl.textContent = '오늘 마감인 Task가 없습니다.';
       return;
     }
+    const pageTasks = allTasks.slice(taskPage * TASKS_PAGE_SIZE, (taskPage + 1) * TASKS_PAGE_SIZE);
+
     tasksListEl.innerHTML = '';
     const table = document.createElement('table');
     table.style.cssText = 'width:100%;border-collapse:collapse;font-size:13px';
     table.innerHTML = `<thead><tr style="border-bottom:1px solid #ddd;color:#888;font-size:12px">
-      <th style="text-align:left;padding:4px 6px;width:32px">상태</th>
       <th style="text-align:left;padding:4px 6px">제목</th>
       <th style="text-align:right;padding:4px 6px">만기일</th>
     </tr></thead>`;
     const tbody = document.createElement('tbody');
-    tasks.forEach(t => {
+    pageTasks.forEach(t => {
       const tr = document.createElement('tr');
       tr.style.cssText = 'border-bottom:1px solid #f0f0f0'
-        + (t.status === 'COMPLETED' ? ';color:#aaa' : '')
-        + (t.priority === 'HIGH' && t.status !== 'COMPLETED' ? ';background:#fdecea' : '');
-
-      const statusTd = document.createElement('td');
-      statusTd.style.padding = '6px';
-      const checkbox = document.createElement('input');
-      checkbox.type = 'checkbox';
-      checkbox.checked = t.status === 'COMPLETED';
-      checkbox.disabled = t.status === 'COMPLETED';
-      checkbox.style.cursor = t.status === 'COMPLETED' ? 'default' : 'pointer';
-      checkbox.addEventListener('change', () => { if(checkbox.checked) completeTask(t, checkbox); });
-      statusTd.appendChild(checkbox);
+        + (t.priority === 'HIGH' ? ';background:#fdecea' : '');
 
       const titleTd = document.createElement('td');
       titleTd.style.padding = '6px';
-      titleTd.className = 'task-subject';
       if(t.dealUrl){
         const link = document.createElement('a');
         link.href = t.dealUrl;
@@ -3553,19 +3546,16 @@ function updateComboCard(bundleValue){
         link.rel = 'noopener';
         link.style.cssText = 'color:#1a73e8;text-decoration:none';
         link.textContent = t.subject || '(제목 없음)';
-        if(t.status === 'COMPLETED') link.style.textDecoration = 'line-through';
         titleTd.appendChild(link);
       } else {
         titleTd.style.color = '#1a73e8';
-        if(t.status === 'COMPLETED') titleTd.style.textDecoration = 'line-through';
         titleTd.textContent = t.subject || '(제목 없음)';
       }
 
       const dueTd = document.createElement('td');
-      dueTd.style.cssText = `padding:6px;text-align:right;white-space:nowrap;color:${t.status === 'COMPLETED' ? '#aaa' : '#666'}`;
+      dueTd.style.cssText = 'padding:6px;text-align:right;white-space:nowrap;color:#666';
       dueTd.textContent = formatKst(t.timestamp);
 
-      tr.appendChild(statusTd);
       tr.appendChild(titleTd);
       tr.appendChild(dueTd);
       tbody.appendChild(tr);
@@ -3573,6 +3563,9 @@ function updateComboCard(bundleValue){
     table.appendChild(tbody);
     tasksListEl.appendChild(table);
   }
+
+  tasksPrevBtn.addEventListener('click', () => { if(taskPage > 0){ taskPage--; renderTasksPage(); } });
+  tasksNextBtn.addEventListener('click', () => { if((taskPage + 1) * TASKS_PAGE_SIZE < allTasks.length){ taskPage++; renderTasksPage(); } });
 
   fetch('/api/hubspot-tasks?agent=' + encodeURIComponent(agent))
     .then(r => r.json().then(data => ({ok: r.ok, data})))
@@ -3582,7 +3575,9 @@ function updateComboCard(bundleValue){
         return;
       }
       tasksCard.style.display = '';
-      renderTasks(data.tasks || []);
+      allTasks = data.tasks || [];
+      taskPage = 0;
+      renderTasksPage();
     })
     .catch(e => console.error('hubspot-tasks fetch failed', e));
 
@@ -3621,6 +3616,7 @@ function updateComboCard(bundleValue){
       radio.type = 'radio';
       radio.name = 'hubspot-deal';
       radio.value = d.id;
+      radio.checked = d.id === selectedDealId;
       radio.style.marginRight = '6px';
       radio.addEventListener('change', () => {
         selectedDealId = d.id;
@@ -3635,17 +3631,34 @@ function updateComboCard(bundleValue){
   }
 
   // hubspot_owner_map에 매핑된 상담사에게만 카드를 노출한다 (매핑 안 된 경우/에러 시 조용히 숨김).
-  fetch('/api/hubspot-deals?agent=' + encodeURIComponent(agent))
-    .then(r => r.json().then(data => ({ok: r.ok, data})))
-    .then(({ok, data}) => {
-      if(!ok || data.mapped === false){
-        if(!ok) console.error('hubspot-deals error', data);
-        return;
-      }
-      card.style.display = '';
-      renderDeals(data.deals || []);
-    })
-    .catch(e => console.error('hubspot-deals fetch failed', e));
+  function loadLeads(){
+    fetch('/api/hubspot-deals?agent=' + encodeURIComponent(agent))
+      .then(r => r.json().then(data => ({ok: r.ok, data})))
+      .then(({ok, data}) => {
+        if(!ok || data.mapped === false){
+          if(!ok) console.error('hubspot-deals error', data);
+          return;
+        }
+        card.style.display = '';
+        renderDeals(data.deals || []);
+      })
+      .catch(e => console.error('hubspot-deals fetch failed', e));
+  }
+  loadLeads();
+
+  const leadsRefreshBtn = document.getElementById('hubspot-leads-refresh');
+  leadsRefreshBtn.addEventListener('click', () => {
+    leadsRefreshBtn.disabled = true;
+    leadsRefreshBtn.style.opacity = '0.5';
+    fetch('/api/hubspot-deals?agent=' + encodeURIComponent(agent))
+      .then(r => r.json().then(data => ({ok: r.ok, data})))
+      .then(({ok, data}) => {
+        if(!ok){ showToast('❌ 새로고침 실패'); return; }
+        if(data.mapped !== false){ renderDeals(data.deals || []); }
+      })
+      .catch(() => showToast('❌ 새로고침 실패'))
+      .finally(() => { leadsRefreshBtn.disabled = false; leadsRefreshBtn.style.opacity = '1'; });
+  });
 
   sendBtn.addEventListener('click', () => {
     const note = noteText.value.trim();
