@@ -3487,13 +3487,31 @@ function updateComboCard(bundleValue){
 
   function formatKst(ts){
     if(!ts) return '';
-    return new Date(ts).toLocaleString('ko-KR', { timeZone: 'Asia/Seoul' });
+    return new Date(ts).toLocaleString('ko-KR', {
+      timeZone: 'Asia/Seoul', year: 'numeric', month: 'long', day: 'numeric', hour: 'numeric', minute: '2-digit',
+    });
   }
 
   // ── 오늘 마감 Task 목록 ──
   const tasksCard = document.getElementById('hubspot-tasks-card');
   const tasksListEl = document.getElementById('hubspot-tasks-list');
-  const PRIORITY_LABEL = { LOW: '낮음', MEDIUM: '보통', HIGH: '높음' };
+
+  function completeTask(t, checkbox){
+    checkbox.disabled = true;
+    fetch('/api/hubspot-task-status?agent=' + encodeURIComponent(agent), {
+      method: 'POST',
+      headers: {'Content-Type':'application/json'},
+      body: JSON.stringify({ taskId: t.id }),
+    })
+      .then(r => { if(!r.ok) throw new Error(); return r.json(); })
+      .then(() => {
+        showToast('✅ Task 완료 처리되었습니다');
+        t.status = 'COMPLETED';
+        checkbox.closest('tr').style.color = '#aaa';
+        checkbox.closest('tr').querySelector('.task-subject').style.textDecoration = 'line-through';
+      })
+      .catch(() => { showToast('❌ 완료 처리 실패'); checkbox.checked = false; checkbox.disabled = false; });
+  }
 
   function renderTasks(tasks){
     if(!tasks.length){
@@ -3501,37 +3519,45 @@ function updateComboCard(bundleValue){
       return;
     }
     tasksListEl.innerHTML = '';
+    const table = document.createElement('table');
+    table.style.cssText = 'width:100%;border-collapse:collapse;font-size:13px';
+    table.innerHTML = `<thead><tr style="border-bottom:1px solid #ddd;color:#888;font-size:12px">
+      <th style="text-align:left;padding:4px 6px;width:32px">상태</th>
+      <th style="text-align:left;padding:4px 6px">제목</th>
+      <th style="text-align:right;padding:4px 6px">만기일</th>
+    </tr></thead>`;
+    const tbody = document.createElement('tbody');
     tasks.forEach(t => {
-      const row = document.createElement('div');
-      row.style.cssText = 'display:flex;align-items:center;justify-content:space-between;gap:8px;padding:5px 0;border-bottom:1px solid #eee';
-      const info = document.createElement('div');
-      info.style.cssText = t.status === 'COMPLETED' ? 'text-decoration:line-through;color:#aaa' : '';
-      info.textContent = `[${PRIORITY_LABEL[t.priority] || t.priority}] ${t.subject || '(제목 없음)'} · ${formatKst(t.timestamp)}`;
-      row.appendChild(info);
-      if(t.status !== 'COMPLETED'){
-        const completeBtn = document.createElement('button');
-        completeBtn.type = 'button';
-        completeBtn.textContent = '완료';
-        completeBtn.style.cssText = 'background:#eef7ee;border:1px solid #4caf50;color:#2e7d32;border-radius:6px;padding:3px 10px;font-size:12px;cursor:pointer;flex-shrink:0';
-        completeBtn.addEventListener('click', () => {
-          completeBtn.disabled = true;
-          fetch('/api/hubspot-task-status?agent=' + encodeURIComponent(agent), {
-            method: 'POST',
-            headers: {'Content-Type':'application/json'},
-            body: JSON.stringify({ taskId: t.id }),
-          })
-            .then(r => { if(!r.ok) throw new Error(); return r.json(); })
-            .then(() => {
-              showToast('✅ Task 완료 처리되었습니다');
-              t.status = 'COMPLETED';
-              renderTasks(tasks);
-            })
-            .catch(() => { showToast('❌ 완료 처리 실패'); completeBtn.disabled = false; });
-        });
-        row.appendChild(completeBtn);
-      }
-      tasksListEl.appendChild(row);
+      const tr = document.createElement('tr');
+      tr.style.cssText = 'border-bottom:1px solid #f0f0f0' + (t.status === 'COMPLETED' ? ';color:#aaa' : '');
+
+      const statusTd = document.createElement('td');
+      statusTd.style.padding = '6px';
+      const checkbox = document.createElement('input');
+      checkbox.type = 'checkbox';
+      checkbox.checked = t.status === 'COMPLETED';
+      checkbox.disabled = t.status === 'COMPLETED';
+      checkbox.style.cursor = t.status === 'COMPLETED' ? 'default' : 'pointer';
+      checkbox.addEventListener('change', () => { if(checkbox.checked) completeTask(t, checkbox); });
+      statusTd.appendChild(checkbox);
+
+      const titleTd = document.createElement('td');
+      titleTd.style.cssText = 'padding:6px;color:#1a73e8';
+      titleTd.className = 'task-subject';
+      if(t.status === 'COMPLETED') titleTd.style.textDecoration = 'line-through';
+      titleTd.textContent = t.subject || '(제목 없음)';
+
+      const dueTd = document.createElement('td');
+      dueTd.style.cssText = `padding:6px;text-align:right;white-space:nowrap;color:${t.status === 'COMPLETED' ? '#aaa' : '#666'}`;
+      dueTd.textContent = formatKst(t.timestamp);
+
+      tr.appendChild(statusTd);
+      tr.appendChild(titleTd);
+      tr.appendChild(dueTd);
+      tbody.appendChild(tr);
     });
+    table.appendChild(tbody);
+    tasksListEl.appendChild(table);
   }
 
   fetch('/api/hubspot-tasks?agent=' + encodeURIComponent(agent))
