@@ -348,6 +348,16 @@ textarea:focus{outline:none;border-color:#3b6ef0}
       <div class="field field-compact"><input type="text" id="consult-date" readonly style="background:#f5f7fb;color:#1a1a1a;cursor:default"></div>
     </div>
 
+    <!-- 허브스팟 오늘 배정 리드 -->
+    <div class="card" id="hubspot-leads-card" style="display:none">
+      <div class="card-title"><span class="ct-icon">📋</span><span>오늘 배정된 리드</span></div>
+      <div id="hubspot-leads-list" style="font-size:13px;color:#666;padding:6px 2px">불러오는 중...</div>
+      <div id="hubspot-note-area" style="display:none;margin-top:8px">
+        <textarea id="hubspot-note-text" placeholder="상담 메모를 입력하세요" style="width:100%;min-height:70px;box-sizing:border-box;border:1px solid #dde1e8;border-radius:8px;padding:8px;font-size:13px"></textarea>
+        <button id="hubspot-note-send" type="button" style="margin-top:6px;background:#2e7d32;color:#fff;border:none;border-radius:7px;padding:7px 14px;font-size:13px;cursor:pointer">메모 전송</button>
+      </div>
+    </div>
+
     <!-- 고객 정보 -->
     <div class="card">
       <div class="card-title">
@@ -3436,6 +3446,76 @@ function updateComboCard(bundleValue){
   // 자동 저장
   document.addEventListener('change', saveToStorage);
   document.addEventListener('input', saveToStorage);
+})();
+</script>
+
+<script>
+// ── 허브스팟 연동: 오늘 배정된 리드 조회 + 상담 메모 전송 ──
+(function(){
+  const agent = new URLSearchParams(window.location.search).get('agent')?.trim();
+  if(!agent) return;
+
+  const card = document.getElementById('hubspot-leads-card');
+  const listEl = document.getElementById('hubspot-leads-list');
+  const noteArea = document.getElementById('hubspot-note-area');
+  const noteText = document.getElementById('hubspot-note-text');
+  const sendBtn = document.getElementById('hubspot-note-send');
+
+  let selectedDealId = null;
+
+  function renderDeals(deals){
+    if(!deals.length){
+      listEl.textContent = '오늘 배정된 리드가 없습니다.';
+      return;
+    }
+    listEl.innerHTML = '';
+    deals.forEach(d => {
+      const label = document.createElement('label');
+      label.style.cssText = 'display:block;padding:4px 0;cursor:pointer';
+      const radio = document.createElement('input');
+      radio.type = 'radio';
+      radio.name = 'hubspot-deal';
+      radio.value = d.id;
+      radio.style.marginRight = '6px';
+      radio.addEventListener('change', () => {
+        selectedDealId = d.id;
+        noteArea.style.display = '';
+      });
+      label.appendChild(radio);
+      const amountText = d.amount ? ` · ${Number(d.amount).toLocaleString()}원` : '';
+      label.appendChild(document.createTextNode(`${d.dealname || '(제목 없음)'}${amountText}`));
+      listEl.appendChild(label);
+    });
+  }
+
+  // hubspot_owner_map에 매핑된 상담사에게만 카드를 노출한다 (매핑 안 된 경우/에러 시 조용히 숨김).
+  fetch('/api/hubspot-deals?agent=' + encodeURIComponent(agent))
+    .then(r => r.json().then(data => ({ok: r.ok, data})))
+    .then(({ok, data}) => {
+      if(!ok || data.mapped === false){
+        if(!ok) console.error('hubspot-deals error', data);
+        return;
+      }
+      card.style.display = '';
+      renderDeals(data.deals || []);
+    })
+    .catch(e => console.error('hubspot-deals fetch failed', e));
+
+  sendBtn.addEventListener('click', () => {
+    const note = noteText.value.trim();
+    if(!selectedDealId){ showToast('⚠️ 거래를 먼저 선택하세요'); return; }
+    if(!note){ showToast('⚠️ 메모를 입력하세요'); return; }
+    sendBtn.disabled = true;
+    fetch('/api/hubspot-note?agent=' + encodeURIComponent(agent), {
+      method: 'POST',
+      headers: {'Content-Type':'application/json'},
+      body: JSON.stringify({ dealId: selectedDealId, note }),
+    })
+      .then(r => { if(!r.ok) throw new Error(); return r.json(); })
+      .then(() => { showToast('✅ 메모가 전송되었습니다'); noteText.value=''; })
+      .catch(() => showToast('❌ 메모 전송 실패'))
+      .finally(() => { sendBtn.disabled = false; });
+  });
 })();
 </script>
 </body>
