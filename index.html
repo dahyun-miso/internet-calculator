@@ -3529,7 +3529,9 @@ function updateComboCard(bundleValue){
     const tbody = document.createElement('tbody');
     tasks.forEach(t => {
       const tr = document.createElement('tr');
-      tr.style.cssText = 'border-bottom:1px solid #f0f0f0' + (t.status === 'COMPLETED' ? ';color:#aaa' : '');
+      tr.style.cssText = 'border-bottom:1px solid #f0f0f0'
+        + (t.status === 'COMPLETED' ? ';color:#aaa' : '')
+        + (t.priority === 'HIGH' && t.status !== 'COMPLETED' ? ';background:#fdecea' : '');
 
       const statusTd = document.createElement('td');
       statusTd.style.padding = '6px';
@@ -3542,10 +3544,22 @@ function updateComboCard(bundleValue){
       statusTd.appendChild(checkbox);
 
       const titleTd = document.createElement('td');
-      titleTd.style.cssText = 'padding:6px;color:#1a73e8';
+      titleTd.style.padding = '6px';
       titleTd.className = 'task-subject';
-      if(t.status === 'COMPLETED') titleTd.style.textDecoration = 'line-through';
-      titleTd.textContent = t.subject || '(제목 없음)';
+      if(t.dealUrl){
+        const link = document.createElement('a');
+        link.href = t.dealUrl;
+        link.target = '_blank';
+        link.rel = 'noopener';
+        link.style.cssText = 'color:#1a73e8;text-decoration:none';
+        link.textContent = t.subject || '(제목 없음)';
+        if(t.status === 'COMPLETED') link.style.textDecoration = 'line-through';
+        titleTd.appendChild(link);
+      } else {
+        titleTd.style.color = '#1a73e8';
+        if(t.status === 'COMPLETED') titleTd.style.textDecoration = 'line-through';
+        titleTd.textContent = t.subject || '(제목 없음)';
+      }
 
       const dueTd = document.createElement('td');
       dueTd.style.cssText = `padding:6px;text-align:right;white-space:nowrap;color:${t.status === 'COMPLETED' ? '#aaa' : '#666'}`;
