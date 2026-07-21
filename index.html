@@ -348,6 +348,12 @@ textarea:focus{outline:none;border-color:#3b6ef0}
       <div class="field field-compact"><input type="text" id="consult-date" readonly style="background:#f5f7fb;color:#1a1a1a;cursor:default"></div>
     </div>
 
+    <!-- 허브스팟 오늘 마감 Task -->
+    <div class="card" id="hubspot-tasks-card" style="display:none">
+      <div class="card-title"><span class="ct-icon">✅</span><span>오늘 마감 Task</span></div>
+      <div id="hubspot-tasks-list" style="font-size:13px;color:#666;padding:6px 2px">불러오는 중...</div>
+    </div>
+
     <!-- 허브스팟 오늘 배정 리드 -->
     <div class="card" id="hubspot-leads-card" style="display:none">
       <div class="card-title"><span class="ct-icon">📋</span><span>오늘 배정된 리드</span></div>
@@ -3483,6 +3489,62 @@ function updateComboCard(bundleValue){
     if(!ts) return '';
     return new Date(ts).toLocaleString('ko-KR', { timeZone: 'Asia/Seoul' });
   }
+
+  // ── 오늘 마감 Task 목록 ──
+  const tasksCard = document.getElementById('hubspot-tasks-card');
+  const tasksListEl = document.getElementById('hubspot-tasks-list');
+  const PRIORITY_LABEL = { LOW: '낮음', MEDIUM: '보통', HIGH: '높음' };
+
+  function renderTasks(tasks){
+    if(!tasks.length){
+      tasksListEl.textContent = '오늘 마감인 Task가 없습니다.';
+      return;
+    }
+    tasksListEl.innerHTML = '';
+    tasks.forEach(t => {
+      const row = document.createElement('div');
+      row.style.cssText = 'display:flex;align-items:center;justify-content:space-between;gap:8px;padding:5px 0;border-bottom:1px solid #eee';
+      const info = document.createElement('div');
+      info.style.cssText = t.status === 'COMPLETED' ? 'text-decoration:line-through;color:#aaa' : '';
+      info.textContent = `[${PRIORITY_LABEL[t.priority] || t.priority}] ${t.subject || '(제목 없음)'} · ${formatKst(t.timestamp)}`;
+      row.appendChild(info);
+      if(t.status !== 'COMPLETED'){
+        const completeBtn = document.createElement('button');
+        completeBtn.type = 'button';
+        completeBtn.textContent = '완료';
+        completeBtn.style.cssText = 'background:#eef7ee;border:1px solid #4caf50;color:#2e7d32;border-radius:6px;padding:3px 10px;font-size:12px;cursor:pointer;flex-shrink:0';
+        completeBtn.addEventListener('click', () => {
+          completeBtn.disabled = true;
+          fetch('/api/hubspot-task-status?agent=' + encodeURIComponent(agent), {
+            method: 'POST',
+            headers: {'Content-Type':'application/json'},
+            body: JSON.stringify({ taskId: t.id }),
+          })
+            .then(r => { if(!r.ok) throw new Error(); return r.json(); })
+            .then(() => {
+              showToast('✅ Task 완료 처리되었습니다');
+              t.status = 'COMPLETED';
+              renderTasks(tasks);
+            })
+            .catch(() => { showToast('❌ 완료 처리 실패'); completeBtn.disabled = false; });
+        });
+        row.appendChild(completeBtn);
+      }
+      tasksListEl.appendChild(row);
+    });
+  }
+
+  fetch('/api/hubspot-tasks?agent=' + encodeURIComponent(agent))
+    .then(r => r.json().then(data => ({ok: r.ok, data})))
+    .then(({ok, data}) => {
+      if(!ok || data.mapped === false){
+        if(!ok) console.error('hubspot-tasks error', data);
+        return;
+      }
+      tasksCard.style.display = '';
+      renderTasks(data.tasks || []);
+    })
+    .catch(e => console.error('hubspot-tasks fetch failed', e));
 
   function loadNotesHistory(dealId){
     notesHistory.textContent = '메모 불러오는 중...';
