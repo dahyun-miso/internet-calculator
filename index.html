@@ -355,6 +355,20 @@ textarea:focus{outline:none;border-color:#3b6ef0}
       <div id="hubspot-note-area" style="display:none;margin-top:8px">
         <textarea id="hubspot-note-text" placeholder="상담 메모를 입력하세요" style="width:100%;min-height:70px;box-sizing:border-box;border:1px solid #dde1e8;border-radius:8px;padding:8px;font-size:13px"></textarea>
         <button id="hubspot-note-send" type="button" style="margin-top:6px;background:#2e7d32;color:#fff;border:none;border-radius:7px;padding:7px 14px;font-size:13px;cursor:pointer">메모 전송</button>
+
+        <div style="margin-top:14px;border-top:1px solid #eee;padding-top:10px">
+          <input type="text" id="hubspot-task-subject" placeholder="후속 작업 제목" style="width:100%;box-sizing:border-box;border:1px solid #dde1e8;border-radius:8px;padding:7px 8px;font-size:13px">
+          <textarea id="hubspot-task-body" placeholder="작업 내용 (선택)" style="margin-top:6px;width:100%;min-height:50px;box-sizing:border-box;border:1px solid #dde1e8;border-radius:8px;padding:8px;font-size:13px"></textarea>
+          <div style="display:flex;gap:8px;margin-top:6px">
+            <input type="date" id="hubspot-task-due" style="flex:1;border:1px solid #dde1e8;border-radius:8px;padding:6px 8px;font-size:13px">
+            <select id="hubspot-task-priority" style="border:1px solid #dde1e8;border-radius:8px;padding:6px 8px;font-size:13px">
+              <option value="LOW">낮음</option>
+              <option value="MEDIUM" selected>보통</option>
+              <option value="HIGH">높음</option>
+            </select>
+          </div>
+          <button id="hubspot-task-send" type="button" style="margin-top:6px;background:#1565c0;color:#fff;border:none;border-radius:7px;padding:7px 14px;font-size:13px;cursor:pointer">Task 생성</button>
+        </div>
       </div>
     </div>
 
@@ -3515,6 +3529,41 @@ function updateComboCard(bundleValue){
       .then(() => { showToast('✅ 메모가 전송되었습니다'); noteText.value=''; })
       .catch(() => showToast('❌ 메모 전송 실패'))
       .finally(() => { sendBtn.disabled = false; });
+  });
+
+  const taskSubject = document.getElementById('hubspot-task-subject');
+  const taskBody = document.getElementById('hubspot-task-body');
+  const taskDue = document.getElementById('hubspot-task-due');
+  const taskPriority = document.getElementById('hubspot-task-priority');
+  const taskSendBtn = document.getElementById('hubspot-task-send');
+
+  taskSendBtn.addEventListener('click', () => {
+    const subject = taskSubject.value.trim();
+    const dueDate = taskDue.value;
+    if(!selectedDealId){ showToast('⚠️ 거래를 먼저 선택하세요'); return; }
+    if(!subject){ showToast('⚠️ 작업 제목을 입력하세요'); return; }
+    if(!dueDate){ showToast('⚠️ 마감일을 선택하세요'); return; }
+    taskSendBtn.disabled = true;
+    fetch('/api/hubspot-task?agent=' + encodeURIComponent(agent), {
+      method: 'POST',
+      headers: {'Content-Type':'application/json'},
+      body: JSON.stringify({
+        dealId: selectedDealId,
+        subject,
+        body: taskBody.value.trim(),
+        dueDate,
+        priority: taskPriority.value,
+      }),
+    })
+      .then(r => { if(!r.ok) throw new Error(); return r.json(); })
+      .then(() => {
+        showToast('✅ Task가 생성되었습니다');
+        taskSubject.value = '';
+        taskBody.value = '';
+        taskDue.value = '';
+      })
+      .catch(() => showToast('❌ Task 생성 실패'))
+      .finally(() => { taskSendBtn.disabled = false; });
   });
 })();
 </script>
