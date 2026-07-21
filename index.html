@@ -3609,7 +3609,17 @@ function updateComboCard(bundleValue){
       return;
     }
     listEl.innerHTML = '';
+    let currentStage = null;
     deals.forEach(d => {
+      const stageLabel = d.dealstageLabel || '(단계 없음)';
+      if(stageLabel !== currentStage){
+        currentStage = stageLabel;
+        const heading = document.createElement('div');
+        heading.style.cssText = 'font-weight:600;font-size:12px;color:#555;margin:10px 0 4px;padding-bottom:2px;border-bottom:1px solid #eee';
+        if(listEl.children.length === 0) heading.style.marginTop = '0';
+        heading.textContent = stageLabel;
+        listEl.appendChild(heading);
+      }
       const label = document.createElement('label');
       label.style.cssText = 'display:block;padding:4px 0;cursor:pointer';
       const radio = document.createElement('input');
