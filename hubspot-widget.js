@@ -41,6 +41,13 @@
     });
   }
 
+  function formatKstTime(ts){
+    if(!ts) return '';
+    return new Date(ts).toLocaleTimeString('ko-KR', {
+      timeZone: 'Asia/Seoul', hour: 'numeric', minute: '2-digit',
+    });
+  }
+
   // ── 오늘 마감 Task 목록 (페이지당 10개, </> 로 넘겨보기) ──
   const tasksCard = document.getElementById('hubspot-tasks-card');
   const tasksListEl = document.getElementById('hubspot-tasks-list');
@@ -70,7 +77,7 @@
     const table = document.createElement('table');
     table.style.cssText = 'width:100%;border-collapse:collapse;font-size:13px';
     table.innerHTML = `<thead><tr style="border-bottom:1px solid #ddd;color:#888;font-size:12px">
-      <th style="text-align:left;padding:4px 6px">제목</th>
+      <th style="text-align:left;padding:4px 6px">Task 제목</th>
       <th style="text-align:right;padding:4px 6px">만기일</th>
     </tr></thead>`;
     const tbody = document.createElement('tbody');
@@ -97,7 +104,7 @@
 
       const dueTd = document.createElement('td');
       dueTd.style.cssText = 'padding:6px;text-align:right;white-space:nowrap;color:#666';
-      dueTd.textContent = formatKst(t.timestamp);
+      dueTd.textContent = formatKstTime(t.timestamp);
 
       tr.appendChild(titleTd);
       tr.appendChild(dueTd);
@@ -195,7 +202,7 @@
     const table = document.createElement('table');
     table.style.cssText = 'width:100%;border-collapse:collapse;font-size:13px';
     table.innerHTML = `<thead><tr style="border-bottom:1px solid #ddd;color:#888;font-size:12px">
-      <th style="text-align:left;padding:4px 6px">제목</th>
+      <th style="text-align:left;padding:4px 6px">거래단계(전화 시도)</th>
       <th style="text-align:center;padding:4px 6px">부재 횟수</th>
     </tr></thead>`;
     const tbody = document.createElement('tbody');
@@ -266,10 +273,12 @@
   // ── 허브스팟 최근(2일) 상품제안: [INT] 재제안 대상 목록 + 다음 활동일이 오늘이거나 없는 전체 거래 ──
   const intRecentCard = document.getElementById('hubspot-int-recent-card');
   const intRecentListEl = document.getElementById('hubspot-int-recent-list');
+  const intRecentCountEl = document.getElementById('hubspot-int-recent-count');
   const intRecentRefreshBtn = document.getElementById('hubspot-int-recent-refresh');
   let awaitingIntRecentReturn = false;
 
   function renderIntRecentDeals(deals){
+    intRecentCountEl.textContent = deals.length ? `(총 ${deals.length}개)` : '';
     if(!deals.length){
       intRecentListEl.textContent = '일치하는 거래가 없습니다.';
       return;
