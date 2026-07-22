@@ -23,6 +23,7 @@ export default async function handler(request) {
     return new Response(JSON.stringify({ deals }), { headers: jsonHeaders });
   } catch (e) {
     console.error('hubspot-int-recent error', e);
-    return new Response(JSON.stringify({ error: 'hubspot lookup failed' }), { status: 502, headers: jsonHeaders });
+    // TODO: 원인 파악 후 아래 debug 필드 제거
+    return new Response(JSON.stringify({ error: 'hubspot lookup failed', debug: String(e?.message || e) }), { status: 502, headers: jsonHeaders });
   }
 }
