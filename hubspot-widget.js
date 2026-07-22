@@ -263,7 +263,7 @@
     }
   });
 
-  // ── 허브스팟 INT 최근(2일) 상담: [INT] 재제안 대상 목록 + 다음 활동일이 오늘이거나 없는 내 거래 ──
+  // ── 허브스팟 최근(2일) 상품제안: [INT] 재제안 대상 목록 + 다음 활동일이 오늘이거나 없는 전체 거래 ──
   const intRecentCard = document.getElementById('hubspot-int-recent-card');
   const intRecentListEl = document.getElementById('hubspot-int-recent-list');
   const intRecentRefreshBtn = document.getElementById('hubspot-int-recent-refresh');
@@ -275,19 +275,9 @@
       return;
     }
     intRecentListEl.innerHTML = '';
-    const table = document.createElement('table');
-    table.style.cssText = 'width:100%;border-collapse:collapse;font-size:13px';
-    table.innerHTML = `<thead><tr style="border-bottom:1px solid #ddd;color:#888;font-size:12px">
-      <th style="text-align:left;padding:4px 6px">제목</th>
-      <th style="text-align:right;padding:4px 6px">다음 활동일</th>
-    </tr></thead>`;
-    const tbody = document.createElement('tbody');
     deals.forEach(d => {
-      const tr = document.createElement('tr');
-      tr.style.cssText = 'border-bottom:1px solid #f0f0f0';
-
-      const titleTd = document.createElement('td');
-      titleTd.style.padding = '6px';
+      const row = document.createElement('div');
+      row.style.cssText = 'padding:6px;border-bottom:1px solid #f0f0f0';
       if(d.dealUrl){
         const link = document.createElement('a');
         link.href = d.dealUrl;
@@ -296,22 +286,13 @@
         link.style.cssText = 'color:#1a73e8;text-decoration:none';
         link.textContent = d.dealname || '(제목 없음)';
         link.addEventListener('click', () => { awaitingIntRecentReturn = true; });
-        titleTd.appendChild(link);
+        row.appendChild(link);
       } else {
-        titleTd.style.color = '#1a73e8';
-        titleTd.textContent = d.dealname || '(제목 없음)';
+        row.style.color = '#1a73e8';
+        row.textContent = d.dealname || '(제목 없음)';
       }
-
-      const dateTd = document.createElement('td');
-      dateTd.style.cssText = 'padding:6px;text-align:right;white-space:nowrap;color:#666';
-      dateTd.textContent = d.nextActivityDate ? formatKst(d.nextActivityDate) : '없음';
-
-      tr.appendChild(titleTd);
-      tr.appendChild(dateTd);
-      tbody.appendChild(tr);
+      intRecentListEl.appendChild(row);
     });
-    table.appendChild(tbody);
-    intRecentListEl.appendChild(table);
   }
 
   // 새로고침 트리거: 1) 최초 로드 2) 🔄 수동 새로고침 클릭 3) 거래 제목 클릭 후 탭 복귀
