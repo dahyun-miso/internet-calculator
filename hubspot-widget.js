@@ -184,20 +184,49 @@
     listEl.querySelectorAll('input[type=radio]').forEach(r => { r.checked = (r.value === dealId); });
   }
 
-  // 메모/Task 생성 기능은 잠시 비활성화 — 거래 제목 + 지속부재 횟수만 표시 (selectDeal 미호출)
+  // 메모/Task 생성 기능은 잠시 비활성화 — 거래 제목(링크) + 지속부재 횟수를 표 형태로 표시 (selectDeal 미호출)
   function renderDeals(deals){
     if(!deals.length){
       listEl.textContent = '일치하는 리드가 없습니다.';
       return;
     }
     listEl.innerHTML = '';
+    const table = document.createElement('table');
+    table.style.cssText = 'width:100%;border-collapse:collapse;font-size:13px';
+    table.innerHTML = `<thead><tr style="border-bottom:1px solid #ddd;color:#888;font-size:12px">
+      <th style="text-align:left;padding:4px 6px">제목</th>
+      <th style="text-align:right;padding:4px 6px">부재 횟수</th>
+    </tr></thead>`;
+    const tbody = document.createElement('tbody');
     deals.forEach(d => {
-      const row = document.createElement('div');
-      row.style.cssText = 'padding:4px 0;border-bottom:1px solid #f0f0f0';
-      const noAnswerText = d.noAnswerCount ? ` · 부재 ${d.noAnswerCount}회` : '';
-      row.textContent = `${d.dealname || '(제목 없음)'}${noAnswerText}`;
-      listEl.appendChild(row);
+      const tr = document.createElement('tr');
+      tr.style.cssText = 'border-bottom:1px solid #f0f0f0';
+
+      const titleTd = document.createElement('td');
+      titleTd.style.padding = '6px';
+      if(d.dealUrl){
+        const link = document.createElement('a');
+        link.href = d.dealUrl;
+        link.target = '_blank';
+        link.rel = 'noopener';
+        link.style.cssText = 'color:#1a73e8;text-decoration:none';
+        link.textContent = d.dealname || '(제목 없음)';
+        titleTd.appendChild(link);
+      } else {
+        titleTd.style.color = '#1a73e8';
+        titleTd.textContent = d.dealname || '(제목 없음)';
+      }
+
+      const noAnswerTd = document.createElement('td');
+      noAnswerTd.style.cssText = 'padding:6px;text-align:right;white-space:nowrap;color:#666';
+      noAnswerTd.textContent = d.noAnswerCount ? String(d.noAnswerCount) : '0';
+
+      tr.appendChild(titleTd);
+      tr.appendChild(noAnswerTd);
+      tbody.appendChild(tr);
     });
+    table.appendChild(tbody);
+    listEl.appendChild(table);
   }
 
   // hubspot_owner_map에 매핑된 상담사에게만 카드를 노출한다 (매핑 안 된 경우/에러 시 조용히 숨김).
