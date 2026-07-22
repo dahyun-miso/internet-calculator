@@ -45,6 +45,8 @@
   const tasksCard = document.getElementById('hubspot-tasks-card');
   const tasksListEl = document.getElementById('hubspot-tasks-list');
   const tasksCountEl = document.getElementById('hubspot-tasks-count');
+  const tasksRefreshBtn = document.getElementById('hubspot-tasks-refresh');
+  const tasksUpdatedEl = document.getElementById('hubspot-tasks-updated');
   const tasksPrevBtn = document.getElementById('hubspot-tasks-prev');
   const tasksNextBtn = document.getElementById('hubspot-tasks-next');
   const TASKS_PAGE_SIZE = 10;
@@ -127,9 +129,11 @@
   function checkDueTasks(){
     const now = Date.now();
     allTasks.forEach(t => {
-      if(!t.timestamp || notifiedDueTaskIds.has(t.id)) return;
+      if(!t.timestamp) return;
+      const dueKey = t.id + ':' + t.timestamp; // 만기일이 바뀌면 새 마감 이벤트로 취급해 재알림
+      if(notifiedDueTaskIds.has(dueKey)) return;
       if(t.timestamp <= now){
-        notifiedDueTaskIds.add(t.id);
+        notifiedDueTaskIds.add(dueKey);
         notifyDue(t);
       }
     });
@@ -141,6 +145,8 @@
   setInterval(checkDueTasks, 30000);
 
   function loadTasks(){
+    tasksRefreshBtn.disabled = true;
+    tasksRefreshBtn.style.opacity = '0.5';
     fetch('/api/hubspot-tasks?agent=' + encodeURIComponent(agent))
       .then(r => r.json().then(data => ({ok: r.ok, data})))
       .then(({ok, data}) => {
@@ -153,9 +159,13 @@
         taskPage = 0;
         renderTasksPage();
         checkDueTasks();
+        tasksUpdatedEl.textContent = '새로고침: ' + new Date().toLocaleTimeString('ko-KR');
       })
-      .catch(e => console.error('hubspot-tasks fetch failed', e));
+      .catch(e => console.error('hubspot-tasks fetch failed', e))
+      .finally(() => { tasksRefreshBtn.disabled = false; tasksRefreshBtn.style.opacity = '1'; });
   }
+
+  tasksRefreshBtn.addEventListener('click', loadTasks);
 
   // Task 제목 클릭으로 HubSpot을 보러 간 뒤 이 탭으로 돌아왔을 때만 새로고침 (주기적 폴링 없음)
   document.addEventListener('visibilitychange', () => {
