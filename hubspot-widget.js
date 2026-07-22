@@ -176,6 +176,7 @@
   }
 
   let allDeals = [];
+  let awaitingLeadsReturn = false; // 거래 제목을 눌러 HubSpot으로 이동한 뒤, 이 탭에 돌아왔을 때만 새로고침
 
   function selectDeal(dealId){
     selectedDealId = dealId;
@@ -211,6 +212,7 @@
         link.rel = 'noopener';
         link.style.cssText = 'color:#1a73e8;text-decoration:none';
         link.textContent = d.dealname || '(제목 없음)';
+        link.addEventListener('click', () => { awaitingLeadsReturn = true; });
         titleTd.appendChild(link);
       } else {
         titleTd.style.color = '#1a73e8';
@@ -230,7 +232,10 @@
   }
 
   // hubspot_owner_map에 매핑된 상담사에게만 카드를 노출한다 (매핑 안 된 경우/에러 시 조용히 숨김).
+  // 새로고침 트리거: 1) 최초 로드 2) 🔄 수동 새로고침 클릭 3) 거래 제목 클릭 후 탭 복귀
   function loadLeads(){
+    leadsRefreshBtn.disabled = true;
+    leadsRefreshBtn.style.opacity = '0.5';
     fetch('/api/hubspot-deals?agent=' + encodeURIComponent(agent))
       .then(r => r.json().then(data => ({ok: r.ok, data})))
       .then(({ok, data}) => {
@@ -242,22 +247,99 @@
         allDeals = (data.deals || []).filter(d => d.dealstageLabel === '전화 시도(1st Attempt Try)');
         renderDeals(allDeals);
       })
-      .catch(e => console.error('hubspot-deals fetch failed', e));
+      .catch(e => console.error('hubspot-deals fetch failed', e))
+      .finally(() => { leadsRefreshBtn.disabled = false; leadsRefreshBtn.style.opacity = '1'; });
   }
-  loadLeads();
 
   const leadsRefreshBtn = document.getElementById('hubspot-leads-refresh');
-  leadsRefreshBtn.addEventListener('click', () => {
-    leadsRefreshBtn.disabled = true;
-    leadsRefreshBtn.style.opacity = '0.5';
-    fetch('/api/hubspot-deals?agent=' + encodeURIComponent(agent))
+  leadsRefreshBtn.addEventListener('click', loadLeads);
+  loadLeads();
+
+  // 거래 제목 클릭으로 HubSpot을 보러 간 뒤 이 탭으로 돌아왔을 때만 새로고침 (주기적 폴링 없음)
+  document.addEventListener('visibilitychange', () => {
+    if(document.visibilityState === 'visible' && awaitingLeadsReturn){
+      awaitingLeadsReturn = false;
+      loadLeads();
+    }
+  });
+
+  // ── 허브스팟 INT 최근(2일) 상담: [INT] 재제안 대상 목록 + 다음 활동일이 오늘이거나 없는 내 거래 ──
+  const intRecentCard = document.getElementById('hubspot-int-recent-card');
+  const intRecentListEl = document.getElementById('hubspot-int-recent-list');
+  const intRecentRefreshBtn = document.getElementById('hubspot-int-recent-refresh');
+  let awaitingIntRecentReturn = false;
+
+  function renderIntRecentDeals(deals){
+    if(!deals.length){
+      intRecentListEl.textContent = '일치하는 거래가 없습니다.';
+      return;
+    }
+    intRecentListEl.innerHTML = '';
+    const table = document.createElement('table');
+    table.style.cssText = 'width:100%;border-collapse:collapse;font-size:13px';
+    table.innerHTML = `<thead><tr style="border-bottom:1px solid #ddd;color:#888;font-size:12px">
+      <th style="text-align:left;padding:4px 6px">제목</th>
+      <th style="text-align:right;padding:4px 6px">다음 활동일</th>
+    </tr></thead>`;
+    const tbody = document.createElement('tbody');
+    deals.forEach(d => {
+      const tr = document.createElement('tr');
+      tr.style.cssText = 'border-bottom:1px solid #f0f0f0';
+
+      const titleTd = document.createElement('td');
+      titleTd.style.padding = '6px';
+      if(d.dealUrl){
+        const link = document.createElement('a');
+        link.href = d.dealUrl;
+        link.target = '_blank';
+        link.rel = 'noopener';
+        link.style.cssText = 'color:#1a73e8;text-decoration:none';
+        link.textContent = d.dealname || '(제목 없음)';
+        link.addEventListener('click', () => { awaitingIntRecentReturn = true; });
+        titleTd.appendChild(link);
+      } else {
+        titleTd.style.color = '#1a73e8';
+        titleTd.textContent = d.dealname || '(제목 없음)';
+      }
+
+      const dateTd = document.createElement('td');
+      dateTd.style.cssText = 'padding:6px;text-align:right;white-space:nowrap;color:#666';
+      dateTd.textContent = d.nextActivityDate ? formatKst(d.nextActivityDate) : '없음';
+
+      tr.appendChild(titleTd);
+      tr.appendChild(dateTd);
+      tbody.appendChild(tr);
+    });
+    table.appendChild(tbody);
+    intRecentListEl.appendChild(table);
+  }
+
+  // 새로고침 트리거: 1) 최초 로드 2) 🔄 수동 새로고침 클릭 3) 거래 제목 클릭 후 탭 복귀
+  function loadIntRecentDeals(){
+    intRecentRefreshBtn.disabled = true;
+    intRecentRefreshBtn.style.opacity = '0.5';
+    fetch('/api/hubspot-int-recent?agent=' + encodeURIComponent(agent))
       .then(r => r.json().then(data => ({ok: r.ok, data})))
       .then(({ok, data}) => {
-        if(!ok){ showToast('❌ 새로고침 실패'); return; }
-        if(data.mapped !== false){ allDeals = (data.deals || []).filter(d => d.dealstageLabel === '전화 시도(1st Attempt Try)'); renderDeals(allDeals); }
+        if(!ok || data.mapped === false){
+          if(!ok) console.error('hubspot-int-recent error', data);
+          return;
+        }
+        intRecentCard.style.display = '';
+        renderIntRecentDeals(data.deals || []);
       })
-      .catch(() => showToast('❌ 새로고침 실패'))
-      .finally(() => { leadsRefreshBtn.disabled = false; leadsRefreshBtn.style.opacity = '1'; });
+      .catch(e => console.error('hubspot-int-recent fetch failed', e))
+      .finally(() => { intRecentRefreshBtn.disabled = false; intRecentRefreshBtn.style.opacity = '1'; });
+  }
+
+  intRecentRefreshBtn.addEventListener('click', loadIntRecentDeals);
+  loadIntRecentDeals();
+
+  document.addEventListener('visibilitychange', () => {
+    if(document.visibilityState === 'visible' && awaitingIntRecentReturn){
+      awaitingIntRecentReturn = false;
+      loadIntRecentDeals();
+    }
   });
 
   sendBtn.addEventListener('click', () => {
