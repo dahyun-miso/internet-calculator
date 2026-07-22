@@ -18,6 +18,15 @@ html,body{height:100%;font-family:-apple-system,BlinkMacSystemFont,'Apple SD Got
 .header .upd{margin-left:auto;font-size:12px;color:rgba(255,255,255,.5)}
 .header .feedback-btn{font-size:12px;background:rgba(255,255,255,.15);padding:3px 10px;border-radius:20px;white-space:nowrap;color:#fff;text-decoration:none;transition:background .15s}
 .header .feedback-btn:hover{background:rgba(255,255,255,.28)}
+.header .hubspot-panel-toggle{position:relative;font-size:12px;background:rgba(255,255,255,.15);border:none;padding:3px 10px;border-radius:20px;white-space:nowrap;color:#fff;cursor:pointer;transition:background .15s}
+.header .hubspot-panel-toggle:hover{background:rgba(255,255,255,.28)}
+.hubspot-panel-badge{position:absolute;top:-6px;right:-6px;background:#e53935;color:#fff;font-size:10px;font-weight:700;line-height:1;padding:3px 5px;border-radius:10px;min-width:14px;text-align:center}
+.hubspot-panel-overlay{display:none;position:fixed;inset:0;background:rgba(0,0,0,.35);z-index:2400}
+.hubspot-panel-overlay.open{display:block}
+.hubspot-panel{position:fixed;top:0;right:0;height:100vh;width:min(420px,92vw);background:#f5f7fb;box-shadow:-4px 0 24px rgba(0,0,0,.2);z-index:2500;transform:translateX(100%);transition:transform .25s;overflow-y:auto;padding:18px;display:flex;flex-direction:column;gap:14px;box-sizing:border-box}
+.hubspot-panel.open{transform:translateX(0)}
+.hubspot-panel-head{display:flex;align-items:center;justify-content:space-between}
+.hubspot-panel-close{background:#fff;border:1px solid #dde1e8;border-radius:7px;padding:4px 10px;font-size:14px;cursor:pointer;line-height:1}
 .field-compact input,.field-compact select{padding:5px 10px;min-height:30px;font-size:13px}
 .layout{display:flex;flex-direction:row;padding:18px;gap:0;height:calc(100vh - 54px);overflow:hidden}
 .left-col{overflow-y:auto;display:flex;flex-direction:column;gap:14px;padding-right:4px;width:33.333%;min-width:260px;flex-shrink:0}
@@ -337,7 +346,57 @@ textarea:focus{outline:none;border-color:#3b6ef0}
   <h1><img src="data:image/jpeg;base64,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" alt="miso">미소 인터넷 결합 계산기</h1>
   <span class="badge" id="agent-badge">인터넷 부서</span>
   <span class="upd" id="last-updated">최종 업데이트: -</span>
+  <button class="hubspot-panel-toggle" id="hubspot-panel-toggle" type="button">📋 HubSpot<span class="hubspot-panel-badge" id="hubspot-panel-badge" style="display:none"></span></button>
   <a class="feedback-btn" href="https://forms.gle/HHYDRxwtb42ZYn8b6" target="_blank">📝 피드백함</a>
+</div>
+<div class="hubspot-panel-overlay" id="hubspot-panel-overlay"></div>
+<div class="hubspot-panel" id="hubspot-panel">
+  <div class="hubspot-panel-head">
+    <strong>HubSpot</strong>
+    <button class="hubspot-panel-close" id="hubspot-panel-close" type="button">✕</button>
+  </div>
+
+  <!-- 허브스팟 오늘 마감 Task -->
+  <div class="card" id="hubspot-tasks-card" style="display:none">
+    <div class="card-title">
+      <span class="ct-icon">✅</span><span>오늘 마감 Task</span>
+      <span id="hubspot-tasks-count" style="color:#888;font-size:12px;margin-left:4px"></span>
+      <span class="ct-spacer"></span>
+      <button id="hubspot-tasks-prev" type="button" style="background:#f5f7fb;border:1px solid #dde1e8;border-radius:6px;padding:3px 9px;font-size:13px;cursor:pointer;line-height:1">&lt;</button>
+      <button id="hubspot-tasks-next" type="button" style="background:#f5f7fb;border:1px solid #dde1e8;border-radius:6px;padding:3px 9px;font-size:13px;cursor:pointer;line-height:1;margin-left:4px">&gt;</button>
+    </div>
+    <div id="hubspot-tasks-list" style="font-size:13px;color:#666;padding:6px 2px">불러오는 중...</div>
+  </div>
+
+  <!-- 허브스팟 오늘 배정 리드 -->
+  <div class="card" id="hubspot-leads-card" style="display:none">
+    <div class="card-title">
+      <span class="ct-icon">📋</span><span>오늘 배정된 리드</span>
+      <span class="ct-spacer"></span>
+      <button id="hubspot-leads-refresh" type="button" title="새로고침" style="background:#f5f7fb;border:1px solid #dde1e8;border-radius:6px;padding:3px 9px;font-size:13px;cursor:pointer;line-height:1">🔄</button>
+    </div>
+    <input type="text" id="hubspot-lead-search" placeholder="리드(거래) 이름 입력 시 자동으로 매칭/선택됩니다" style="width:100%;box-sizing:border-box;border:1px solid #dde1e8;border-radius:8px;padding:6px 8px;font-size:13px;margin-bottom:6px">
+    <div id="hubspot-leads-list" style="font-size:13px;color:#666;padding:6px 2px">불러오는 중...</div>
+    <div id="hubspot-note-area" style="display:none;margin-top:8px">
+      <div id="hubspot-notes-history" style="max-height:150px;overflow-y:auto;font-size:12px;color:#444;background:#fafbfc;border:1px solid #eee;border-radius:8px;padding:8px;margin-bottom:8px"></div>
+      <textarea id="hubspot-note-text" placeholder="상담 메모를 입력하세요" style="width:100%;min-height:70px;box-sizing:border-box;border:1px solid #dde1e8;border-radius:8px;padding:8px;font-size:13px"></textarea>
+      <button id="hubspot-note-send" type="button" style="margin-top:6px;background:#2e7d32;color:#fff;border:none;border-radius:7px;padding:7px 14px;font-size:13px;cursor:pointer">메모 전송</button>
+
+      <div style="margin-top:14px;border-top:1px solid #eee;padding-top:10px">
+        <input type="text" id="hubspot-task-subject" placeholder="후속 작업 제목" style="width:100%;box-sizing:border-box;border:1px solid #dde1e8;border-radius:8px;padding:7px 8px;font-size:13px">
+        <textarea id="hubspot-task-body" placeholder="작업 내용 (선택)" style="margin-top:6px;width:100%;min-height:50px;box-sizing:border-box;border:1px solid #dde1e8;border-radius:8px;padding:8px;font-size:13px"></textarea>
+        <div style="display:flex;gap:8px;margin-top:6px">
+          <input type="datetime-local" id="hubspot-task-due" style="flex:1;border:1px solid #dde1e8;border-radius:8px;padding:6px 8px;font-size:13px">
+          <select id="hubspot-task-priority" style="border:1px solid #dde1e8;border-radius:8px;padding:6px 8px;font-size:13px">
+            <option value="LOW">낮음</option>
+            <option value="MEDIUM" selected>보통</option>
+            <option value="HIGH">높음</option>
+          </select>
+        </div>
+        <button id="hubspot-task-send" type="button" style="margin-top:6px;background:#1565c0;color:#fff;border:none;border-radius:7px;padding:7px 14px;font-size:13px;cursor:pointer">Task 생성</button>
+      </div>
+    </div>
+  </div>
 </div>
 <div class="layout">
   <div class="left-col">
@@ -346,47 +405,6 @@ textarea:focus{outline:none;border-color:#3b6ef0}
     <div class="row2">
       <div class="field field-compact"><input type="text" id="agent-name" placeholder="상담사 이름" style="background:#f5f7fb;color:#1a1a1a"></div>
       <div class="field field-compact"><input type="text" id="consult-date" readonly style="background:#f5f7fb;color:#1a1a1a;cursor:default"></div>
-    </div>
-
-    <!-- 허브스팟 오늘 마감 Task -->
-    <div class="card" id="hubspot-tasks-card" style="display:none">
-      <div class="card-title">
-        <span class="ct-icon">✅</span><span>오늘 마감 Task</span>
-        <span id="hubspot-tasks-count" style="color:#888;font-size:12px;margin-left:4px"></span>
-        <span class="ct-spacer"></span>
-        <button id="hubspot-tasks-prev" type="button" style="background:#f5f7fb;border:1px solid #dde1e8;border-radius:6px;padding:3px 9px;font-size:13px;cursor:pointer;line-height:1">&lt;</button>
-        <button id="hubspot-tasks-next" type="button" style="background:#f5f7fb;border:1px solid #dde1e8;border-radius:6px;padding:3px 9px;font-size:13px;cursor:pointer;line-height:1;margin-left:4px">&gt;</button>
-      </div>
-      <div id="hubspot-tasks-list" style="font-size:13px;color:#666;padding:6px 2px">불러오는 중...</div>
-    </div>
-
-    <!-- 허브스팟 오늘 배정 리드 -->
-    <div class="card" id="hubspot-leads-card" style="display:none">
-      <div class="card-title">
-        <span class="ct-icon">📋</span><span>오늘 배정된 리드</span>
-        <span class="ct-spacer"></span>
-        <button id="hubspot-leads-refresh" type="button" title="새로고침" style="background:#f5f7fb;border:1px solid #dde1e8;border-radius:6px;padding:3px 9px;font-size:13px;cursor:pointer;line-height:1">🔄</button>
-      </div>
-      <div id="hubspot-leads-list" style="font-size:13px;color:#666;padding:6px 2px">불러오는 중...</div>
-      <div id="hubspot-note-area" style="display:none;margin-top:8px">
-        <div id="hubspot-notes-history" style="max-height:150px;overflow-y:auto;font-size:12px;color:#444;background:#fafbfc;border:1px solid #eee;border-radius:8px;padding:8px;margin-bottom:8px"></div>
-        <textarea id="hubspot-note-text" placeholder="상담 메모를 입력하세요" style="width:100%;min-height:70px;box-sizing:border-box;border:1px solid #dde1e8;border-radius:8px;padding:8px;font-size:13px"></textarea>
-        <button id="hubspot-note-send" type="button" style="margin-top:6px;background:#2e7d32;color:#fff;border:none;border-radius:7px;padding:7px 14px;font-size:13px;cursor:pointer">메모 전송</button>
-
-        <div style="margin-top:14px;border-top:1px solid #eee;padding-top:10px">
-          <input type="text" id="hubspot-task-subject" placeholder="후속 작업 제목" style="width:100%;box-sizing:border-box;border:1px solid #dde1e8;border-radius:8px;padding:7px 8px;font-size:13px">
-          <textarea id="hubspot-task-body" placeholder="작업 내용 (선택)" style="margin-top:6px;width:100%;min-height:50px;box-sizing:border-box;border:1px solid #dde1e8;border-radius:8px;padding:8px;font-size:13px"></textarea>
-          <div style="display:flex;gap:8px;margin-top:6px">
-            <input type="datetime-local" id="hubspot-task-due" style="flex:1;border:1px solid #dde1e8;border-radius:8px;padding:6px 8px;font-size:13px">
-            <select id="hubspot-task-priority" style="border:1px solid #dde1e8;border-radius:8px;padding:6px 8px;font-size:13px">
-              <option value="LOW">낮음</option>
-              <option value="MEDIUM" selected>보통</option>
-              <option value="HIGH">높음</option>
-            </select>
-          </div>
-          <button id="hubspot-task-send" type="button" style="margin-top:6px;background:#1565c0;color:#fff;border:none;border-radius:7px;padding:7px 14px;font-size:13px;cursor:pointer">Task 생성</button>
-        </div>
-      </div>
     </div>
 
     <!-- 고객 정보 -->
@@ -3480,252 +3498,6 @@ function updateComboCard(bundleValue){
 })();
 </script>
 
-<script>
-// ── 허브스팟 연동: 오늘 배정된 리드 조회 + 상담 메모 전송 ──
-(function(){
-  const agent = new URLSearchParams(window.location.search).get('agent')?.trim();
-  if(!agent) return;
-
-  const card = document.getElementById('hubspot-leads-card');
-  const listEl = document.getElementById('hubspot-leads-list');
-  const noteArea = document.getElementById('hubspot-note-area');
-  const noteText = document.getElementById('hubspot-note-text');
-  const sendBtn = document.getElementById('hubspot-note-send');
-
-  let selectedDealId = null;
-  const notesHistory = document.getElementById('hubspot-notes-history');
-
-  function formatKst(ts){
-    if(!ts) return '';
-    return new Date(ts).toLocaleString('ko-KR', {
-      timeZone: 'Asia/Seoul', year: 'numeric', month: 'long', day: 'numeric', hour: 'numeric', minute: '2-digit',
-    });
-  }
-
-  // ── 오늘 마감 Task 목록 (페이지당 10개, </> 로 넘겨보기) ──
-  const tasksCard = document.getElementById('hubspot-tasks-card');
-  const tasksListEl = document.getElementById('hubspot-tasks-list');
-  const tasksCountEl = document.getElementById('hubspot-tasks-count');
-  const tasksPrevBtn = document.getElementById('hubspot-tasks-prev');
-  const tasksNextBtn = document.getElementById('hubspot-tasks-next');
-  const TASKS_PAGE_SIZE = 10;
-  let allTasks = [];
-  let taskPage = 0;
-
-  function renderTasksPage(){
-    const total = allTasks.length;
-    tasksCountEl.textContent = total ? `(총 ${total}개)` : '';
-    tasksPrevBtn.disabled = taskPage === 0;
-    tasksNextBtn.disabled = (taskPage + 1) * TASKS_PAGE_SIZE >= total;
-
-    if(!total){
-      tasksListEl.textContent = '오늘 마감인 Task가 없습니다.';
-      return;
-    }
-    const pageTasks = allTasks.slice(taskPage * TASKS_PAGE_SIZE, (taskPage + 1) * TASKS_PAGE_SIZE);
-
-    tasksListEl.innerHTML = '';
-    const table = document.createElement('table');
-    table.style.cssText = 'width:100%;border-collapse:collapse;font-size:13px';
-    table.innerHTML = `<thead><tr style="border-bottom:1px solid #ddd;color:#888;font-size:12px">
-      <th style="text-align:left;padding:4px 6px">제목</th>
-      <th style="text-align:right;padding:4px 6px">만기일</th>
-    </tr></thead>`;
-    const tbody = document.createElement('tbody');
-    pageTasks.forEach(t => {
-      const tr = document.createElement('tr');
-      tr.style.cssText = 'border-bottom:1px solid #f0f0f0'
-        + (t.priority === 'HIGH' ? ';background:#fdecea' : '');
-
-      const titleTd = document.createElement('td');
-      titleTd.style.padding = '6px';
-      if(t.dealUrl){
-        const link = document.createElement('a');
-        link.href = t.dealUrl;
-        link.target = '_blank';
-        link.rel = 'noopener';
-        link.style.cssText = 'color:#1a73e8;text-decoration:none';
-        link.textContent = t.subject || '(제목 없음)';
-        titleTd.appendChild(link);
-      } else {
-        titleTd.style.color = '#1a73e8';
-        titleTd.textContent = t.subject || '(제목 없음)';
-      }
-
-      const dueTd = document.createElement('td');
-      dueTd.style.cssText = 'padding:6px;text-align:right;white-space:nowrap;color:#666';
-      dueTd.textContent = formatKst(t.timestamp);
-
-      tr.appendChild(titleTd);
-      tr.appendChild(dueTd);
-      tbody.appendChild(tr);
-    });
-    table.appendChild(tbody);
-    tasksListEl.appendChild(table);
-  }
-
-  tasksPrevBtn.addEventListener('click', () => { if(taskPage > 0){ taskPage--; renderTasksPage(); } });
-  tasksNextBtn.addEventListener('click', () => { if((taskPage + 1) * TASKS_PAGE_SIZE < allTasks.length){ taskPage++; renderTasksPage(); } });
-
-  fetch('/api/hubspot-tasks?agent=' + encodeURIComponent(agent))
-    .then(r => r.json().then(data => ({ok: r.ok, data})))
-    .then(({ok, data}) => {
-      if(!ok || data.mapped === false){
-        if(!ok) console.error('hubspot-tasks error', data);
-        return;
-      }
-      tasksCard.style.display = '';
-      allTasks = data.tasks || [];
-      taskPage = 0;
-      renderTasksPage();
-    })
-    .catch(e => console.error('hubspot-tasks fetch failed', e));
-
-  function loadNotesHistory(dealId){
-    notesHistory.textContent = '메모 불러오는 중...';
-    fetch('/api/hubspot-deal-notes?dealId=' + encodeURIComponent(dealId))
-      .then(r => { if(!r.ok) throw new Error(); return r.json(); })
-      .then(data => {
-        const notes = data.notes || [];
-        if(!notes.length){ notesHistory.textContent = '등록된 메모가 없습니다.'; return; }
-        notesHistory.innerHTML = '';
-        notes.forEach(n => {
-          const item = document.createElement('div');
-          item.style.cssText = 'padding:5px 0;border-bottom:1px solid #eee;white-space:pre-wrap';
-          const time = document.createElement('div');
-          time.style.cssText = 'color:#999;font-size:11px;margin-bottom:2px';
-          time.textContent = formatKst(n.timestamp);
-          item.appendChild(time);
-          item.appendChild(document.createTextNode(n.body));
-          notesHistory.appendChild(item);
-        });
-      })
-      .catch(() => { notesHistory.textContent = '메모를 불러오지 못했습니다.'; });
-  }
-
-  function renderDeals(deals){
-    if(!deals.length){
-      listEl.textContent = '오늘 배정된 리드가 없습니다.';
-      return;
-    }
-    listEl.innerHTML = '';
-    let currentStage = null;
-    deals.forEach(d => {
-      const stageLabel = d.dealstageLabel || '(단계 없음)';
-      if(stageLabel !== currentStage){
-        currentStage = stageLabel;
-        const heading = document.createElement('div');
-        heading.style.cssText = 'font-weight:600;font-size:12px;color:#555;margin:10px 0 4px;padding-bottom:2px;border-bottom:1px solid #eee';
-        if(listEl.children.length === 0) heading.style.marginTop = '0';
-        heading.textContent = stageLabel;
-        listEl.appendChild(heading);
-      }
-      const label = document.createElement('label');
-      label.style.cssText = 'display:block;padding:4px 0;cursor:pointer';
-      const radio = document.createElement('input');
-      radio.type = 'radio';
-      radio.name = 'hubspot-deal';
-      radio.value = d.id;
-      radio.checked = d.id === selectedDealId;
-      radio.style.marginRight = '6px';
-      radio.addEventListener('change', () => {
-        selectedDealId = d.id;
-        noteArea.style.display = '';
-        loadNotesHistory(d.id);
-      });
-      label.appendChild(radio);
-      const amountText = d.amount ? ` · ${Number(d.amount).toLocaleString()}원` : '';
-      const noAnswerText = d.noAnswerCount ? ` · 부재 ${d.noAnswerCount}회` : '';
-      label.appendChild(document.createTextNode(`${d.dealname || '(제목 없음)'}${amountText}${noAnswerText}`));
-      listEl.appendChild(label);
-    });
-  }
-
-  // hubspot_owner_map에 매핑된 상담사에게만 카드를 노출한다 (매핑 안 된 경우/에러 시 조용히 숨김).
-  function loadLeads(){
-    fetch('/api/hubspot-deals?agent=' + encodeURIComponent(agent))
-      .then(r => r.json().then(data => ({ok: r.ok, data})))
-      .then(({ok, data}) => {
-        if(!ok || data.mapped === false){
-          if(!ok) console.error('hubspot-deals error', data);
-          return;
-        }
-        card.style.display = '';
-        renderDeals(data.deals || []);
-      })
-      .catch(e => console.error('hubspot-deals fetch failed', e));
-  }
-  loadLeads();
-
-  const leadsRefreshBtn = document.getElementById('hubspot-leads-refresh');
-  leadsRefreshBtn.addEventListener('click', () => {
-    leadsRefreshBtn.disabled = true;
-    leadsRefreshBtn.style.opacity = '0.5';
-    fetch('/api/hubspot-deals?agent=' + encodeURIComponent(agent))
-      .then(r => r.json().then(data => ({ok: r.ok, data})))
-      .then(({ok, data}) => {
-        if(!ok){ showToast('❌ 새로고침 실패'); return; }
-        if(data.mapped !== false){ renderDeals(data.deals || []); }
-      })
-      .catch(() => showToast('❌ 새로고침 실패'))
-      .finally(() => { leadsRefreshBtn.disabled = false; leadsRefreshBtn.style.opacity = '1'; });
-  });
-
-  sendBtn.addEventListener('click', () => {
-    const note = noteText.value.trim();
-    if(!selectedDealId){ showToast('⚠️ 거래를 먼저 선택하세요'); return; }
-    if(!note){ showToast('⚠️ 메모를 입력하세요'); return; }
-    sendBtn.disabled = true;
-    fetch('/api/hubspot-note?agent=' + encodeURIComponent(agent), {
-      method: 'POST',
-      headers: {'Content-Type':'application/json'},
-      body: JSON.stringify({ dealId: selectedDealId, note }),
-    })
-      .then(r => { if(!r.ok) throw new Error(); return r.json(); })
-      .then(() => {
-        showToast('✅ 메모가 전송되었습니다');
-        noteText.value='';
-        if(selectedDealId) loadNotesHistory(selectedDealId);
-      })
-      .catch(() => showToast('❌ 메모 전송 실패'))
-      .finally(() => { sendBtn.disabled = false; });
-  });
-
-  const taskSubject = document.getElementById('hubspot-task-subject');
-  const taskBody = document.getElementById('hubspot-task-body');
-  const taskDue = document.getElementById('hubspot-task-due');
-  const taskPriority = document.getElementById('hubspot-task-priority');
-  const taskSendBtn = document.getElementById('hubspot-task-send');
-
-  taskSendBtn.addEventListener('click', () => {
-    const subject = taskSubject.value.trim();
-    const dueDate = taskDue.value;
-    if(!selectedDealId){ showToast('⚠️ 거래를 먼저 선택하세요'); return; }
-    if(!subject){ showToast('⚠️ 작업 제목을 입력하세요'); return; }
-    if(!dueDate){ showToast('⚠️ 마감일을 선택하세요'); return; }
-    taskSendBtn.disabled = true;
-    fetch('/api/hubspot-task?agent=' + encodeURIComponent(agent), {
-      method: 'POST',
-      headers: {'Content-Type':'application/json'},
-      body: JSON.stringify({
-        dealId: selectedDealId,
-        subject,
-        body: taskBody.value.trim(),
-        dueDate,
-        priority: taskPriority.value,
-      }),
-    })
-      .then(r => { if(!r.ok) throw new Error(); return r.json(); })
-      .then(() => {
-        showToast('✅ Task가 생성되었습니다');
-        taskSubject.value = '';
-        taskBody.value = '';
-        taskDue.value = '';
-      })
-      .catch(() => showToast('❌ Task 생성 실패'))
-      .finally(() => { taskSendBtn.disabled = false; });
-  });
-})();
-</script>
+<script src="/hubspot-widget.js"></script>
 </body>
 </html>
