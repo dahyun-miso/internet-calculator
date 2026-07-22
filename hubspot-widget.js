@@ -184,6 +184,12 @@
 
   let allDeals = [];
   let awaitingLeadsReturn = false; // 거래 제목을 눌러 HubSpot으로 이동한 뒤, 이 탭에 돌아왔을 때만 새로고침
+  const LEADS_PAGE_SIZE = 10;
+  let leadsPage = 0;
+  const leadsUpdatedEl = document.getElementById('hubspot-leads-updated');
+  const leadsPrevBtn = document.getElementById('hubspot-leads-prev');
+  const leadsPageEl = document.getElementById('hubspot-leads-page');
+  const leadsNextBtn = document.getElementById('hubspot-leads-next');
 
   function selectDeal(dealId){
     selectedDealId = dealId;
@@ -193,11 +199,19 @@
   }
 
   // 메모/Task 생성 기능은 잠시 비활성화 — 거래 제목(링크) + 지속부재 횟수를 표 형태로 표시 (selectDeal 미호출)
-  function renderDeals(deals){
-    if(!deals.length){
+  function renderLeadsPage(){
+    const total = allDeals.length;
+    const totalPages = Math.max(1, Math.ceil(total / LEADS_PAGE_SIZE));
+    leadsPageEl.textContent = total ? `${leadsPage + 1} / ${totalPages}` : '';
+    leadsPrevBtn.disabled = leadsPage === 0;
+    leadsNextBtn.disabled = (leadsPage + 1) * LEADS_PAGE_SIZE >= total;
+
+    if(!total){
       listEl.textContent = '일치하는 리드가 없습니다.';
       return;
     }
+    const pageDeals = allDeals.slice(leadsPage * LEADS_PAGE_SIZE, (leadsPage + 1) * LEADS_PAGE_SIZE);
+
     listEl.innerHTML = '';
     const table = document.createElement('table');
     table.style.cssText = 'width:100%;border-collapse:collapse;font-size:13px';
@@ -206,7 +220,7 @@
       <th style="text-align:center;padding:4px 6px">부재 횟수</th>
     </tr></thead>`;
     const tbody = document.createElement('tbody');
-    deals.forEach(d => {
+    pageDeals.forEach(d => {
       const tr = document.createElement('tr');
       tr.style.cssText = 'border-bottom:1px solid #f0f0f0';
 
@@ -238,6 +252,9 @@
     listEl.appendChild(table);
   }
 
+  leadsPrevBtn.addEventListener('click', () => { if(leadsPage > 0){ leadsPage--; renderLeadsPage(); } });
+  leadsNextBtn.addEventListener('click', () => { if((leadsPage + 1) * LEADS_PAGE_SIZE < allDeals.length){ leadsPage++; renderLeadsPage(); } });
+
   // hubspot_owner_map에 매핑된 상담사에게만 카드를 노출한다 (매핑 안 된 경우/에러 시 조용히 숨김).
   // 새로고침 트리거: 1) 최초 로드 2) 🔄 수동 새로고침 클릭 3) 거래 제목 클릭 후 탭 복귀
   function loadLeads(){
@@ -252,7 +269,9 @@
         }
         card.style.display = '';
         allDeals = (data.deals || []).filter(d => d.dealstageLabel === '전화 시도(1st Attempt Try)');
-        renderDeals(allDeals);
+        leadsPage = 0;
+        renderLeadsPage();
+        leadsUpdatedEl.textContent = '새로고침: ' + new Date().toLocaleTimeString('ko-KR');
       })
       .catch(e => console.error('hubspot-deals fetch failed', e))
       .finally(() => { leadsRefreshBtn.disabled = false; leadsRefreshBtn.style.opacity = '1'; });
@@ -275,16 +294,31 @@
   const intRecentListEl = document.getElementById('hubspot-int-recent-list');
   const intRecentCountEl = document.getElementById('hubspot-int-recent-count');
   const intRecentRefreshBtn = document.getElementById('hubspot-int-recent-refresh');
+  const intRecentUpdatedEl = document.getElementById('hubspot-int-recent-updated');
+  const intRecentPrevBtn = document.getElementById('hubspot-int-recent-prev');
+  const intRecentPageEl = document.getElementById('hubspot-int-recent-page');
+  const intRecentNextBtn = document.getElementById('hubspot-int-recent-next');
+  const INT_RECENT_PAGE_SIZE = 10;
+  let allIntRecentDeals = [];
+  let intRecentPage = 0;
   let awaitingIntRecentReturn = false;
 
-  function renderIntRecentDeals(deals){
-    intRecentCountEl.textContent = deals.length ? `(총 ${deals.length}개)` : '';
-    if(!deals.length){
+  function renderIntRecentPage(){
+    const total = allIntRecentDeals.length;
+    const totalPages = Math.max(1, Math.ceil(total / INT_RECENT_PAGE_SIZE));
+    intRecentCountEl.textContent = total ? `(총 ${total}개)` : '';
+    intRecentPageEl.textContent = total ? `${intRecentPage + 1} / ${totalPages}` : '';
+    intRecentPrevBtn.disabled = intRecentPage === 0;
+    intRecentNextBtn.disabled = (intRecentPage + 1) * INT_RECENT_PAGE_SIZE >= total;
+
+    if(!total){
       intRecentListEl.textContent = '일치하는 거래가 없습니다.';
       return;
     }
+    const pageDeals = allIntRecentDeals.slice(intRecentPage * INT_RECENT_PAGE_SIZE, (intRecentPage + 1) * INT_RECENT_PAGE_SIZE);
+
     intRecentListEl.innerHTML = '';
-    deals.forEach(d => {
+    pageDeals.forEach(d => {
       const row = document.createElement('div');
       row.style.cssText = 'padding:6px;border-bottom:1px solid #f0f0f0';
       if(d.dealUrl){
@@ -304,6 +338,9 @@
     });
   }
 
+  intRecentPrevBtn.addEventListener('click', () => { if(intRecentPage > 0){ intRecentPage--; renderIntRecentPage(); } });
+  intRecentNextBtn.addEventListener('click', () => { if((intRecentPage + 1) * INT_RECENT_PAGE_SIZE < allIntRecentDeals.length){ intRecentPage++; renderIntRecentPage(); } });
+
   // 새로고침 트리거: 1) 최초 로드 2) 🔄 수동 새로고침 클릭 3) 거래 제목 클릭 후 탭 복귀
   function loadIntRecentDeals(){
     intRecentRefreshBtn.disabled = true;
@@ -316,7 +353,10 @@
           return;
         }
         intRecentCard.style.display = '';
-        renderIntRecentDeals(data.deals || []);
+        allIntRecentDeals = data.deals || [];
+        intRecentPage = 0;
+        renderIntRecentPage();
+        intRecentUpdatedEl.textContent = '새로고침: ' + new Date().toLocaleTimeString('ko-KR');
       })
       .catch(e => console.error('hubspot-int-recent fetch failed', e))
       .finally(() => { intRecentRefreshBtn.disabled = false; intRecentRefreshBtn.style.opacity = '1'; });

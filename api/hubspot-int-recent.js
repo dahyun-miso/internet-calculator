@@ -1,5 +1,5 @@
 import { getAll } from '@vercel/edge-config';
-import { searchIntRecentDeals } from '../lib/hubspot.js';
+import { getOwnerIdByEmail, searchIntRecentDealsByOwner } from '../lib/hubspot.js';
 
 export const config = { runtime: 'edge' };
 
@@ -19,7 +19,11 @@ export default async function handler(request) {
   }
 
   try {
-    const deals = await searchIntRecentDeals();
+    const ownerId = await getOwnerIdByEmail(email);
+    if (!ownerId) {
+      return new Response(JSON.stringify({ deals: [], mapped: true, ownerFound: false }), { headers: jsonHeaders });
+    }
+    const deals = await searchIntRecentDealsByOwner(ownerId);
     return new Response(JSON.stringify({ deals }), { headers: jsonHeaders });
   } catch (e) {
     console.error('hubspot-int-recent error', e);
