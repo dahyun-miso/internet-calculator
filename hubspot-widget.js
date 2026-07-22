@@ -210,7 +210,7 @@
           return;
         }
         card.style.display = '';
-        allDeals = (data.deals || []).filter(d => d.dealstageLabel === '전화 시도');
+        allDeals = (data.deals || []).filter(d => d.dealstageLabel === '전화 시도(1st Attempt Try)');
         renderDeals(allDeals);
       })
       .catch(e => console.error('hubspot-deals fetch failed', e));
@@ -225,7 +225,7 @@
       .then(r => r.json().then(data => ({ok: r.ok, data})))
       .then(({ok, data}) => {
         if(!ok){ showToast('❌ 새로고침 실패'); return; }
-        if(data.mapped !== false){ allDeals = (data.deals || []).filter(d => d.dealstageLabel === '전화 시도'); renderDeals(allDeals); }
+        if(data.mapped !== false){ allDeals = (data.deals || []).filter(d => d.dealstageLabel === '전화 시도(1st Attempt Try)'); renderDeals(allDeals); }
       })
       .catch(() => showToast('❌ 새로고침 실패'))
       .finally(() => { leadsRefreshBtn.disabled = false; leadsRefreshBtn.style.opacity = '1'; });
