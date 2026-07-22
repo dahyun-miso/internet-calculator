@@ -195,7 +195,7 @@
     table.style.cssText = 'width:100%;border-collapse:collapse;font-size:13px';
     table.innerHTML = `<thead><tr style="border-bottom:1px solid #ddd;color:#888;font-size:12px">
       <th style="text-align:left;padding:4px 6px">제목</th>
-      <th style="text-align:right;padding:4px 6px">부재 횟수</th>
+      <th style="text-align:center;padding:4px 6px">부재 횟수</th>
     </tr></thead>`;
     const tbody = document.createElement('tbody');
     deals.forEach(d => {
@@ -218,7 +218,7 @@
       }
 
       const noAnswerTd = document.createElement('td');
-      noAnswerTd.style.cssText = 'padding:6px;text-align:right;white-space:nowrap;color:#666';
+      noAnswerTd.style.cssText = 'padding:6px;text-align:center;white-space:nowrap;color:#666';
       noAnswerTd.textContent = d.noAnswerCount ? String(d.noAnswerCount) : '0';
 
       tr.appendChild(titleTd);
