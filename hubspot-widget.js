@@ -110,33 +110,9 @@
   tasksPrevBtn.addEventListener('click', () => { if(taskPage > 0){ taskPage--; renderTasksPage(); } });
   tasksNextBtn.addEventListener('click', () => { if((taskPage + 1) * TASKS_PAGE_SIZE < allTasks.length){ taskPage++; renderTasksPage(); } });
 
-  // ── 마감 임박/경과 Task 알림 (서버 호출 없이 이미 불러온 데이터로만 판단) ──
-  const notifiedDueTaskIds = new Set();
-
-  if(typeof Notification !== 'undefined' && Notification.permission === 'default'){
-    Notification.requestPermission();
-  }
-
-  function notifyDue(task){
-    const subject = task.subject || '(제목 없음)';
-    if(typeof Notification !== 'undefined' && Notification.permission === 'granted'){
-      new Notification(`⏰ Task 마감: ${subject}`, { body: `마감시간(${formatKst(task.timestamp)})이 지났습니다.` });
-    } else {
-      showToast(`⏰ "${subject}" 마감시간이 지났습니다`);
-    }
-  }
-
+  // ── 마감 지난 Task 개수 뱃지 (팝업/토스트 알림 없이, 헤더 버튼에 조용히 숫자만 표시) ──
   function checkDueTasks(){
     const now = Date.now();
-    allTasks.forEach(t => {
-      if(!t.timestamp) return;
-      const dueKey = t.id + ':' + t.timestamp; // 만기일이 바뀌면 새 마감 이벤트로 취급해 재알림
-      if(notifiedDueTaskIds.has(dueKey)) return;
-      if(t.timestamp <= now){
-        notifiedDueTaskIds.add(dueKey);
-        notifyDue(t);
-      }
-    });
     const dueCount = allTasks.filter(t => t.timestamp && t.timestamp <= now).length;
     panelBadge.textContent = dueCount > 9 ? '9+' : String(dueCount);
     panelBadge.style.display = dueCount > 0 ? '' : 'none';
@@ -209,42 +185,23 @@
     listEl.querySelectorAll('input[type=radio]').forEach(r => { r.checked = (r.value === dealId); });
   }
 
+  // 메모/Task 생성 기능은 잠시 비활성화 — 거래 제목 + 지속부재 횟수만 표시 (selectDeal 미호출)
   function renderDeals(deals){
     if(!deals.length){
       listEl.textContent = '일치하는 리드가 없습니다.';
       return;
     }
     listEl.innerHTML = '';
-    let currentStage = null;
     deals.forEach(d => {
-      const stageLabel = d.dealstageLabel || '(단계 없음)';
-      if(stageLabel !== currentStage){
-        currentStage = stageLabel;
-        const heading = document.createElement('div');
-        heading.style.cssText = 'font-weight:600;font-size:12px;color:#555;margin:10px 0 4px;padding-bottom:2px;border-bottom:1px solid #eee';
-        if(listEl.children.length === 0) heading.style.marginTop = '0';
-        heading.textContent = stageLabel;
-        listEl.appendChild(heading);
-      }
-      const label = document.createElement('label');
-      label.style.cssText = 'display:block;padding:4px 0;cursor:pointer';
-      const radio = document.createElement('input');
-      radio.type = 'radio';
-      radio.name = 'hubspot-deal';
-      radio.value = d.id;
-      radio.checked = d.id === selectedDealId;
-      radio.style.marginRight = '6px';
-      radio.addEventListener('change', () => selectDeal(d.id));
-      label.appendChild(radio);
-      const amountText = d.amount ? ` · ${Number(d.amount).toLocaleString()}원` : '';
+      const row = document.createElement('div');
+      row.style.cssText = 'padding:4px 0;border-bottom:1px solid #f0f0f0';
       const noAnswerText = d.noAnswerCount ? ` · 부재 ${d.noAnswerCount}회` : '';
-      label.appendChild(document.createTextNode(`${d.dealname || '(제목 없음)'}${amountText}${noAnswerText}`));
-      listEl.appendChild(label);
+      row.textContent = `${d.dealname || '(제목 없음)'}${noAnswerText}`;
+      listEl.appendChild(row);
     });
   }
 
-  // 검색창에 입력한 글자가 리드 이름에 포함되는 것만 걸러서 보여주고,
-  // 정확히 하나만 남으면 그 리드를 자동으로 선택한다.
+  // 검색창에 입력한 글자가 리드 이름에 포함되는 것만 걸러서 보여준다.
   function applyLeadFilter(){
     const query = leadSearchInput.value.trim().toLowerCase();
     if(!query){
@@ -253,7 +210,6 @@
     }
     const matched = allDeals.filter(d => (d.dealname || '').toLowerCase().includes(query));
     renderDeals(matched);
-    if(matched.length === 1) selectDeal(matched[0].id);
   }
   leadSearchInput.addEventListener('input', applyLeadFilter);
 
@@ -267,7 +223,7 @@
           return;
         }
         card.style.display = '';
-        allDeals = data.deals || [];
+        allDeals = (data.deals || []).filter(d => d.dealstageLabel === '전화 시도');
         applyLeadFilter();
       })
       .catch(e => console.error('hubspot-deals fetch failed', e));
@@ -282,7 +238,7 @@
       .then(r => r.json().then(data => ({ok: r.ok, data})))
       .then(({ok, data}) => {
         if(!ok){ showToast('❌ 새로고침 실패'); return; }
-        if(data.mapped !== false){ allDeals = data.deals || []; applyLeadFilter(); }
+        if(data.mapped !== false){ allDeals = (data.deals || []).filter(d => d.dealstageLabel === '전화 시도'); applyLeadFilter(); }
       })
       .catch(() => showToast('❌ 새로고침 실패'))
       .finally(() => { leadsRefreshBtn.disabled = false; leadsRefreshBtn.style.opacity = '1'; });
