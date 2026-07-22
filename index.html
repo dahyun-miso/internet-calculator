@@ -18,6 +18,15 @@ html,body{height:100%;font-family:-apple-system,BlinkMacSystemFont,'Apple SD Got
 .header .upd{margin-left:auto;font-size:12px;color:rgba(255,255,255,.5)}
 .header .feedback-btn{font-size:12px;background:rgba(255,255,255,.15);padding:3px 10px;border-radius:20px;white-space:nowrap;color:#fff;text-decoration:none;transition:background .15s}
 .header .feedback-btn:hover{background:rgba(255,255,255,.28)}
+.header .hubspot-panel-toggle{position:relative;font-size:12px;background:rgba(255,255,255,.15);border:none;padding:3px 10px;border-radius:20px;white-space:nowrap;color:#fff;cursor:pointer;transition:background .15s}
+.header .hubspot-panel-toggle:hover{background:rgba(255,255,255,.28)}
+.hubspot-panel-badge{position:absolute;top:-6px;right:-6px;background:#e53935;color:#fff;font-size:10px;font-weight:700;line-height:1;padding:3px 5px;border-radius:10px;min-width:14px;text-align:center}
+.hubspot-panel-overlay{display:none;position:fixed;inset:0;background:rgba(0,0,0,.35);z-index:2400}
+.hubspot-panel-overlay.open{display:block}
+.hubspot-panel{position:fixed;top:0;right:0;height:100vh;width:min(420px,92vw);background:#f5f7fb;box-shadow:-4px 0 24px rgba(0,0,0,.2);z-index:2500;transform:translateX(100%);transition:transform .25s;overflow-y:auto;padding:18px;display:flex;flex-direction:column;gap:14px;box-sizing:border-box}
+.hubspot-panel.open{transform:translateX(0)}
+.hubspot-panel-head{display:flex;align-items:center;justify-content:space-between}
+.hubspot-panel-close{background:#fff;border:1px solid #dde1e8;border-radius:7px;padding:4px 10px;font-size:14px;cursor:pointer;line-height:1}
 .field-compact input,.field-compact select{padding:5px 10px;min-height:30px;font-size:13px}
 .layout{display:flex;flex-direction:row;padding:18px;gap:0;height:calc(100vh - 54px);overflow:hidden}
 .left-col{overflow-y:auto;display:flex;flex-direction:column;gap:14px;padding-right:4px;width:33.333%;min-width:260px;flex-shrink:0}
@@ -337,7 +346,57 @@ textarea:focus{outline:none;border-color:#3b6ef0}
   <h1><img src="data:image/jpeg;base64,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" alt="miso">미소 인터넷 결합 계산기</h1>
   <span class="badge" id="agent-badge">인터넷 부서</span>
   <span class="upd" id="last-updated">최종 업데이트: -</span>
+  <button class="hubspot-panel-toggle" id="hubspot-panel-toggle" type="button">📋 HubSpot<span class="hubspot-panel-badge" id="hubspot-panel-badge" style="display:none"></span></button>
   <a class="feedback-btn" href="https://forms.gle/HHYDRxwtb42ZYn8b6" target="_blank">📝 피드백함</a>
+</div>
+<div class="hubspot-panel-overlay" id="hubspot-panel-overlay"></div>
+<div class="hubspot-panel" id="hubspot-panel">
+  <div class="hubspot-panel-head">
+    <strong>HubSpot</strong>
+    <button class="hubspot-panel-close" id="hubspot-panel-close" type="button">✕</button>
+  </div>
+
+  <!-- 허브스팟 오늘 마감 Task -->
+  <div class="card" id="hubspot-tasks-card" style="display:none">
+    <div class="card-title">
+      <span class="ct-icon">✅</span><span>오늘 마감 Task</span>
+      <span id="hubspot-tasks-count" style="color:#888;font-size:12px;margin-left:4px"></span>
+      <span class="ct-spacer"></span>
+      <button id="hubspot-tasks-prev" type="button" style="background:#f5f7fb;border:1px solid #dde1e8;border-radius:6px;padding:3px 9px;font-size:13px;cursor:pointer;line-height:1">&lt;</button>
+      <button id="hubspot-tasks-next" type="button" style="background:#f5f7fb;border:1px solid #dde1e8;border-radius:6px;padding:3px 9px;font-size:13px;cursor:pointer;line-height:1;margin-left:4px">&gt;</button>
+    </div>
+    <div id="hubspot-tasks-list" style="font-size:13px;color:#666;padding:6px 2px">불러오는 중...</div>
+  </div>
+
+  <!-- 허브스팟 오늘 배정 리드 -->
+  <div class="card" id="hubspot-leads-card" style="display:none">
+    <div class="card-title">
+      <span class="ct-icon">📋</span><span>오늘 배정된 리드</span>
+      <span class="ct-spacer"></span>
+      <button id="hubspot-leads-refresh" type="button" title="새로고침" style="background:#f5f7fb;border:1px solid #dde1e8;border-radius:6px;padding:3px 9px;font-size:13px;cursor:pointer;line-height:1">🔄</button>
+    </div>
+    <input type="text" id="hubspot-lead-search" placeholder="리드(거래) 이름 입력 시 자동으로 매칭/선택됩니다" style="width:100%;box-sizing:border-box;border:1px solid #dde1e8;border-radius:8px;padding:6px 8px;font-size:13px;margin-bottom:6px">
+    <div id="hubspot-leads-list" style="font-size:13px;color:#666;padding:6px 2px">불러오는 중...</div>
+    <div id="hubspot-note-area" style="display:none;margin-top:8px">
+      <div id="hubspot-notes-history" style="max-height:150px;overflow-y:auto;font-size:12px;color:#444;background:#fafbfc;border:1px solid #eee;border-radius:8px;padding:8px;margin-bottom:8px"></div>
+      <textarea id="hubspot-note-text" placeholder="상담 메모를 입력하세요" style="width:100%;min-height:70px;box-sizing:border-box;border:1px solid #dde1e8;border-radius:8px;padding:8px;font-size:13px"></textarea>
+      <button id="hubspot-note-send" type="button" style="margin-top:6px;background:#2e7d32;color:#fff;border:none;border-radius:7px;padding:7px 14px;font-size:13px;cursor:pointer">메모 전송</button>
+
+      <div style="margin-top:14px;border-top:1px solid #eee;padding-top:10px">
+        <input type="text" id="hubspot-task-subject" placeholder="후속 작업 제목" style="width:100%;box-sizing:border-box;border:1px solid #dde1e8;border-radius:8px;padding:7px 8px;font-size:13px">
+        <textarea id="hubspot-task-body" placeholder="작업 내용 (선택)" style="margin-top:6px;width:100%;min-height:50px;box-sizing:border-box;border:1px solid #dde1e8;border-radius:8px;padding:8px;font-size:13px"></textarea>
+        <div style="display:flex;gap:8px;margin-top:6px">
+          <input type="datetime-local" id="hubspot-task-due" style="flex:1;border:1px solid #dde1e8;border-radius:8px;padding:6px 8px;font-size:13px">
+          <select id="hubspot-task-priority" style="border:1px solid #dde1e8;border-radius:8px;padding:6px 8px;font-size:13px">
+            <option value="LOW">낮음</option>
+            <option value="MEDIUM" selected>보통</option>
+            <option value="HIGH">높음</option>
+          </select>
+        </div>
+        <button id="hubspot-task-send" type="button" style="margin-top:6px;background:#1565c0;color:#fff;border:none;border-radius:7px;padding:7px 14px;font-size:13px;cursor:pointer">Task 생성</button>
+      </div>
+    </div>
+  </div>
 </div>
 <div class="layout">
   <div class="left-col">
@@ -3438,5 +3497,7 @@ function updateComboCard(bundleValue){
   document.addEventListener('input', saveToStorage);
 })();
 </script>
+
+<script src="/hubspot-widget.js"></script>
 </body>
 </html>
