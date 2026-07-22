@@ -129,7 +129,7 @@
 
   function loadTasks(){
     tasksRefreshBtn.disabled = true;
-    tasksRefreshBtn.style.opacity = '0.5';
+    tasksRefreshBtn.classList.add('spinning');
     fetch('/api/hubspot-tasks?agent=' + encodeURIComponent(agent))
       .then(r => r.json().then(data => ({ok: r.ok, data})))
       .then(({ok, data}) => {
@@ -145,7 +145,7 @@
         tasksUpdatedEl.textContent = '새로고침: ' + new Date().toLocaleTimeString('ko-KR');
       })
       .catch(e => console.error('hubspot-tasks fetch failed', e))
-      .finally(() => { tasksRefreshBtn.disabled = false; tasksRefreshBtn.style.opacity = '1'; });
+      .finally(() => { tasksRefreshBtn.disabled = false; tasksRefreshBtn.classList.remove('spinning'); });
   }
 
   tasksRefreshBtn.addEventListener('click', loadTasks);
@@ -207,7 +207,7 @@
     leadsNextBtn.disabled = (leadsPage + 1) * LEADS_PAGE_SIZE >= total;
 
     if(!total){
-      listEl.textContent = '일치하는 리드가 없습니다.';
+      listEl.textContent = '오늘 할 일 모두 완료! 수고하셨습니다';
       return;
     }
     const pageDeals = allDeals.slice(leadsPage * LEADS_PAGE_SIZE, (leadsPage + 1) * LEADS_PAGE_SIZE);
@@ -259,7 +259,7 @@
   // 새로고침 트리거: 1) 최초 로드 2) 🔄 수동 새로고침 클릭 3) 거래 제목 클릭 후 탭 복귀
   function loadLeads(){
     leadsRefreshBtn.disabled = true;
-    leadsRefreshBtn.style.opacity = '0.5';
+    leadsRefreshBtn.classList.add('spinning');
     fetch('/api/hubspot-deals?agent=' + encodeURIComponent(agent))
       .then(r => r.json().then(data => ({ok: r.ok, data})))
       .then(({ok, data}) => {
@@ -274,7 +274,7 @@
         leadsUpdatedEl.textContent = '새로고침: ' + new Date().toLocaleTimeString('ko-KR');
       })
       .catch(e => console.error('hubspot-deals fetch failed', e))
-      .finally(() => { leadsRefreshBtn.disabled = false; leadsRefreshBtn.style.opacity = '1'; });
+      .finally(() => { leadsRefreshBtn.disabled = false; leadsRefreshBtn.classList.remove('spinning'); });
   }
 
   const leadsRefreshBtn = document.getElementById('hubspot-leads-refresh');
@@ -344,7 +344,7 @@
   // 새로고침 트리거: 1) 최초 로드 2) 🔄 수동 새로고침 클릭 3) 거래 제목 클릭 후 탭 복귀
   function loadIntRecentDeals(){
     intRecentRefreshBtn.disabled = true;
-    intRecentRefreshBtn.style.opacity = '0.5';
+    intRecentRefreshBtn.classList.add('spinning');
     fetch('/api/hubspot-int-recent?agent=' + encodeURIComponent(agent))
       .then(r => r.json().then(data => ({ok: r.ok, data})))
       .then(({ok, data}) => {
@@ -359,7 +359,7 @@
         intRecentUpdatedEl.textContent = '새로고침: ' + new Date().toLocaleTimeString('ko-KR');
       })
       .catch(e => console.error('hubspot-int-recent fetch failed', e))
-      .finally(() => { intRecentRefreshBtn.disabled = false; intRecentRefreshBtn.style.opacity = '1'; });
+      .finally(() => { intRecentRefreshBtn.disabled = false; intRecentRefreshBtn.classList.remove('spinning'); });
   }
 
   intRecentRefreshBtn.addEventListener('click', loadIntRecentDeals);

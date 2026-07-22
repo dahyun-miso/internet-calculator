@@ -340,6 +340,14 @@ textarea:focus{outline:none;border-color:#3b6ef0}
 .usim-gift-label{font-size:12px;color:#2e7d32;font-weight:600;margin-bottom:4px}
 .usim-gift-amount{font-size:20px;font-weight:800;color:#1b5e20}
 .usim-gift-sub{font-size:11px;color:#388e3c;margin-top:2px}
+
+/* ── HubSpot 새로고침 버튼 ── */
+.hubspot-refresh-btn{background:#f5f7fb;border:1px solid #dde1e8;border-radius:6px;width:28px;height:28px;display:inline-flex;align-items:center;justify-content:center;cursor:pointer;padding:0;color:#5b6472;transition:background .15s,border-color .15s}
+.hubspot-refresh-btn:hover:not(:disabled){background:#eef1f6;border-color:#c7ceda}
+.hubspot-refresh-btn:disabled{cursor:default;opacity:.6}
+.hubspot-refresh-btn svg{width:15px;height:15px}
+.hubspot-refresh-btn.spinning svg{animation:hubspot-refresh-spin .7s linear infinite}
+@keyframes hubspot-refresh-spin{from{transform:rotate(0deg)}to{transform:rotate(360deg)}}
 </style>
 <body>
 <div class="header">
@@ -362,7 +370,7 @@ textarea:focus{outline:none;border-color:#3b6ef0}
       <span class="ct-icon">✅</span><span>오늘 마감 Task</span>
       <span id="hubspot-tasks-count" style="color:#e05050;font-size:12px;margin-left:4px;font-weight:700"></span>
       <span class="ct-spacer"></span>
-      <button id="hubspot-tasks-refresh" type="button" title="새로고침" style="background:#f5f7fb;border:1px solid #dde1e8;border-radius:6px;padding:3px 9px;font-size:13px;cursor:pointer;line-height:1">🔄</button>
+      <button id="hubspot-tasks-refresh" type="button" title="새로고침" class="hubspot-refresh-btn"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M21 12a9 9 0 1 1-3-6.7"/><polyline points="21 3 21 9 15 9"/></svg></button>
     </div>
     <div id="hubspot-tasks-list" style="font-size:13px;color:#666;padding:6px 2px">불러오는 중...</div>
     <div style="display:flex;align-items:center;justify-content:space-between;margin-top:6px">
@@ -377,9 +385,9 @@ textarea:focus{outline:none;border-color:#3b6ef0}
   <!-- 허브스팟 오늘 배정 리드 -->
   <div class="card" id="hubspot-leads-card" style="display:none">
     <div class="card-title">
-      <span class="ct-icon">📋</span><span>오늘 전화 시도 횟수</span><span onclick="openLeadsNotice()" title="전화 시도 안내" style="display:inline-flex;align-items:center;justify-content:center;width:15px;height:15px;border-radius:50%;background:#9aa0ab;color:#fff;font-size:10px;font-weight:800;cursor:pointer;flex:none">!</span>
+      <span class="ct-icon">📋</span><span>오늘 거래 전화 시도</span><span onclick="openLeadsNotice()" title="전화 시도 안내" style="display:inline-flex;align-items:center;justify-content:center;width:15px;height:15px;border-radius:50%;background:#9aa0ab;color:#fff;font-size:10px;font-weight:800;cursor:pointer;flex:none">!</span>
       <span class="ct-spacer"></span>
-      <button id="hubspot-leads-refresh" type="button" title="새로고침" style="background:#f5f7fb;border:1px solid #dde1e8;border-radius:6px;padding:3px 9px;font-size:13px;cursor:pointer;line-height:1">🔄</button>
+      <button id="hubspot-leads-refresh" type="button" title="새로고침" class="hubspot-refresh-btn"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M21 12a9 9 0 1 1-3-6.7"/><polyline points="21 3 21 9 15 9"/></svg></button>
     </div>
     <div id="hubspot-leads-list" style="font-size:13px;color:#666;padding:6px 2px">불러오는 중...</div>
     <div style="display:flex;align-items:center;justify-content:space-between;margin-top:6px">
@@ -417,7 +425,7 @@ textarea:focus{outline:none;border-color:#3b6ef0}
       <span class="ct-icon">💡</span><span>최근(2일) 상품제안</span>
       <span id="hubspot-int-recent-count" style="color:#e05050;font-size:12px;margin-left:4px;font-weight:700"></span>
       <span class="ct-spacer"></span>
-      <button id="hubspot-int-recent-refresh" type="button" title="새로고침" style="background:#f5f7fb;border:1px solid #dde1e8;border-radius:6px;padding:3px 9px;font-size:13px;cursor:pointer;line-height:1">🔄</button>
+      <button id="hubspot-int-recent-refresh" type="button" title="새로고침" class="hubspot-refresh-btn"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M21 12a9 9 0 1 1-3-6.7"/><polyline points="21 3 21 9 15 9"/></svg></button>
     </div>
     <div id="hubspot-int-recent-list" style="font-size:13px;color:#666;padding:6px 2px">불러오는 중...</div>
     <div style="display:flex;align-items:center;justify-content:space-between;margin-top:6px">
