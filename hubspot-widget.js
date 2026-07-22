@@ -176,7 +176,6 @@
   }
 
   let allDeals = [];
-  const leadSearchInput = document.getElementById('hubspot-lead-search');
 
   function selectDeal(dealId){
     selectedDealId = dealId;
@@ -201,18 +200,6 @@
     });
   }
 
-  // 검색창에 입력한 글자가 리드 이름에 포함되는 것만 걸러서 보여준다.
-  function applyLeadFilter(){
-    const query = leadSearchInput.value.trim().toLowerCase();
-    if(!query){
-      renderDeals(allDeals);
-      return;
-    }
-    const matched = allDeals.filter(d => (d.dealname || '').toLowerCase().includes(query));
-    renderDeals(matched);
-  }
-  leadSearchInput.addEventListener('input', applyLeadFilter);
-
   // hubspot_owner_map에 매핑된 상담사에게만 카드를 노출한다 (매핑 안 된 경우/에러 시 조용히 숨김).
   function loadLeads(){
     fetch('/api/hubspot-deals?agent=' + encodeURIComponent(agent))
@@ -224,7 +211,7 @@
         }
         card.style.display = '';
         allDeals = (data.deals || []).filter(d => d.dealstageLabel === '전화 시도');
-        applyLeadFilter();
+        renderDeals(allDeals);
       })
       .catch(e => console.error('hubspot-deals fetch failed', e));
   }
@@ -238,7 +225,7 @@
       .then(r => r.json().then(data => ({ok: r.ok, data})))
       .then(({ok, data}) => {
         if(!ok){ showToast('❌ 새로고침 실패'); return; }
-        if(data.mapped !== false){ allDeals = (data.deals || []).filter(d => d.dealstageLabel === '전화 시도'); applyLeadFilter(); }
+        if(data.mapped !== false){ allDeals = (data.deals || []).filter(d => d.dealstageLabel === '전화 시도'); renderDeals(allDeals); }
       })
       .catch(() => showToast('❌ 새로고침 실패'))
       .finally(() => { leadsRefreshBtn.disabled = false; leadsRefreshBtn.style.opacity = '1'; });
