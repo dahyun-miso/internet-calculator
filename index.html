@@ -15,20 +15,22 @@ html,body{height:100%;font-family:-apple-system,BlinkMacSystemFont,'Apple SD Got
 .header h1{font-size:19px;font-weight:700;letter-spacing:-.3px;display:flex;align-items:center;gap:8px}
 .header h1 img{height:22px;display:block}
 .header .badge{font-size:12px;background:rgba(255,255,255,.15);padding:3px 10px;border-radius:20px;white-space:nowrap}
-.header .upd{margin-left:auto;font-size:12px;color:rgba(255,255,255,.5)}
-.header .feedback-btn{font-size:12px;background:rgba(255,255,255,.15);padding:3px 10px;border-radius:20px;white-space:nowrap;color:#fff;text-decoration:none;transition:background .15s}
-.header .feedback-btn:hover{background:rgba(255,255,255,.28)}
-.header .hubspot-panel-toggle{position:relative;font-size:12px;background:rgba(255,255,255,.15);border:none;padding:3px 10px;border-radius:20px;white-space:nowrap;color:#fff;cursor:pointer;transition:background .15s}
-.header .hubspot-panel-toggle:hover{background:rgba(255,255,255,.28)}
-.hubspot-panel-badge{position:absolute;top:-6px;right:-6px;background:#e53935;color:#fff;font-size:10px;font-weight:700;line-height:1;padding:3px 5px;border-radius:10px;min-width:14px;text-align:center}
+.header .hubspot-panel-toggle{position:relative;align-self:stretch;margin:-4px 0 -4px auto;display:flex;align-items:center;font-size:15px;font-weight:700;letter-spacing:-.2px;background:linear-gradient(180deg,#fff3e0,#ffdfa8);border:1.5px solid #f0a94e;border-radius:10px;padding:0 20px;white-space:nowrap;color:#8a4b00;cursor:pointer;box-shadow:0 1px 3px rgba(0,0,0,.15);transition:background .15s,box-shadow .15s,transform .15s}
+.header .hubspot-panel-toggle:hover{background:linear-gradient(180deg,#ffe9c7,#ffd08a);box-shadow:0 3px 8px rgba(0,0,0,.2);transform:translateY(-1px)}
+.header .hubspot-panel-toggle:active{transform:translateY(0);box-shadow:0 1px 2px rgba(0,0,0,.15)}
+.footer{position:fixed;left:0;right:0;bottom:0;height:22px;display:flex;align-items:center;justify-content:flex-end;gap:14px;padding:0 16px;background:#e4e7ed;border-top:1px solid #d3d7e0;z-index:50}
+.footer .upd{font-size:11px;color:#9098a8}
+.footer .feedback-btn{font-size:11px;color:#727a8c;text-decoration:none;transition:color .15s}
+.footer .feedback-btn:hover{color:#404859}
+.hubspot-panel-badge{position:absolute;top:-10px;right:-10px;background:#e53935;color:#fff;font-size:13px;font-weight:800;line-height:1;padding:4px 7px;border:2px solid #fff;border-radius:12px;min-width:20px;text-align:center;box-shadow:0 1px 3px rgba(0,0,0,.3)}
 .hubspot-panel-overlay{display:none;position:fixed;inset:0;background:rgba(0,0,0,.35);z-index:2400}
 .hubspot-panel-overlay.open{display:block}
-.hubspot-panel{position:fixed;top:0;right:0;height:100vh;width:min(420px,92vw);background:#f5f7fb;box-shadow:-4px 0 24px rgba(0,0,0,.2);z-index:2500;transform:translateX(100%);transition:transform .25s;overflow-y:auto;padding:18px;display:flex;flex-direction:column;gap:14px;box-sizing:border-box}
+.hubspot-panel{position:fixed;top:0;right:0;height:100vh;width:clamp(420px,33vw,720px);max-width:92vw;background:#f5f7fb;box-shadow:-4px 0 24px rgba(0,0,0,.2);z-index:2500;transform:translateX(100%);transition:transform .25s;overflow-y:auto;padding:18px;display:flex;flex-direction:column;gap:14px;box-sizing:border-box}
 .hubspot-panel.open{transform:translateX(0)}
 .hubspot-panel-head{display:flex;align-items:center;justify-content:space-between}
-.hubspot-panel-close{background:#fff;border:1px solid #dde1e8;border-radius:7px;padding:4px 10px;font-size:14px;cursor:pointer;line-height:1}
+.hubspot-panel-close{background:#fff;border:1px solid #dde1e8;border-radius:7px;padding:4px 10px;font-size:14px;color:#e53935;cursor:pointer;line-height:1}
 .field-compact input,.field-compact select{padding:5px 10px;min-height:30px;font-size:13px}
-.layout{display:flex;flex-direction:row;padding:18px;gap:0;height:calc(100vh - 54px);overflow:hidden}
+.layout{display:flex;flex-direction:row;padding:18px;gap:0;height:calc(100vh - 54px - 22px);overflow:hidden}
 .left-col{overflow-y:auto;display:flex;flex-direction:column;gap:14px;padding-right:4px;width:33.333%;min-width:260px;flex-shrink:0}
 .mid-col{overflow-y:auto;display:flex;flex-direction:column;gap:14px;padding:0 14px;width:33.333%;min-width:260px;flex-shrink:0}
 .right-col{overflow-y:auto;display:flex;flex-direction:column;gap:14px;flex:1;min-width:260px;padding-left:4px}
@@ -201,6 +203,8 @@ textarea:focus{outline:none;border-color:#3b6ef0}
 .gift-table tr:nth-child(even) td{background:#fafbfd}
 .gift-table td:first-child{font-weight:700;color:#1a1a1a;text-align:left;background:#f7f8fb;font-size:12px}
 .gift-table .hl{background:#fff8e1 !important;font-weight:700;color:#a05000}
+.gift-table tr.gift-extra-row td{background:#eef1f7 !important;color:#7a8499;font-weight:600;font-size:11.5px;font-style:italic}
+.gift-table tr.gift-extra-row td:first-child{color:#7a8499;font-weight:600;padding-left:20px}
 .gift-note{margin-top:8px;font-size:12px;color:#000;line-height:1.6}
 
 /* ── 문자 탭 ── */
@@ -353,16 +357,16 @@ textarea:focus{outline:none;border-color:#3b6ef0}
 <div class="header">
   <h1><img src="data:image/jpeg;base64,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" alt="miso">미소 인터넷 결합 계산기</h1>
   <span class="badge" id="agent-badge">인터넷 부서</span>
-  <span class="upd" id="last-updated">최종 업데이트: -</span>
-  <button class="hubspot-panel-toggle" id="hubspot-panel-toggle" type="button">📋 HubSpot<span class="hubspot-panel-badge" id="hubspot-panel-badge" style="display:none"></span></button>
-  <a class="feedback-btn" href="https://forms.gle/HHYDRxwtb42ZYn8b6" target="_blank">📝 피드백함</a>
+  <button class="hubspot-panel-toggle" id="hubspot-panel-toggle" type="button">오늘 할일 📝<span class="hubspot-panel-badge" id="hubspot-panel-badge" style="display:none"></span></button>
 </div>
 <div class="hubspot-panel-overlay" id="hubspot-panel-overlay"></div>
 <div class="hubspot-panel" id="hubspot-panel">
   <div class="hubspot-panel-head">
-    <strong>HubSpot</strong>
+    <strong>오늘 할일 📝</strong>
     <button class="hubspot-panel-close" id="hubspot-panel-close" type="button">✕</button>
   </div>
+
+  <div id="hubspot-panel-loading" style="text-align:center;padding:40px 12px;color:#888;font-size:14px">정보를 가져오고 있습니다. 잠시만 기다려주세요..</div>
 
   <!-- 오늘 마감/오늘 거래/최근(2일) 3가지 섹션이 모두 비었을 때만 노출되는 완료 배너 -->
   <div id="hubspot-all-clear" style="display:none;text-align:center;padding:28px 12px;font-size:15px;font-weight:700;color:#2e7d32">완료! 오늘도 수고하셨습니다 👏</div>
@@ -378,9 +382,10 @@ textarea:focus{outline:none;border-color:#3b6ef0}
     <div id="hubspot-tasks-list" style="font-size:13px;color:#666;padding:6px 2px">불러오는 중...</div>
     <div style="display:flex;align-items:center;justify-content:space-between;margin-top:6px">
       <span id="hubspot-tasks-updated" style="font-size:11px;color:#999"></span>
-      <div>
+      <div style="display:flex;align-items:center;gap:6px">
         <button id="hubspot-tasks-prev" type="button" style="background:#f5f7fb;border:1px solid #dde1e8;border-radius:6px;padding:3px 9px;font-size:13px;cursor:pointer;line-height:1">&lt;</button>
-        <button id="hubspot-tasks-next" type="button" style="background:#f5f7fb;border:1px solid #dde1e8;border-radius:6px;padding:3px 9px;font-size:13px;cursor:pointer;line-height:1;margin-left:4px">&gt;</button>
+        <span id="hubspot-tasks-page" style="font-size:12px;color:#666"></span>
+        <button id="hubspot-tasks-next" type="button" style="background:#f5f7fb;border:1px solid #dde1e8;border-radius:6px;padding:3px 9px;font-size:13px;cursor:pointer;line-height:1">&gt;</button>
       </div>
     </div>
   </div>
@@ -388,7 +393,7 @@ textarea:focus{outline:none;border-color:#3b6ef0}
   <!-- 허브스팟 오늘 배정 리드 -->
   <div class="card" id="hubspot-leads-card" style="display:none">
     <div class="card-title">
-      <span class="ct-icon">📋</span><span>오늘 거래 전화 시도</span><span onclick="openLeadsNotice()" title="전화 시도 안내" style="display:inline-flex;align-items:center;justify-content:center;width:15px;height:15px;border-radius:50%;background:#9aa0ab;color:#fff;font-size:10px;font-weight:800;cursor:pointer;flex:none">!</span>
+      <span class="ct-icon">📋</span><span>오늘 전화 시도</span><span onclick="openLeadsNotice()" title="전화 시도 안내" style="display:inline-flex;align-items:center;justify-content:center;width:15px;height:15px;border-radius:50%;background:#9aa0ab;color:#fff;font-size:10px;font-weight:800;cursor:pointer;flex:none">!</span>
       <span class="ct-spacer"></span>
       <button id="hubspot-leads-refresh" type="button" title="새로고침" class="hubspot-refresh-btn"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M21 12a9 9 0 1 1-3-6.7"/><polyline points="21 3 21 9 15 9"/></svg></button>
     </div>
@@ -425,7 +430,7 @@ textarea:focus{outline:none;border-color:#3b6ef0}
   <!-- 허브스팟 최근(2일) 상품제안 -->
   <div class="card" id="hubspot-int-recent-card" style="display:none">
     <div class="card-title">
-      <span class="ct-icon">💡</span><span>최근(2일) 상품제안</span>
+      <span class="ct-icon">💡</span><span>최근 2일 상품 제안</span>
       <span id="hubspot-int-recent-count" style="color:#e05050;font-size:12px;margin-left:4px;font-weight:700"></span>
       <span class="ct-spacer"></span>
       <button id="hubspot-int-recent-refresh" type="button" title="새로고침" class="hubspot-refresh-btn"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M21 12a9 9 0 1 1-3-6.7"/><polyline points="21 3 21 9 15 9"/></svg></button>
@@ -485,7 +490,7 @@ textarea:focus{outline:none;border-color:#3b6ef0}
       <div class="card-title">
         <span class="ct-icon">📦</span><span>상품 선택</span>
         <span class="ct-spacer"></span>
-        <button id="btn-ongajok" onclick="toggleOngajok()" style="padding:4px 11px;font-size:12px;font-weight:700;border-radius:7px;border:1.5px solid #d0d5e0;background:#f5f7fb;color:#7a8499;cursor:pointer;transition:all .2s;margin-right:6px;letter-spacing:0">온가족할인</button>
+        <button id="btn-ongajok" onclick="openOngajokSheet()" style="padding:4px 11px;font-size:12px;font-weight:700;border-radius:7px;border:1.5px solid #d0d5e0;background:#f5f7fb;color:#7a8499;cursor:pointer;transition:all .2s;margin-right:6px;letter-spacing:0">온가족할인</button>
         <button onclick="resetProductSelection()" title="상품 선택 초기화" style="background:#fff5f5;border:1.5px solid #e05050;cursor:pointer;font-size:15px;color:#e05050;padding:4px 9px;border-radius:7px;line-height:1;transition:transform .3s,background .15s" onmouseenter="this.style.transform='rotate(180deg)'" onmouseleave="this.style.transform='rotate(0deg)'">↺</button>
       </div>
       <div class="compare-tabs">
@@ -815,10 +820,15 @@ textarea:focus{outline:none;border-color:#3b6ef0}
             <tbody>
               <tr><td style="background:#fff0f0;color:#c0001a">KT 베이직</td><td>9(현5/상4)</td><td></td><td>14(현10/상4)</td><td>14(현9/상5)</td></tr>
               <tr><td style="background:#fff0f0;color:#c0001a">KT 패밀리</td><td>9(현6/상3)</td><td></td><td>14(현11/상3)</td><td>14(현11/상3)</td></tr>
+              <tr class="gift-extra-row"><td>+ 추가 사은품</td><td>0</td><td></td><td>1</td><td>1</td></tr>
               <tr><td style="background:#f0f6ff;color:#0a4fa0">LG</td><td>20</td><td>20</td><td>23</td><td>23</td></tr>
+              <tr class="gift-extra-row"><td>+ 추가 사은품</td><td>0</td><td>0</td><td>2</td><td>2</td></tr>
               <tr><td style="background:#f0f6ff;color:#0a4fa0">LG (소호)</td><td>13</td><td>20</td><td>25</td><td>25</td></tr>
+              <tr class="gift-extra-row"><td>+ 추가 사은품</td><td>7</td><td>0</td><td>0</td><td>0</td></tr>
               <tr><td style="background:#fff8f0;color:#b85000">SKB</td><td>10</td><td></td><td>17</td><td>17</td></tr>
+              <tr class="gift-extra-row"><td>+ 추가 사은품</td><td>1</td><td></td><td>3</td><td>3</td></tr>
               <tr><td style="background:#fff8f0;color:#b85000">SKT</td><td>11</td><td></td><td>17</td><td>17</td></tr>
+              <tr class="gift-extra-row"><td>+ 추가 사은품</td><td>0</td><td></td><td>0</td><td>0</td></tr>
             </tbody>
           </table>
           <!-- 번들 표 -->
@@ -828,13 +838,20 @@ textarea:focus{outline:none;border-color:#3b6ef0}
               <tr><td style="background:#fff0f0;color:#c0001a">KT 베이직</td><td>37(현31/상6)</td><td></td><td>45(현39/상6)</td><td>45(현36/상9)</td></tr>
               <tr><td style="background:#fff0f0;color:#c0001a">KT 베이직이상</td><td>37(현30/상7)</td><td></td><td>45(현38/상7)</td><td>45(현35/상10)</td></tr>
               <tr><td style="background:#fff0f0;color:#c0001a">KT 패밀리</td><td>37(현34/상3)</td><td></td><td>45(현42/상3)</td><td>45(현42/상3)</td></tr>
+              <tr class="gift-extra-row"><td>+ 추가 사은품</td><td>3</td><td></td><td>0</td><td>0</td></tr>
               <tr><td style="background:#f0f6ff;color:#0a4fa0">LG</td><td>33</td><td>33</td><td>47</td><td>47</td></tr>
+              <tr class="gift-extra-row"><td>+ 추가 사은품</td><td>2</td><td>2</td><td>5</td><td>5</td></tr>
               <tr><td style="background:#f0f6ff;color:#0a4fa0">LG (소호)</td><td>40</td><td>40</td><td>47</td><td>47</td></tr>
+              <tr class="gift-extra-row"><td>+ 추가 사은품</td><td>0</td><td>0</td><td>5</td><td>5</td></tr>
               <tr><td style="background:#fff8f0;color:#b85000">SKB</td><td>39</td><td></td><td>49</td><td>49</td></tr>
+              <tr class="gift-extra-row"><td>+ 추가 사은품</td><td>1</td><td></td><td>3</td><td>3</td></tr>
               <tr><td style="background:#fff8f0;color:#b85000">SKT</td><td>38</td><td></td><td>43</td><td>52</td></tr>
+              <tr class="gift-extra-row"><td>+ 추가 사은품</td><td>0</td><td></td><td>0</td><td>0</td></tr>
             </tbody>
           </table>
           <div class="gift-note">
+            ✅ 유심 : 개통 건당 5만원 추가 혜택 지급 가능 (KT는 3만원, 가족 유심도 건당)<br>
+            ✅ 접수 후 개통 취소 시 : 추가 제안한 금액에서 3만원 더 제안 가능<br>
             ✅ KT 법인 명의 가입 시 (100/500M - 농협 지류 4만원, 1G 이상 - 농협 지류 5만원) 제공<br>
             ✅ KT 일반 전화(개인/법인) 가입 시 1대 당 농협 지류 2만원 추가 제공<br>
             ✅ 스카이라이프/ 헬로비전 교육자료 확인<br>
@@ -943,10 +960,16 @@ textarea:focus{outline:none;border-color:#3b6ef0}
         </div>
         <div class="quick-accordion">
           <button class="qacc-btn" id="qacc-btn-fee" onclick="toggleAcc('fee')"><span>💰 요금 조회</span><span class="qacc-arrow">▼</span></button>
-          <div class="qacc-body" id="qacc-body-fee">
-            <a class="qbtn kt" href="https://product.kt.com/wDic/index.do?CateCode=6005&FilterCode=118" target="_blank">KT</a>
-            <a class="qbtn sk" href="https://www.bworld.co.kr/product/internet/charge.do?menu_id=P02010000" target="_blank">SKB</a>
-            <a class="qbtn lg" href="https://www.lguplus.com/internet/plan?tab=IN&subtab=all" target="_blank">LG</a>
+          <div class="qacc-body" id="qacc-body-fee" style="flex-direction:column">
+            <div style="display:flex;gap:7px">
+              <a class="qbtn kt" href="https://product.kt.com/wDic/index.do?CateCode=6005&FilterCode=118" target="_blank" style="flex:1;justify-content:center">KT</a>
+              <a class="qbtn sk" href="https://www.bworld.co.kr/product/internet/charge.do?menu_id=P02010000" target="_blank" style="flex:1;justify-content:center">SKB</a>
+              <a class="qbtn lg" href="https://www.lguplus.com/internet/plan?tab=IN&subtab=all" target="_blank" style="flex:1;justify-content:center">LG</a>
+            </div>
+            <div style="display:flex;gap:7px">
+              <a class="qbtn" href="https://www.skylife.co.kr/product/internet/all" target="_blank" style="flex:1;justify-content:center">SKY</a>
+              <a class="qbtn hello" href="https://www.lghellovision.net/product/internet/internetPriceList.do?sub=true" target="_blank" style="flex:1;justify-content:center">LG 헬로비전</a>
+            </div>
           </div>
         </div>
         <div class="quick-accordion">
@@ -1340,6 +1363,11 @@ textarea:focus{outline:none;border-color:#3b6ef0}
   </div>
 </div>
 
+<div class="footer">
+  <span class="upd" id="last-updated">최종 업데이트: -</span>
+  <a class="feedback-btn" href="https://forms.gle/HHYDRxwtb42ZYn8b6" target="_blank">📝 피드백함</a>
+</div>
+
 <div id="leads-notice-modal" style="display:none;position:fixed;inset:0;background:rgba(0,0,0,.5);z-index:3000;align-items:center;justify-content:center" onclick="closeLeadsNotice(event)">
   <div style="background:#fff;border-radius:14px;padding:22px;width:min(420px,92vw);max-height:88vh;overflow-y:auto;box-shadow:0 8px 40px rgba(0,0,0,.25)">
     <div style="display:flex;align-items:center;margin-bottom:14px">
@@ -1427,6 +1455,7 @@ function clearField(id){
       if(wTv) wTv.classList.remove('has-value','disabled');
       if(wTvEx) wTvEx.classList.remove('has-value','disabled');
       updateDandokLock();
+      if(typeof filterSkyProductOptions === 'function') filterSkyProductOptions();
     }
     filterBundleOptions();
   }
@@ -1477,7 +1506,7 @@ function resetProductSelection(){
   calc();
 }
 
-const PRODUCTS={KT:{internet:{"(단독) 100mb":22000,"(단독) 500mb":33000,"(단독) 1GB":38500,"100mb":22000,"500mb":27500,"1GB":33000},tv:{"미가입":0,"베이직 (239채널) + 기가지니A":15400,"라이트 (243채널) + 기가지니A":16500,"에센스 (269채널) + 기가지니A":19800,"에센스 플러스 (268+채널)":24200,"넷플릭스 HD (268채널)":27800,"넷플릭스 UHD (268채널)":31300,"키즈랜드팩초이스 (268채널)":24200},"tv-extra":{"베이직 (239채널) + 기가지니A":10670,"라이트 (243채널) + 기가지니A":11220,"에센스 (269채널) + 기가지니A":13420},router:{"공유기":1100,"공유기 무료 (인단독 1GB)":0,"공유기 X":0},phone:{"일반 전화":6050,"인터넷 전화 (모임스톤)":7461},addon:{"기가지니3A (AI 셋톱박스)":1100,"AI 지니 TV 올인원 사운드바 (공유기 내장 셋탑, 우드/화이트 색상 택 1)":5500,"버디증폭기":1650,"기가지니 4A":3300},bundle:{"~22,000원 휴대폰 요금제&100mb/총액결합": 1650, "~64,900원 휴대폰 요금제&100mb/총액결합": 3300, "64,900원 이상 요금제&100mb/총액결합": 5500, "100mb + TV/패밀리 결합": 5500, "(단독) 100mb/알뜰폰 결합": 3300, "~22,000원 휴대폰 요금제&(단독) 500mb/총액결합": 7700, "22,000원 이상 요금제&(단독) 500mb/총액결합": 11000, "~22,000원 휴대폰 요금제&500mb/총액결합": 2200, "22,000원 이상 요금제&500mb/총액결합": 5500, "77,000원 이상 휴대폰 요금제 2회선 &500mb/프리미엄 가족결합": 5500, "77,000원 이상 요금제&(단독) 500mb/프리미엄 싱글 결합": 5500, "77,000원 이상 휴대폰 요금제 2회선 &(단독) 500mb/프리미엄 가족결합": 11000, "77,000원 이상 요금제&500mb/프리미엄 싱글 결합": 0, "(단독) 500mb/알뜰폰 결합": 11000, "500mb+TV/패밀리 결합": 5500, "1GB + TV 핸드폰 결합/총액결합": 5500, "77,000원 이상 휴대폰 요금제 2회선 & 1GB/프리미엄 가족결합": 5500, "1GB + TV/패밀리 결합": 5500, "(단독) 100mb/패밀리 결합": 5500, "(단독) 500mb/패밀리 결합": 11000, "~22,000원 휴대폰 요금제&(단독) 1GB/총액결합": 7700, "22,000원 이상 휴대폰 요금제&(단독) 1GB/총액결합": 11000, "77,000원 이상 휴대폰 요금제 2회선 &(단독) 1GB/프리미엄 가족결합": 11000, "77,000원 이상 요금제&(단독) 1GB/프리미엄 싱글 결합": 5500, "77,000원 이상 요금제&1GB/프리미엄 싱글 결합": 0, "(단독) 1GB/알뜰폰 결합": 11000, "(단독) 1GB/패밀리 결합": 11000, "100mb + TV/알뜰폰 결합": 3300, "500mb + TV/알뜰폰 결합": 5500, "1GB + TV/알뜰폰 결합": 5500, "~22,000원 휴대폰 요금제&500mb/총액결합+따살결": 9900, "~22,000원 휴대폰 요금제&1GB/총액결합+따살결": 11000, "~22,000원 요금제&500mb/총액결합+따살결": 9900, "~22,000원 요금제&1GB/총액결합+따살결": 11000, "22,000원 이상 휴대폰 요금제&500mb/총액결합+따살결": 13200, "22,000원 이상 휴대폰 요금제&1GB/총액결합+따살결": 14300, "22,000원 이상 요금제&500mb/총액결합+따살결": 9900, "22,000원 이상 요금제&1GB/총액결합+따살결": 11000, "(단독) 100mb/정액결합": 5500, "(단독) 500mb/정액결합": 11000, "(단독) 1GB/정액결합": 11000, "100mb+TV/정액결합": 5500, "500mb+TV/정액결합": 5500, "1GB+TV/정액결합": 5500},install:{"인터넷 설치비":36000,"인터넷+TV 설치비":56200,"인터넷 + 일반전화 설치비":68000,"인터넷 + 070전화 설치비":60000,"인터넷+TV + 일반전화 설치비":88200,"인터넷+TV + 070전화 설치비":80200,"인터넷+TV + TV 추가 설치비":71600,"인터넷 설치비 (주말)":45000,"인터넷 + 일반전화 설치비 (주말)":86000,"인터넷 + 070전화 설치비 (주말)":78000,"인터넷+TV 설치비 (주말)":71250,"인터넷+TV + 일반전화 설치비 (주말)":112250,"인터넷+TV + 070전화 설치비 (주말)":104250,"인터넷+TV + TV 추가 설치비 (주말)":90500},gift:{"(단독) 100mb":{t:90000,c:50000,v:40000},"(단독) 500mb":{t:140000,c:100000,v:40000},"(단독) 1GB":{t:140000,c:90000,v:50000},"100mb+tv":{t:370000,c:310000,v:60000},"500mb+tv":{t:450000,c:390000,v:60000},"1GB+tv":{t:450000,c:360000,v:90000}}},"KT 오피스넷":{internet:{"(단독) 100mb 유동":30800,"(단독) 500mb 유동":44000,"(단독) 1GB 유동":49500,"100mb 유동":30800,"500mb 유동":44000,"1GB 유동":49500},tv:{"미가입":0,"베이직 (239채널) + 기가지니A":15400,"라이트 (243채널) + 기가지니A":16500,"에센스 (269채널) + 기가지니A":19800},"tv-extra":{"베이직 (239채널) + 기가지니A":10670,"라이트 (243채널) + 기가지니A":11220,"에센스 (269채널) + 기가지니A":13420},router:{"공유기":1100},phone:{"일반 전화":6050,"인터넷 전화":6294},addon:{"100MB 고정IP":41800,"500MB 고정IP":49500,"1GB 고정IP":55000},bundle:{"(단독) 500mb 유동 & 전화":2200,"(단독) 1GB 유동 & 전화":2200,"500mb 유동(& TV or & 전화+TV)":5500,"1GB 유동(& TV or & 전화+TV)":5500},install:{"인터넷 설치비":36000,"인터넷+TV 설치비":56200,"인터넷 + 일반전화 설치비":68000,"인터넷 + 070전화 설치비":60000,"인터넷+TV + 일반전화 설치비":88200,"인터넷+TV + 070전화 설치비":80200,"인터넷+TV + TV 추가 설치비":71600,"인터넷 설치비 (주말)":45000,"인터넷 + 일반전화 설치비 (주말)":86000,"인터넷 + 070전화 설치비 (주말)":78000,"인터넷+TV 설치비 (주말)":71250,"인터넷+TV + 일반전화 설치비 (주말)":112250,"인터넷+TV + 070전화 설치비 (주말)":104250,"인터넷+TV + TV 추가 설치비 (주말)":90500},gift:{"(단독) 100mb 유동":{t:90000,c:50000,v:40000},"(단독) 500mb 유동":{t:140000,c:100000,v:40000},"(단독) 1GB 유동":{t:140000,c:90000,v:50000},"100mb 유동+tv":{t:370000,c:300000,v:70000},"500mb 유동+tv":{t:450000,c:380000,v:70000},"1GB 유동+tv":{t:450000,c:350000,v:100000}}},LGU:{internet:{"(단독) 100mb":22000,"(단독) 200mb":25300,"(단독) 500mb":33000,"(단독) 1GB":38500,"100mb":22000,"200mb":25300,"500mb":27500,"1GB":33000},tv:{"미가입":0,"실속형 (217채널) + UHD4":17600,"기본형 (233채널) + UHD4":18700,"프리미엄 (252채널)":20900,"프리미엄 라이트 (259채널)":23100,"프리미엄 디즈니":29000,"프리미엄 넷플릭스 HD":32200,"프리미엄 넷플릭스 UHD":35700},"tv-extra":{"실속형 (217채널) + UHD3 / 500mb 이상":9900,"기본형 (233채널) + UHD3 / 500mb 이상":10450,"실속형 (217채널) + UHD4":12100,"기본형 (233채널) + UHD4":12650,"실속형(고급형) / 100mb할 경우":11000,"프리미엄(UHD4)":13750},router:{"공유기 무료":0},phone:{"인터넷 전화(070) - 단말기 보유":3300,"인터넷 전화(070) - 단말기 구매":5562},addon:{"증폭기 (GAPK-7600)":2200,"네이버 클로버 클락":3300,"사운드바 셋톱박스 블랙":2200,"(100/200/1G 번들) 아이패드 - 프리미엄X":14694,"(500mb 번들) 아이패드 - 프리미엄 X":13200},bundle:{"100mb + TV/참쉬운가족결합":5500,"100mb + TV/인터넷 가족끼리 다모여 결합(패밀리)":5500,"200mb + TV/참쉬운가족결합":5500,"200mb + TV/인터넷 가족끼리 다모여 결합(패밀리)":5500,"500mb + TV/참쉬운가족결합":9900,"500mb + TV/인터넷 가족끼리 다모여 결합(패밀리)":5500,"500mb + TV/투게더결합":11000,"1GB + TV/참쉬운가족결합":13200,"1GB + TV/인터넷 가족끼리 다모여 결합(패밀리)":5500,"1GB + TV/투게더결합":11000,"(단독) 100mb/참쉬운가족결합":5500,"(단독) 100mb/인터넷 가족끼리 다모여 결합(패밀리)":5500,"(단독) 200mb/참쉬운가족결합":5500,"(단독) 200mb/인터넷 가족끼리 다모여 결합(패밀리)":5500,"(단독) 500mb/참쉬운가족결합":9900,"(단독) 500mb/인터넷 가족끼리 다모여 결합(패밀리)":5500,"(단독) 500mb/투게더결합":11000,"(단독) 1GB/참쉬운가족결합":13200,"(단독) 1GB/인터넷 가족끼리 다모여 결합(패밀리)":5500,"(단독) 1GB/투게더결합":11000},install:{"인터넷 설치비":36300,"인터넷 + 일반전화 설치비":36300,"인터넷 + 인터넷전화 설치비":36300,"인터넷 + TV 설치비":56100,"인터넷 + TV + 일반/070전화 설치비":56100,"인터넷 + TV + TV추가 설치비":78100,"인터넷 설치비 (주말)":45375,"인터넷 + 일반전화 설치비 (주말)":45375,"인터넷 + 인터넷전화 설치비 (주말)":45375,"인터넷 + TV 설치비 (주말)":70125,"인터넷 + TV + 일반/070전화 설치비 (주말)":70125,"인터넷 + TV + TV추가 설치비 (주말)":97625},gift:{"(단독) 100mb":200000,"(단독) 200mb":200000,"(단독) 500mb":230000,"(단독) 1GB":230000,"100mb+tv":330000,"200mb+tv":330000,"500mb+tv":470000,"1GB+tv":470000}},"LG 소호":{internet:{"(단독) 100mb":22000,"(단독) 200mb":25300,"(단독) 500mb":33000,"(단독) 1GB":38500,"100mb":22000,"200mb":25300,"500mb":27500,"1GB":33000},tv:{"미가입":0,"실속형 (217채널) + UHD4":17600,"기본형 (233채널) + UHD4":18700,"프리미엄 (254채널)":20900,"프리미엄 라이트 (259채널)":23100,"프리미엄 디즈니":29000,"프리미엄 넷플릭스 HD":32200,"프리미엄 넷플릭스 UHD":35700},"tv-extra":{"실속형 (217채널) + UHD4":12100,"기본형 (233채널) + UHD4":12650,"실속형(고급형) / 100mb할 경우":11000,"프리미엄(UHD4)":13750},router:{"공유기 무료":0,"SOHO 안심 보상 (100M/500M)":3300,"SOHO 안심 보상 (1G)":4400},phone:{"일반전화(지역번호)- CPG(기존 소유 전화 단말기 사용 시) / 신규가입 시, 가입비 33,000원 포함":35200,"일반 전화 (지역번호) - CPG(기존 소유 전화 단말기 사용 시)":2200,"인터넷 전화 (070) - CPG(기존 소유 전화 단말기 사용 시)":2200,"100mb/인터넷 전화 (070) - (IP450S 단말기 대여 포함) 월 요금 3,300원 + 단말기(611원)":3911,"500mb이상/인터넷 전화 (070) - 고급형센트릭스 월 요금 3,300원 + IP520G 단말기 대여비 (월 요금 1405원)":4705},addon:{"CCTV 1대":13200,"CCTV 2대":26400,"CCTV 3대":39600},bundle:{"100mb + TV/참쉬운가족결합":5500,"100mb + TV/인터넷 가족끼리 다모여 결합(패밀리)":5500,"200mb + TV/참쉬운가족결합":5500,"200mb + TV/인터넷 가족끼리 다모여 결합(패밀리)":5500,"500mb + TV/참쉬운가족결합":9900,"500mb + TV/인터넷 가족끼리 다모여 결합(패밀리)":5500,"500mb + TV/투게더결합":11000,"1GB + TV/참쉬운가족결합":13200,"1GB + TV/인터넷 가족끼리 다모여 결합(패밀리)":5500,"1GB + TV/투게더결합":11000,"(단독) 100mb/참쉬운가족결합":5500,"(단독) 100mb/인터넷 가족끼리 다모여 결합(패밀리)":5500,"(단독) 200mb/참쉬운가족결합":5500,"(단독) 200mb/인터넷 가족끼리 다모여 결합(패밀리)":5500,"(단독) 500mb/참쉬운가족결합":9900,"(단독) 500mb/인터넷 가족끼리 다모여 결합(패밀리)":5500,"(단독) 500mb/투게더결합":11000,"(단독) 1GB/참쉬운가족결합":13200,"(단독) 1GB/인터넷 가족끼리 다모여 결합(패밀리)":5500,"(단독) 1GB/투게더결합":11000},install:{"인터넷 설치비":36300,"인터넷 + 일반전화 설치비":36300,"인터넷 + 인터넷전화 설치비":36300,"인터넷 + TV 설치비":56100,"인터넷 + TV + 일반/070전화 설치비":56100,"인터넷 + TV + TV추가 설치비":78100,"인터넷 설치비 (주말)":45375,"인터넷 + 일반전화 설치비 (주말)":45375,"인터넷 + 인터넷전화 설치비 (주말)":45375,"인터넷 + TV 설치비 (주말)":70125,"인터넷 + TV + 일반/070전화 설치비 (주말)":70125,"인터넷 + TV + TV추가 설치비 (주말)":97625},gift:{"(단독) 100mb":130000,"(단독) 200mb":200000,"(단독) 500mb":250000,"(단독) 1GB":250000,"100mb+tv":400000,"200mb+tv":400000,"500mb+tv":470000,"1GB+tv":470000}},SKB:{internet:{"(단독) 100mb":22000,"(단독) 500mb":33000,"(단독) 1GB":38500,"100mb":19800,"500mb":27500,"1GB":33000},tv:{"미가입":0,"이코노미 (182채널) + 스마트3":14300,"스탠다드 (236채널) + 스마트3":17600,"ALL (256채널) + 스마트3":20900,"Btv Max (256채널) + 스마트3":27500,"스탠다드 넷플릭스 29,900원":29900,"스탠다드 넷플릭스 프리미엄 32,900원":32900,"ALL 넷플릭스 32,400원":32400,"ALL 넷플릭스 프리미엄 35,400원":35400},"tv-extra":{"이코노미 (182채널) + 스마트3":8250,"이코노미(애플셋탑)":10450,"스탠다드 (236채널) + 스마트3":9900,"스탠다드(애플셋탑)":12100,"ALL (256채널) + 스마트3":11550,"ALL(애플셋탑)":13750,"Btv Max (256채널) + 스마트3":18150},router:{"공유기":1100,"7D WiFi":2200,"공유기 X":0},phone:{"일반 전화":1100,"070 전화 (인터넷+전화 기본)":1100,"070 전화 (인터넷+TV+전화 기본)":1100,"070 전화 (인터넷+집전화 프리)":4400,"070 전화 (인터넷+TV+집전화 프리)":2200},addon:{"WINGS (증폭기)":1650,"AI 사운드바 맥스":4400,"애플셋탑 (프로모션 진행 중)":0,"AI5":3300},bundle:{"100mb + TV/요즘가족결합":3300,"100mb + TV/패밀리결합":3300,"100mb + TV/알뜰한 결합":3300,"500mb + TV/요즘가족결합":6600,"500mb + TV/패밀리결합":5500,"500mb + TV/알뜰한 결합":6600,"1GB + TV/요즘가족결합":8800,"1GB + TV/패밀리결합":5500,"1GB + TV/알뜰한 결합":8800,"(단독) 100mb/요즘가족결합":4400,"(단독) 100mb/패밀리결합":5500,"(단독) 100mb/알뜰한 결합":4400,"(단독) 500mb/요즘가족결합":11000,"(단독) 500mb/패밀리결합":11000,"(단독) 500mb/알뜰한 결합":11000,"(단독) 1GB/요즘가족결합":13200,"(단독) 1GB/패밀리결합":11000,"(단독) 1GB/알뜰한 결합":13200},install:{"인터넷 설치비":36300,"인터넷 + 일반전화 설치비":44000,"인터넷 + 070전화 설치비":37400,"인터넷 + TV 설치비":56100,"인터넷 + TV + 일반/070전화 설치비":56100,"인터넷 + TV + TV추가 설치비":73700,"인터넷 설치비 (주말)":45375,"인터넷 + 일반전화 설치비 (주말)":51700,"인터넷 + 070전화 설치비 (주말)":45100,"인터넷 + TV 설치비 (주말)":70125,"인터넷 + TV + 일반/070전화 설치비 (주말)":70125,"인터넷 + TV + TV추가 설치비 (주말)":92125},gift:{"(단독) 100mb":100000,"(단독) 500mb":170000,"(단독) 1GB":170000,"100mb+tv":390000,"500mb+tv":490000,"1GB+tv":490000}},SKT:{internet:{"(단독) 100mb":22000,"(단독) 500mb":33000,"(단독) 1GB":38500,"100mb":19800,"500mb":27500,"1GB":33000},tv:{"미가입":0,"이코노미 (182채널) + 스마트3":14300,"스탠다드 (236채널) + 스마트3":17600,"ALL (256채널) + 스마트3":20900,"Btv Max (256채널) + 스마트3":27500,"스탠다드 넷플릭스 29,900원":29900,"스탠다드 넷플릭스 프리미엄 32,900원":32900,"ALL 넷플릭스 32,400원":32400,"ALL 넷플릭스 프리미엄 35,400원":35400},"tv-extra":{"이코노미 (182채널) + 스마트3":8250,"이코노미(애플셋탑)":10450,"스탠다드 (236채널) + 스마트3":9900,"스탠다드(애플셋탑)":12100,"ALL (256채널) + 스마트3":11550,"ALL(애플셋탑)":13750,"Btv Max (256채널) + 스마트3":18150},router:{"공유기":1100,"7D WiFi":2200,"공유기 X":0},phone:{"일반 전화":1100,"070 전화 (인터넷+전화 기본)":1100,"070 전화 (인터넷+TV+전화 기본)":1100,"070 전화 (인터넷+집전화 프리)":4400,"070 전화 (인터넷+TV+집전화 프리)":2200},addon:{"WINGS (증폭기)":1650,"AI 사운드바 맥스":4400,"애플셋탑 (프로모션 진행 중)":0,"AI5":3300},bundle:{"100mb + TV/요즘가족결합":3300,"100mb + TV/패밀리결합":3300,"500mb + TV/요즘가족결합":6600,"500mb + TV/패밀리결합":5500,"1GB + TV/요즘가족결합":8800,"1GB + TV/패밀리결합":5500,"(단독) 100mb/요즘가족결합":4400,"(단독) 100mb/패밀리결합":5500,"(단독) 500mb/요즘가족결합":11000,"(단독) 500mb/패밀리결합":11000,"(단독) 1GB/요즘가족결합":13200,"(단독) 1GB/패밀리결합":11000},install:{"인터넷 설치비":36300,"인터넷 + 일반전화 설치비":44000,"인터넷 + 070전화 설치비":37400,"인터넷 + TV 설치비":56100,"인터넷 + TV + 일반/070전화 설치비":56100,"인터넷 + TV + TV추가 설치비":73700,"인터넷 설치비 (주말)":45375,"인터넷 + 일반전화 설치비 (주말)":51700,"인터넷 + 070전화 설치비 (주말)":45100,"인터넷 + TV 설치비 (주말)":70125,"인터넷 + TV + 일반/070전화 설치비 (주말)":70125,"인터넷 + TV + TV추가 설치비 (주말)":92125},gift:{"(단독) 100mb":110000,"(단독) 500mb":170000,"(단독) 1GB":170000,"100mb+tv":380000,"500mb+tv":430000,"1GB+tv":520000}},헬로비전:{internet:{"(단독) 100mb":20790,"(단독) 160mb":26510,"(단독) 500mb":30360,"(단독) 1GB":31900,"100mb":16330,"160mb":21060,"500mb":24090,"1GB":25300},tv:{"미가입":0,"이코노미 UHD (108채널)":15400,"뉴베이직 UHD (247채널)":17600,"프로라이트 UHD (222채널)":17600,"프로맥스 UHD (249채널)":19800},"tv-extra":{"이코노미 HD (108채널)":5500,"뉴베이직 HD (247채널)":8800,"뉴베이직 UHD (247채널)":11000,"프로라이트 UHD (222채널)":11550,"프로맥스 UHD (249채널)":13750},router:{"공유기":1100,"공유기 X (100mb 가입시 선택 가능)":0},phone:{},addon:{},bundle:{"160mb 단독 / SK 동등 결합":5530,"160mb 단독 / KT 동등 결합":5530,"160mb 단독 / LG 동등 결합":5530,"500mb 단독 / SK 동등 결합":6300,"500mb 단독 / KT 동등 결합":6300,"500mb 단독 / LG 동등 결합":6300,"1GB 단독 / SK 동등 결합":9900,"1GB 단독 / KT 동등 결합":9900,"1GB 단독 / LG 동등 결합":9900,"160mb + TV / SK 동등 결합":5520,"160mb + TV / KT 동등 결합":5520,"160mb + TV / LG 동등 결합":5520,"500mb + TV / SK 동등 결합":6300,"500mb + TV / KT 동등 결합":6300,"500mb + TV / LG 동등 결합":6300,"1GB + TV / SK 동등 결합":9900,"1GB + TV / KT 동등 결합":9900,"1GB + TV / LG 동등 결합":9900},install:{"인터넷 설치비":36300,"인터넷 + TV 설치비":56100,"인터넷 + TV 설치비 + TV 설치비":78100},gift:{"(단독) 100mb":0,"(단독) 160mb":{t:110000,c:90000,v:20000},"(단독) 500mb":{t:160000,c:140000,v:20000},"(단독) 1GB":{t:180000,c:160000,v:20000},"160mb+tv":{t:360000,c:340000,v:20000},"500mb+tv":{t:400000,c:380000,v:20000},"1GB+tv":{t:430000,c:410000,v:20000}}},SKY:{internet:{"(단독) 100mb":23100,"(단독) 200mb":25300,"(단독) 500mb":30800,"(단독) 1GB":36300,"100mb(SKY)":19800,"100mb(IPTV)":19800,"200mb(SKY)":22000,"200mb(IPTV)":22000,"500mb(SKY)":27500,"500mb(IPTV)":27500,"1GB(SKY)":33000,"1GB(IPTV)":33000},tv:{"미가입":0,"SKY ALL 244채널(UHD셋탑)":9900,"SKY 포인트 244채널(UHD셋탑)":12100,"베이직 194채널(기가지니A)":13200,"플러스 209채널(기가지니A)":14300,"초이스 209채널(기가지니A)":23100},"tv-extra":{"SKY ALL 244채널(UHD셋탑)":6600,"베이직 194채널(기가지니A)":9350,"플러스 209채널(기가지니A)":9900},router:{"100mb 공유기":1100,"200mb 이상 공유기 무료":0},phone:{},addon:{},bundle:{"(100MB사은품 없음) 30% 할인":8800,"(200MB사은품 없음) 30% 할인":8800},install:{"인터넷 설치비":36000,"인터넷 설치비 (주말)":45000,"(위성)인터넷 + TV 설치비":48500,"(위성)인터넷 + TV + TV 추가 설치비":58500,"(IPTV)인터넷 + TV 설치비":48500,"(IPTV)인터넷 + TV + TV 추가 설치비":58500},gift:{"(단독) 100mb":{t:100000,c:60000,v:40000},"(단독) 200mb":{t:120000,c:80000,v:40000},"(단독) 500mb":{t:140000,c:90000,v:50000},"(단독) 1GB":{t:150000,c:100000,v:50000},"100mb(SKY)+tv":{t:350000,c:310000,v:40000},"100mb(IPTV)+tv":{t:350000,c:310000,v:40000},"200mb(SKY)+tv":{t:360000,c:320000,v:40000},"200mb(IPTV)+tv":{t:360000,c:320000,v:40000},"500mb(SKY)+tv":{t:420000,c:370000,v:50000},"500mb(IPTV)+tv":{t:420000,c:370000,v:50000},"1GB(SKY)+tv":{t:480000,c:430000,v:50000},"1GB(IPTV)+tv":{t:480000,c:430000,v:50000}}}};
+const PRODUCTS={KT:{internet:{"(단독) 100mb":22000,"(단독) 500mb":33000,"(단독) 1GB":38500,"100mb":22000,"500mb":27500,"1GB":33000},tv:{"미가입":0,"베이직 (239채널) + 기가지니A":15400,"라이트 (243채널) + 기가지니A":16500,"에센스 (269채널) + 기가지니A":19800,"에센스 플러스 (268+채널)":24200,"넷플릭스 HD (268채널)":27800,"넷플릭스 UHD (268채널)":31300,"키즈랜드팩초이스 (268채널)":24200},"tv-extra":{"베이직 (239채널) + 기가지니A":10670,"라이트 (243채널) + 기가지니A":11220,"에센스 (269채널) + 기가지니A":13420},router:{"공유기":1100,"공유기 무료 (1GB)":0,"공유기 X":0,"7D WiFi":2200,"7D WiFi (1GB)":1100},phone:{"일반 전화":6050,"인터넷 전화 (모임스톤)":7461},addon:{"기가지니3A (AI 셋톱박스)":1100,"AI 지니 TV 올인원 사운드바 (공유기 내장 셋탑, 우드/화이트 색상 택 1)":5500,"버디증폭기":1650,"기가지니 4A":3300},bundle:{"~22,000원 휴대폰 요금제&100mb/총액결합": 1650, "~64,900원 휴대폰 요금제&100mb/총액결합": 3300, "64,900원 이상 요금제&100mb/총액결합": 5500, "100mb + TV/패밀리 결합": 5500, "(단독) 100mb/알뜰폰 결합": 3300, "~22,000원 휴대폰 요금제&(단독) 500mb/총액결합": 7700, "22,000원 이상 요금제&(단독) 500mb/총액결합": 11000, "~22,000원 휴대폰 요금제&500mb/총액결합": 2200, "22,000원 이상 요금제&500mb/총액결합": 5500, "77,000원 이상 휴대폰 요금제 2회선 &500mb/프리미엄 가족결합": 5500, "77,000원 이상 요금제&(단독) 500mb/프리미엄 싱글 결합": 5500, "77,000원 이상 휴대폰 요금제 2회선 &(단독) 500mb/프리미엄 가족결합": 11000, "77,000원 이상 요금제&500mb/프리미엄 싱글 결합": 0, "(단독) 500mb/알뜰폰 결합": 11000, "500mb+TV/패밀리 결합": 5500, "1GB + TV 핸드폰 결합/총액결합": 5500, "77,000원 이상 휴대폰 요금제 2회선 & 1GB/프리미엄 가족결합": 5500, "1GB + TV/패밀리 결합": 5500, "(단독) 100mb/패밀리 결합": 5500, "(단독) 500mb/패밀리 결합": 11000, "~22,000원 휴대폰 요금제&(단독) 1GB/총액결합": 7700, "22,000원 이상 휴대폰 요금제&(단독) 1GB/총액결합": 11000, "77,000원 이상 휴대폰 요금제 2회선 &(단독) 1GB/프리미엄 가족결합": 11000, "77,000원 이상 요금제&(단독) 1GB/프리미엄 싱글 결합": 5500, "77,000원 이상 요금제&1GB/프리미엄 싱글 결합": 0, "(단독) 1GB/알뜰폰 결합": 11000, "(단독) 1GB/패밀리 결합": 11000, "100mb + TV/알뜰폰 결합": 3300, "500mb + TV/알뜰폰 결합": 5500, "1GB + TV/알뜰폰 결합": 5500, "~22,000원 휴대폰 요금제&500mb/총액결합+따살결": 9900, "~22,000원 휴대폰 요금제&1GB/총액결합+따살결": 11000, "~22,000원 요금제&500mb/총액결합+따살결": 9900, "~22,000원 요금제&1GB/총액결합+따살결": 11000, "22,000원 이상 휴대폰 요금제&500mb/총액결합+따살결": 13200, "22,000원 이상 휴대폰 요금제&1GB/총액결합+따살결": 14300, "22,000원 이상 요금제&500mb/총액결합+따살결": 9900, "22,000원 이상 요금제&1GB/총액결합+따살결": 11000, "(단독) 100mb/정액결합": 5500, "(단독) 500mb/정액결합": 11000, "(단독) 1GB/정액결합": 11000, "100mb+TV/정액결합": 5500, "500mb+TV/정액결합": 5500, "1GB+TV/정액결합": 5500},install:{"인터넷 설치비":36000,"인터넷+TV 설치비":56200,"인터넷 + 일반전화 설치비":68000,"인터넷 + 070전화 설치비":60000,"인터넷+TV + 일반전화 설치비":88200,"인터넷+TV + 070전화 설치비":80200,"인터넷+TV + TV 추가 설치비":71600,"인터넷 설치비 (주말)":45000,"인터넷 + 일반전화 설치비 (주말)":86000,"인터넷 + 070전화 설치비 (주말)":78000,"인터넷+TV 설치비 (주말)":71250,"인터넷+TV + 일반전화 설치비 (주말)":112250,"인터넷+TV + 070전화 설치비 (주말)":104250,"인터넷+TV + TV 추가 설치비 (주말)":90500},gift:{"(단독) 100mb":{t:90000,c:50000,v:40000},"(단독) 500mb":{t:140000,c:100000,v:40000},"(단독) 1GB":{t:140000,c:90000,v:50000},"100mb+tv":{t:370000,c:310000,v:60000},"500mb+tv":{t:450000,c:390000,v:60000},"1GB+tv":{t:450000,c:360000,v:90000}}},"KT 오피스넷":{internet:{"(단독) 100mb 유동":30800,"(단독) 500mb 유동":44000,"(단독) 1GB 유동":49500,"100mb 유동":30800,"500mb 유동":44000,"1GB 유동":49500},tv:{"미가입":0,"베이직 (239채널) + 기가지니A":15400,"라이트 (243채널) + 기가지니A":16500,"에센스 (269채널) + 기가지니A":19800},"tv-extra":{"베이직 (239채널) + 기가지니A":10670,"라이트 (243채널) + 기가지니A":11220,"에센스 (269채널) + 기가지니A":13420},router:{"공유기":1100},phone:{"일반 전화":6050,"인터넷 전화":6294},addon:{"100MB 고정IP":41800,"500MB 고정IP":49500,"1GB 고정IP":55000},bundle:{"(단독) 500mb 유동 & 전화":2200,"(단독) 1GB 유동 & 전화":2200,"500mb 유동(& TV or & 전화+TV)":5500,"1GB 유동(& TV or & 전화+TV)":5500},install:{"인터넷 설치비":36000,"인터넷+TV 설치비":56200,"인터넷 + 일반전화 설치비":68000,"인터넷 + 070전화 설치비":60000,"인터넷+TV + 일반전화 설치비":88200,"인터넷+TV + 070전화 설치비":80200,"인터넷+TV + TV 추가 설치비":71600,"인터넷 설치비 (주말)":45000,"인터넷 + 일반전화 설치비 (주말)":86000,"인터넷 + 070전화 설치비 (주말)":78000,"인터넷+TV 설치비 (주말)":71250,"인터넷+TV + 일반전화 설치비 (주말)":112250,"인터넷+TV + 070전화 설치비 (주말)":104250,"인터넷+TV + TV 추가 설치비 (주말)":90500},gift:{"(단독) 100mb 유동":{t:90000,c:50000,v:40000},"(단독) 500mb 유동":{t:140000,c:100000,v:40000},"(단독) 1GB 유동":{t:140000,c:90000,v:50000},"100mb 유동+tv":{t:370000,c:300000,v:70000},"500mb 유동+tv":{t:450000,c:380000,v:70000},"1GB 유동+tv":{t:450000,c:350000,v:100000}}},LGU:{internet:{"(단독) 100mb":22000,"(단독) 200mb":25300,"(단독) 500mb":33000,"(단독) 1GB":38500,"100mb":22000,"200mb":25300,"500mb":27500,"1GB":33000},tv:{"미가입":0,"실속형 (217채널) + UHD4":17600,"기본형 (233채널) + UHD4":18700,"프리미엄 (252채널)":20900,"프리미엄 라이트 (259채널)":23100,"프리미엄 디즈니":29000,"프리미엄 넷플릭스 HD":32200,"프리미엄 넷플릭스 UHD":35700},"tv-extra":{"실속형 (217채널) + UHD3 / 500mb 이상":9900,"기본형 (233채널) + UHD3 / 500mb 이상":10450,"실속형 (217채널) + UHD4":12100,"기본형 (233채널) + UHD4":12650,"실속형(고급형) / 100mb할 경우":11000,"프리미엄(UHD4)":13750},router:{"공유기 무료":0},phone:{"인터넷 전화(070) - 단말기 보유":3300,"인터넷 전화(070) - 단말기 구매":5562},addon:{"증폭기 (GAPK-7600)":2200,"네이버 클로버 클락":3300,"사운드바 셋톱박스 블랙":2200,"(100/200/1G 번들) 아이패드 - 프리미엄X":14694,"(500mb 번들) 아이패드 - 프리미엄 X":13200},bundle:{"100mb + TV/참쉬운가족결합":5500,"100mb + TV/인터넷 가족끼리 다모여 결합(패밀리)":5500,"200mb + TV/참쉬운가족결합":5500,"200mb + TV/인터넷 가족끼리 다모여 결합(패밀리)":5500,"500mb + TV/참쉬운가족결합":9900,"500mb + TV/인터넷 가족끼리 다모여 결합(패밀리)":5500,"500mb + TV/투게더결합":11000,"1GB + TV/참쉬운가족결합":13200,"1GB + TV/인터넷 가족끼리 다모여 결합(패밀리)":5500,"1GB + TV/투게더결합":11000,"(단독) 100mb/참쉬운가족결합":5500,"(단독) 100mb/인터넷 가족끼리 다모여 결합(패밀리)":5500,"(단독) 200mb/참쉬운가족결합":5500,"(단독) 200mb/인터넷 가족끼리 다모여 결합(패밀리)":5500,"(단독) 500mb/참쉬운가족결합":9900,"(단독) 500mb/인터넷 가족끼리 다모여 결합(패밀리)":5500,"(단독) 500mb/투게더결합":11000,"(단독) 1GB/참쉬운가족결합":13200,"(단독) 1GB/인터넷 가족끼리 다모여 결합(패밀리)":5500,"(단독) 1GB/투게더결합":11000},install:{"인터넷 설치비":36300,"인터넷 + 일반전화 설치비":36300,"인터넷 + 인터넷전화 설치비":36300,"인터넷 + TV 설치비":56100,"인터넷 + TV + 일반/070전화 설치비":56100,"인터넷 + TV + TV추가 설치비":78100,"인터넷 설치비 (주말)":45375,"인터넷 + 일반전화 설치비 (주말)":45375,"인터넷 + 인터넷전화 설치비 (주말)":45375,"인터넷 + TV 설치비 (주말)":70125,"인터넷 + TV + 일반/070전화 설치비 (주말)":70125,"인터넷 + TV + TV추가 설치비 (주말)":97625},gift:{"(단독) 100mb":200000,"(단독) 200mb":200000,"(단독) 500mb":230000,"(단독) 1GB":230000,"100mb+tv":330000,"200mb+tv":330000,"500mb+tv":470000,"1GB+tv":470000}},"LG 소호":{internet:{"(단독) 100mb":22000,"(단독) 200mb":25300,"(단독) 500mb":33000,"(단독) 1GB":38500,"100mb":22000,"200mb":25300,"500mb":27500,"1GB":33000},tv:{"미가입":0,"실속형 (217채널) + UHD4":17600,"기본형 (233채널) + UHD4":18700,"프리미엄 (254채널)":20900,"프리미엄 라이트 (259채널)":23100,"프리미엄 디즈니":29000,"프리미엄 넷플릭스 HD":32200,"프리미엄 넷플릭스 UHD":35700},"tv-extra":{"실속형 (217채널) + UHD4":12100,"기본형 (233채널) + UHD4":12650,"실속형(고급형) / 100mb할 경우":11000,"프리미엄(UHD4)":13750},router:{"공유기 무료":0,"SOHO 안심 보상 (100M/500M)":3300,"SOHO 안심 보상 (1G)":4400},phone:{"일반전화(지역번호)- CPG(기존 소유 전화 단말기 사용 시) / 신규가입 시, 가입비 33,000원 포함":35200,"일반 전화 (지역번호) - CPG(기존 소유 전화 단말기 사용 시)":2200,"인터넷 전화 (070) - CPG(기존 소유 전화 단말기 사용 시)":2200,"100mb/인터넷 전화 (070) - (IP450S 단말기 대여 포함) 월 요금 3,300원 + 단말기(611원)":3911,"500mb이상/인터넷 전화 (070) - 고급형센트릭스 월 요금 3,300원 + IP520G 단말기 대여비 (월 요금 1405원)":4705},addon:{"CCTV 1대":13200,"CCTV 2대":26400,"CCTV 3대":39600},bundle:{"100mb + TV/참쉬운가족결합":5500,"100mb + TV/인터넷 가족끼리 다모여 결합(패밀리)":5500,"200mb + TV/참쉬운가족결합":5500,"200mb + TV/인터넷 가족끼리 다모여 결합(패밀리)":5500,"500mb + TV/참쉬운가족결합":9900,"500mb + TV/인터넷 가족끼리 다모여 결합(패밀리)":5500,"500mb + TV/투게더결합":11000,"1GB + TV/참쉬운가족결합":13200,"1GB + TV/인터넷 가족끼리 다모여 결합(패밀리)":5500,"1GB + TV/투게더결합":11000,"(단독) 100mb/참쉬운가족결합":5500,"(단독) 100mb/인터넷 가족끼리 다모여 결합(패밀리)":5500,"(단독) 200mb/참쉬운가족결합":5500,"(단독) 200mb/인터넷 가족끼리 다모여 결합(패밀리)":5500,"(단독) 500mb/참쉬운가족결합":9900,"(단독) 500mb/인터넷 가족끼리 다모여 결합(패밀리)":5500,"(단독) 500mb/투게더결합":11000,"(단독) 1GB/참쉬운가족결합":13200,"(단독) 1GB/인터넷 가족끼리 다모여 결합(패밀리)":5500,"(단독) 1GB/투게더결합":11000},install:{"인터넷 설치비":36300,"인터넷 + 일반전화 설치비":36300,"인터넷 + 인터넷전화 설치비":36300,"인터넷 + TV 설치비":56100,"인터넷 + TV + 일반/070전화 설치비":56100,"인터넷 + TV + TV추가 설치비":78100,"인터넷 설치비 (주말)":45375,"인터넷 + 일반전화 설치비 (주말)":45375,"인터넷 + 인터넷전화 설치비 (주말)":45375,"인터넷 + TV 설치비 (주말)":70125,"인터넷 + TV + 일반/070전화 설치비 (주말)":70125,"인터넷 + TV + TV추가 설치비 (주말)":97625},gift:{"(단독) 100mb":130000,"(단독) 200mb":200000,"(단독) 500mb":250000,"(단독) 1GB":250000,"100mb+tv":400000,"200mb+tv":400000,"500mb+tv":470000,"1GB+tv":470000}},SKB:{internet:{"(단독) 100mb":22000,"(단독) 500mb":33000,"(단독) 1GB":38500,"100mb":19800,"500mb":27500,"1GB":33000},tv:{"미가입":0,"이코노미 (182채널) + 스마트3":14300,"스탠다드 (236채널) + 스마트3":17600,"ALL (256채널) + 스마트3":20900,"Btv Max (256채널) + 스마트3":27500,"스탠다드 넷플릭스 29,900원":29900,"스탠다드 넷플릭스 프리미엄 32,900원":32900,"ALL 넷플릭스 32,400원":32400,"ALL 넷플릭스 프리미엄 35,400원":35400},"tv-extra":{"이코노미 (182채널) + 스마트3":8250,"이코노미(애플셋탑)":10450,"스탠다드 (236채널) + 스마트3":9900,"스탠다드(애플셋탑)":12100,"ALL (256채널) + 스마트3":11550,"ALL(애플셋탑)":13750,"Btv Max (256채널) + 스마트3":18150},router:{"공유기":1100,"7D WiFi":2200,"공유기 X":0},phone:{"일반 전화":1100,"070 전화 (인터넷+전화 기본)":1100,"070 전화 (인터넷+TV+전화 기본)":1100,"070 전화 (인터넷+집전화 프리)":4400,"070 전화 (인터넷+TV+집전화 프리)":2200},addon:{"WINGS (증폭기)":1650,"AI 사운드바 맥스":4400,"애플셋탑 (프로모션 진행 중)":0,"AI5":3300},bundle:{"100mb + TV/요즘가족결합":3300,"100mb + TV/패밀리결합":3300,"100mb + TV/알뜰한 결합":3300,"500mb + TV/요즘가족결합":6600,"500mb + TV/패밀리결합":5500,"500mb + TV/알뜰한 결합":6600,"1GB + TV/요즘가족결합":8800,"1GB + TV/패밀리결합":5500,"1GB + TV/알뜰한 결합":8800,"(단독) 100mb/요즘가족결합":4400,"(단독) 100mb/패밀리결합":5500,"(단독) 100mb/알뜰한 결합":4400,"(단독) 500mb/요즘가족결합":11000,"(단독) 500mb/패밀리결합":11000,"(단독) 500mb/알뜰한 결합":11000,"(단독) 1GB/요즘가족결합":13200,"(단독) 1GB/패밀리결합":11000,"(단독) 1GB/알뜰한 결합":13200},install:{"인터넷 설치비":36300,"인터넷 + 일반전화 설치비":44000,"인터넷 + 070전화 설치비":37400,"인터넷 + TV 설치비":56100,"인터넷 + TV + 일반/070전화 설치비":56100,"인터넷 + TV + TV추가 설치비":73700,"인터넷 설치비 (주말)":45375,"인터넷 + 일반전화 설치비 (주말)":51700,"인터넷 + 070전화 설치비 (주말)":45100,"인터넷 + TV 설치비 (주말)":70125,"인터넷 + TV + 일반/070전화 설치비 (주말)":70125,"인터넷 + TV + TV추가 설치비 (주말)":92125},gift:{"(단독) 100mb":100000,"(단독) 500mb":170000,"(단독) 1GB":170000,"100mb+tv":390000,"500mb+tv":490000,"1GB+tv":490000}},SKT:{internet:{"(단독) 100mb":22000,"(단독) 500mb":33000,"(단독) 1GB":38500,"100mb":19800,"500mb":27500,"1GB":33000},tv:{"미가입":0,"이코노미 (182채널) + 스마트3":14300,"스탠다드 (236채널) + 스마트3":17600,"ALL (256채널) + 스마트3":20900,"Btv Max (256채널) + 스마트3":27500,"스탠다드 넷플릭스 29,900원":29900,"스탠다드 넷플릭스 프리미엄 32,900원":32900,"ALL 넷플릭스 32,400원":32400,"ALL 넷플릭스 프리미엄 35,400원":35400},"tv-extra":{"이코노미 (182채널) + 스마트3":8250,"이코노미(애플셋탑)":10450,"스탠다드 (236채널) + 스마트3":9900,"스탠다드(애플셋탑)":12100,"ALL (256채널) + 스마트3":11550,"ALL(애플셋탑)":13750,"Btv Max (256채널) + 스마트3":18150},router:{"공유기":1100,"7D WiFi":2200,"공유기 X":0},phone:{"일반 전화":1100,"070 전화 (인터넷+전화 기본)":1100,"070 전화 (인터넷+TV+전화 기본)":1100,"070 전화 (인터넷+집전화 프리)":4400,"070 전화 (인터넷+TV+집전화 프리)":2200},addon:{"WINGS (증폭기)":1650,"AI 사운드바 맥스":4400,"애플셋탑 (프로모션 진행 중)":0,"AI5":3300},bundle:{"100mb + TV/요즘가족결합":3300,"100mb + TV/패밀리결합":3300,"500mb + TV/요즘가족결합":6600,"500mb + TV/패밀리결합":5500,"1GB + TV/요즘가족결합":8800,"1GB + TV/패밀리결합":5500,"(단독) 100mb/요즘가족결합":4400,"(단독) 100mb/패밀리결합":5500,"(단독) 500mb/요즘가족결합":11000,"(단독) 500mb/패밀리결합":11000,"(단독) 1GB/요즘가족결합":13200,"(단독) 1GB/패밀리결합":11000},install:{"인터넷 설치비":36300,"인터넷 + 일반전화 설치비":44000,"인터넷 + 070전화 설치비":37400,"인터넷 + TV 설치비":56100,"인터넷 + TV + 일반/070전화 설치비":56100,"인터넷 + TV + TV추가 설치비":73700,"인터넷 설치비 (주말)":45375,"인터넷 + 일반전화 설치비 (주말)":51700,"인터넷 + 070전화 설치비 (주말)":45100,"인터넷 + TV 설치비 (주말)":70125,"인터넷 + TV + 일반/070전화 설치비 (주말)":70125,"인터넷 + TV + TV추가 설치비 (주말)":92125},gift:{"(단독) 100mb":110000,"(단독) 500mb":170000,"(단독) 1GB":170000,"100mb+tv":380000,"500mb+tv":430000,"1GB+tv":520000}},헬로비전:{internet:{"(단독) 100mb":20790,"(단독) 160mb":26510,"(단독) 500mb":30360,"(단독) 1GB":31900,"100mb":16330,"160mb":21060,"500mb":24090,"1GB":25300},tv:{"미가입":0,"이코노미 UHD (108채널)":15400,"뉴베이직 UHD (247채널)":17600,"프로라이트 UHD (222채널)":17600,"프로맥스 UHD (249채널)":19800},"tv-extra":{"이코노미 HD (108채널)":5500,"뉴베이직 HD (247채널)":8800,"뉴베이직 UHD (247채널)":11000,"프로라이트 UHD (222채널)":11550,"프로맥스 UHD (249채널)":13750},router:{"공유기":1100,"공유기 X (100mb 가입시 선택 가능)":0},phone:{},addon:{},bundle:{"160mb 단독 / SK 동등 결합":5530,"160mb 단독 / KT 동등 결합":5530,"160mb 단독 / LG 동등 결합":5530,"500mb 단독 / SK 동등 결합":6300,"500mb 단독 / KT 동등 결합":6300,"500mb 단독 / LG 동등 결합":6300,"1GB 단독 / SK 동등 결합":9900,"1GB 단독 / KT 동등 결합":9900,"1GB 단독 / LG 동등 결합":9900,"160mb + TV / SK 동등 결합":5520,"160mb + TV / KT 동등 결합":5520,"160mb + TV / LG 동등 결합":5520,"500mb + TV / SK 동등 결합":6300,"500mb + TV / KT 동등 결합":6300,"500mb + TV / LG 동등 결합":6300,"1GB + TV / SK 동등 결합":9900,"1GB + TV / KT 동등 결합":9900,"1GB + TV / LG 동등 결합":9900},install:{"인터넷 설치비":36300,"인터넷 + TV 설치비":56100,"인터넷 + TV 설치비 + TV 설치비":78100},gift:{"(단독) 100mb":0,"(단독) 160mb":{t:110000,c:90000,v:20000},"(단독) 500mb":{t:160000,c:140000,v:20000},"(단독) 1GB":{t:180000,c:160000,v:20000},"160mb+tv":{t:360000,c:340000,v:20000},"500mb+tv":{t:400000,c:380000,v:20000},"1GB+tv":{t:430000,c:410000,v:20000}}},SKY:{internet:{"(단독) 100mb":23100,"(단독) 200mb":25300,"(단독) 500mb":30800,"(단독) 1GB":36300,"100mb(SKY)":19800,"100mb(IPTV)":19800,"200mb(SKY)":22000,"200mb(IPTV)":22000,"500mb(SKY)":27500,"500mb(IPTV)":27500,"1GB(SKY)":33000,"1GB(IPTV)":33000},tv:{"미가입":0,"SKY ALL 244채널(UHD셋탑)":9900,"SKY 포인트 244채널(UHD셋탑)":12100,"베이직 194채널(기가지니A)":13200,"플러스 209채널(기가지니A)":14300,"초이스 209채널(기가지니A)":23100},"tv-extra":{"SKY ALL 244채널(UHD셋탑)":6600,"베이직 194채널(기가지니A)":9350,"플러스 209채널(기가지니A)":9900},router:{"100mb 공유기":1100,"200mb 이상 공유기 무료":0},phone:{},addon:{},bundle:{"(100MB사은품 없음) 30% 할인":8800,"(200MB사은품 없음) 30% 할인":8800},install:{"인터넷 설치비":36000,"인터넷 설치비 (주말)":45000,"(위성)인터넷 + TV 설치비":48500,"(위성)인터넷 + TV + TV 추가 설치비":58500,"(IPTV)인터넷 + TV 설치비":48500,"(IPTV)인터넷 + TV + TV 추가 설치비":58500},gift:{"(단독) 100mb":{t:100000,c:60000,v:40000},"(단독) 200mb":{t:120000,c:80000,v:40000},"(단독) 500mb":{t:140000,c:90000,v:50000},"(단독) 1GB":{t:150000,c:100000,v:50000},"100mb(SKY)+tv":{t:350000,c:310000,v:40000},"100mb(IPTV)+tv":{t:350000,c:310000,v:40000},"200mb(SKY)+tv":{t:360000,c:320000,v:40000},"200mb(IPTV)+tv":{t:360000,c:320000,v:40000},"500mb(SKY)+tv":{t:420000,c:370000,v:50000},"500mb(IPTV)+tv":{t:420000,c:370000,v:50000},"1GB(SKY)+tv":{t:480000,c:430000,v:50000},"1GB(IPTV)+tv":{t:480000,c:430000,v:50000}}}};
 const BUNDLE_SPEED_MAP={
 "KT":{"~22,000원 휴대폰 요금제&100mb/총액결합":["(단독) 100mb","100mb"],"~64,900원 휴대폰 요금제&100mb/총액결합":["(단독) 100mb","100mb"],"64,900원 이상 요금제&100mb/총액결합":["(단독) 100mb","100mb"],"100mb + TV/패밀리 결합":["100mb"],"~22,000원 휴대폰 요금제&500mb/총액결합":["500mb"],"22,000원 이상 요금제&500mb/총액결합":["500mb"],"77,000원 이상 요금제&500mb/프리미엄 싱글 결합":["500mb"],"77,000원 이상 휴대폰 요금제 2회선 &500mb/프리미엄 가족결합":["500mb"],"500mb+TV/패밀리 결합":["500mb"],"1GB + TV 핸드폰 결합/총액결합":["1GB"],"77,000원 이상 요금제&1GB/프리미엄 싱글 결합":["1GB"],"77,000원 이상 휴대폰 요금제 2회선 & 1GB/프리미엄 가족결합":["1GB"],"1GB + TV/패밀리 결합":["1GB"],"(단독) 100mb/패밀리 결합":["(단독) 100mb"],"(단독) 100mb/알뜰폰 결합":["(단독) 100mb"],"~22,000원 휴대폰 요금제&(단독) 500mb/총액결합":["(단독) 500mb"],"22,000원 이상 요금제&(단독) 500mb/총액결합":["(단독) 500mb"],"77,000원 이상 요금제&(단독) 500mb/프리미엄 싱글 결합":["(단독) 500mb"],"77,000원 이상 휴대폰 요금제 2회선 &(단독) 500mb/프리미엄 가족결합":["(단독) 500mb"],"(단독) 500mb/알뜰폰 결합":["(단독) 500mb"],"(단독) 500mb/패밀리 결합":["(단독) 500mb"],"(단독) 1GB/알뜰폰 결합":["(단독) 1GB"],"~22,000원 휴대폰 요금제&(단독) 1GB/총액결합":["(단독) 1GB"],"22,000원 이상 휴대폰 요금제&(단독) 1GB/총액결합":["(단독) 1GB"],"77,000원 이상 요금제&(단독) 1GB/프리미엄 싱글 결합":["(단독) 1GB"],"77,000원 이상 휴대폰 요금제 2회선 &(단독) 1GB/프리미엄 가족결합":["(단독) 1GB"],"(단독) 1GB/패밀리 결합":["(단독) 1GB"],"100mb + TV/알뜰폰 결합":["100mb"],"500mb + TV/알뜰폰 결합":["500mb"],"1GB + TV/알뜰폰 결합":["1GB"],"~22,000원 휴대폰 요금제&500mb/총액결합+따살결":["(단독) 500mb"],"~22,000원 휴대폰 요금제&1GB/총액결합+따살결":["(단독) 1GB"],"~22,000원 요금제&500mb/총액결합+따살결":["500mb"],"~22,000원 요금제&1GB/총액결합+따살결":["1GB"],"22,000원 이상 휴대폰 요금제&500mb/총액결합+따살결":["(단독) 500mb"],"22,000원 이상 휴대폰 요금제&1GB/총액결합+따살결":["(단독) 1GB"],"22,000원 이상 요금제&500mb/총액결합+따살결":["500mb"],"22,000원 이상 요금제&1GB/총액결합+따살결":["1GB"],"(단독) 100mb/정액결합":["(단독) 100mb"],"(단독) 500mb/정액결합":["(단독) 500mb"],"(단독) 1GB/정액결합":["(단독) 1GB"],"100mb+TV/정액결합":["100mb"],"500mb+TV/정액결합":["500mb"],"1GB+TV/정액결합":["1GB"]},
 "LGU":{"100mb + TV/참쉬운가족결합":["100mb"],"100mb + TV/인터넷 가족끼리 다모여 결합(패밀리)":["100mb"],"200mb + TV/참쉬운가족결합":["200mb"],"200mb + TV/인터넷 가족끼리 다모여 결합(패밀리)":["200mb"],"500mb + TV/참쉬운가족결합":["500mb"],"500mb + TV/인터넷 가족끼리 다모여 결합(패밀리)":["500mb"],"500mb + TV/투게더결합":["500mb"],"1GB + TV/참쉬운가족결합":["1GB"],"1GB + TV/인터넷 가족끼리 다모여 결합(패밀리)":["1GB"],"1GB + TV/투게더결합":["1GB"],"(단독) 100mb/참쉬운가족결합":["(단독) 100mb"],"(단독) 100mb/인터넷 가족끼리 다모여 결합(패밀리)":["(단독) 100mb"],"(단독) 200mb/참쉬운가족결합":["(단독) 200mb"],"(단독) 200mb/인터넷 가족끼리 다모여 결합(패밀리)":["(단독) 200mb"],"(단독) 500mb/참쉬운가족결합":["(단독) 500mb"],"(단독) 500mb/인터넷 가족끼리 다모여 결합(패밀리)":["(단독) 500mb"],"(단독) 500mb/투게더결합":["(단독) 500mb"],"(단독) 1GB/참쉬운가족결합":["(단독) 1GB"],"(단독) 1GB/인터넷 가족끼리 다모여 결합(패밀리)":["(단독) 1GB"],"(단독) 1GB/투게더결합":["(단독) 1GB"],"100mb는 투게더불가!!!!":["(단독) 100mb","100mb"],"200mb는 투게더불가!!!!":["(단독) 200mb","200mb"]},
@@ -1586,6 +1615,12 @@ const ONGAJOK_PHONE = {
   "070 전화 (인터넷+TV+집전화 프리 요금제 / 단말기 대여 X)": 2200
 };
 
+// 온가족할인 버튼: 계산기 모드 전환은 비활성화, 시트 링크만 새 탭으로 오픈
+function openOngajokSheet() {
+  window.open('https://docs.google.com/spreadsheets/d/1cl-1LWKCmkBwqQN-OCrLXn2_SWw8mx80hITxDe8zSy8/edit?pli=1&gid=1911716096#gid=1911716096', '_blank');
+}
+
+// 비활성화됨 — 버튼에서 더 이상 호출하지 않음 (온가족할인 모드 전환 로직은 삭제하지 않고 보존)
 function toggleOngajok() {
   ongajokMode = !ongajokMode;
   const btn = document.getElementById('btn-ongajok');
@@ -1705,6 +1740,66 @@ function filterBundleOptions(){
   updateWrapState('bundle');
 }
 
+// KT 7D WiFi: 인터넷 속도에 따라 "7D WiFi"(100mb/500mb) 또는 "7D WiFi (1GB)"(1GB)만 노출
+const KT_7D_WIFI_100_500 = ['(단독) 100mb','(단독) 500mb','100mb','500mb'];
+const KT_7D_WIFI_1GB = ['(단독) 1GB','1GB'];
+function filterRouterOptions(){
+  const isp = document.getElementById('isp').value;
+  if(!isp || !PRODUCTS[isp]) return;
+  const routerAll = PRODUCTS[isp].router;
+  const inet = document.getElementById('internet').value || '';
+
+  const sel = document.getElementById('router');
+  const prev = sel.value;
+  sel.innerHTML = '';
+  const blankOpt=document.createElement('option'); blankOpt.value=''; blankOpt.textContent='-- 공유기 선택 --'; sel.appendChild(blankOpt);
+
+  for(const [k, v] of Object.entries(routerAll)){
+    let show = true;
+    if(isp === 'KT' && k === '7D WiFi'){
+      show = !inet || KT_7D_WIFI_100_500.includes(inet);
+    } else if(isp === 'KT' && k === '7D WiFi (1GB)'){
+      show = !inet || KT_7D_WIFI_1GB.includes(inet);
+    }
+    if(show) addOpt(sel, k, v);
+  }
+
+  sel.value = ([...sel.options].some(o=>o.value===prev)) ? prev : sel.options[0]?.value || '';
+  updateWrapState('router');
+}
+
+// SKY: 인터넷이 (SKY)형이면 위성 TV(SKY ALL/SKY 포인트)만, (IPTV)형이면 기가지니A TV(베이직/플러스/초이스)만 노출
+// tv-extra도 동일 규칙 적용 (미선택/단독은 전체 노출 — 단독은 updateDandokLock()이 TV를 잠그므로 영향 없음)
+function filterSkyProductOptions(){
+  const isp = document.getElementById('isp').value;
+  if(isp !== 'SKY' || !PRODUCTS.SKY) return;
+  const inet = document.getElementById('internet').value || '';
+  const isSkyType = inet.includes('(SKY)');
+  const isIptvType = inet.includes('(IPTV)');
+
+  ['tv','tv-extra'].forEach(id=>{
+    const all = PRODUCTS.SKY[id];
+    const sel = document.getElementById(id);
+    if(!all || !sel) return;
+    const prev = sel.value;
+    sel.innerHTML = '';
+    const blankOpt=document.createElement('option');
+    blankOpt.value=''; blankOpt.textContent = (id==='tv') ? '-- TV 선택 --' : '-- TV 추가 없음 --';
+    sel.appendChild(blankOpt);
+
+    for(const [k, v] of Object.entries(all)){
+      if(id === 'tv' && k === '미가입') continue;
+      let show = true;
+      if(isSkyType) show = !k.includes('기가지니A');
+      else if(isIptvType) show = k.includes('기가지니A');
+      if(show) addOpt(sel, k, v);
+    }
+
+    sel.value = ([...sel.options].some(o=>o.value===prev)) ? prev : sel.options[0]?.value || '';
+    updateWrapState(id);
+  });
+}
+
 function addOpt(sel, k, v){
   const o = document.createElement('option');
   o.value = k; o.textContent = k; sel.appendChild(o);
@@ -1727,7 +1822,7 @@ function populateSelect(id,options){
   else el.selectedIndex=0;
   updateWrapState(id);
 }
-function onIspChange(){const isp=document.getElementById('isp').value;const ispEl=document.getElementById('isp');if(isp){ispEl.classList.add('isp-selected');}else{ispEl.classList.remove('isp-selected');}if(!isp||!PRODUCTS[isp])return;const p=PRODUCTS[isp];['internet','tv','tv-extra','router','phone','addon','bundle','install'].forEach(id=>{const el=document.getElementById(id);if(el)el.selectedIndex=0;});populateSelect('internet',p.internet);populateSelect('tv',p.tv);populateSelect('tv-extra',p['tv-extra']);populateSelect('router',p.router);populateSelect('phone',p.phone);populateSelect('addon',p.addon);populateSelect('bundle',p.bundle);populateSelect('install',p.install);['internet','tv','tv-extra','router','phone','addon','bundle','install'].forEach(updateWrapState);updateWrapState('isp');updateDandokLock();filterBundleOptions();calc();calcUsimGift();syncUsimIspToInternet();}
+function onIspChange(){const isp=document.getElementById('isp').value;const ispEl=document.getElementById('isp');if(isp){ispEl.classList.add('isp-selected');}else{ispEl.classList.remove('isp-selected');}if(!isp||!PRODUCTS[isp])return;const p=PRODUCTS[isp];['internet','tv','tv-extra','router','phone','addon','bundle','install'].forEach(id=>{const el=document.getElementById(id);if(el)el.selectedIndex=0;});populateSelect('internet',p.internet);populateSelect('tv',p.tv);populateSelect('tv-extra',p['tv-extra']);populateSelect('router',p.router);populateSelect('phone',p.phone);populateSelect('addon',p.addon);populateSelect('bundle',p.bundle);populateSelect('install',p.install);['internet','tv','tv-extra','router','phone','addon','bundle','install'].forEach(updateWrapState);updateWrapState('isp');updateDandokLock();filterBundleOptions();filterRouterOptions();filterSkyProductOptions();calc();calcUsimGift();syncUsimIspToInternet();}
 // ⚠️ 저수준 헬퍼: PRODUCTS[isp].gift에서 "인터넷 속도 + TV유무"만으로 단순 조회.
 // TV 종류(베이직/에센스 등)나 결합종류는 전혀 구분하지 않음.
 // → 실제 화면/계산에는 이 함수를 직접 쓰지 않고, 아래 calcGift()를 통해서만 사용할 것.
@@ -3146,7 +3241,7 @@ setTimeout(()=>setMemoMode('proposal'), 50);
   document.getElementById(id).addEventListener('change', function(){
     resetFrom(id);
     updateWrapState(id);
-    if(id === 'internet'){ updateDandokLock(); filterBundleOptions(); }
+    if(id === 'internet'){ updateDandokLock(); filterBundleOptions(); filterRouterOptions(); filterSkyProductOptions(); }
     if(id === 'tv' || id === 'tv-extra'){ filterBundleOptions(); }
     calc();
     if(id === 'internet' || id === 'tv' || id === 'bundle'){ calcUsimGift(); }
@@ -3304,6 +3399,8 @@ function loadTab(n){
     });
     updateDandokLock();
     filterBundleOptions();
+    filterRouterOptions();
+    filterSkyProductOptions();
   }else{
     TAB_FIELDS.slice(1).forEach(id=>{
       const el=document.getElementById(id);
@@ -3533,6 +3630,8 @@ function updateComboCard(bundleValue){
         });
         if(typeof updateDandokLock === 'function') updateDandokLock();
         if(typeof filterBundleOptions === 'function') filterBundleOptions();
+        if(typeof filterRouterOptions === 'function') filterRouterOptions();
+        if(typeof filterSkyProductOptions === 'function') filterSkyProductOptions();
       }
 
       // 탭 데이터
