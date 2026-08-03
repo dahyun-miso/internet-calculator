@@ -20,10 +20,17 @@ function decodeBasicAuth(base64) {
   return new TextDecoder('utf-8').decode(bytes);
 }
 
+// 정적 에셋(JS/CSS 등)은 <script src="..."> 처럼 쿼리스트링 없이 요청되므로
+// agent 파라미터 유무로 판단하면 항상 "파라미터 없음"으로 걸려 로그인 창이 뜬다.
+// 페이지 자체가 아닌 리소스 파일이라 민감 정보가 없으므로 인증 없이 통과시킨다.
+const STATIC_ASSET_RE = /\.(js|css|png|jpe?g|gif|svg|ico|webp|woff2?|ttf|map)$/i;
+
 // agent 파라미터가 있는 요청(계산기 사용)은 인증 없이 열어두고,
 // agent 파라미터가 없는 요청(예: /logins.html 관리자 페이지)만 아이디/비번으로 보호한다.
 export default async function middleware(request) {
   const url = new URL(request.url);
+  if (STATIC_ASSET_RE.test(url.pathname)) return next();
+
   const agentParam = url.searchParams.get('agent')?.trim();
   const ip = ipAddress(request);
 

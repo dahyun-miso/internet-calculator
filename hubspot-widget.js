@@ -5,11 +5,15 @@
   const panel = document.getElementById('hubspot-panel');
   const panelCloseBtn = document.getElementById('hubspot-panel-close');
   const panelBadge = document.getElementById('hubspot-panel-badge');
+  const panelLoading = document.getElementById('hubspot-panel-loading');
 
   const agent = new URLSearchParams(window.location.search).get('agent')?.trim();
-  if(agent !== '박다현'){ // 테스트 기간 동안 다른 상담사에게는 노출하지 않음
-    panelToggleBtn.style.display = 'none';
-    return;
+
+  // 최초 로드 시 세 섹션(Task/전화 시도/최근 상품제안)이 모두 응답할 때까지 로딩 문구를 띄운다.
+  const sectionLoaded = { tasks: false, leads: false, intRecent: false };
+  function markSectionLoaded(key){
+    sectionLoaded[key] = true;
+    if(Object.values(sectionLoaded).every(Boolean)) panelLoading.style.display = 'none';
   }
 
   function openPanel(){
@@ -55,6 +59,7 @@
   const tasksRefreshBtn = document.getElementById('hubspot-tasks-refresh');
   const tasksUpdatedEl = document.getElementById('hubspot-tasks-updated');
   const tasksPrevBtn = document.getElementById('hubspot-tasks-prev');
+  const tasksPageEl = document.getElementById('hubspot-tasks-page');
   const tasksNextBtn = document.getElementById('hubspot-tasks-next');
   const TASKS_PAGE_SIZE = 10;
   let allTasks = [];
@@ -63,15 +68,18 @@
 
   function renderTasksPage(){
     const total = allTasks.length;
+    const totalPages = Math.max(1, Math.ceil(total / TASKS_PAGE_SIZE));
     tasksCountEl.textContent = total ? `(총 ${total}개)` : '';
+    tasksPageEl.textContent = total ? `${taskPage + 1} / ${totalPages}` : '';
     tasksPrevBtn.disabled = taskPage === 0;
     tasksNextBtn.disabled = (taskPage + 1) * TASKS_PAGE_SIZE >= total;
 
     if(!total){
-      tasksListEl.textContent = '오늘 마감인 Task가 없습니다.';
+      tasksListEl.textContent = '모두 완료! 수고하셨습니다👏';
       return;
     }
     const pageTasks = allTasks.slice(taskPage * TASKS_PAGE_SIZE, (taskPage + 1) * TASKS_PAGE_SIZE);
+    const now = Date.now();
 
     tasksListEl.innerHTML = '';
     const table = document.createElement('table');
@@ -82,9 +90,10 @@
     </tr></thead>`;
     const tbody = document.createElement('tbody');
     pageTasks.forEach(t => {
+      const isOverdue = t.timestamp && new Date(t.timestamp).getTime() <= now;
       const tr = document.createElement('tr');
       tr.style.cssText = 'border-bottom:1px solid #f0f0f0'
-        + (t.priority === 'HIGH' ? ';background:#fdecea' : '');
+        + (isOverdue ? ';background:#ffe9e9' : (t.priority === 'HIGH' ? ';background:#fdecea' : ''));
 
       const titleTd = document.createElement('td');
       titleTd.style.padding = '6px';
@@ -120,7 +129,7 @@
   // ── 마감 지난 Task 개수 뱃지 (팝업/토스트 알림 없이, 헤더 버튼에 조용히 숫자만 표시) ──
   function checkDueTasks(){
     const now = Date.now();
-    const dueCount = allTasks.filter(t => t.timestamp && t.timestamp <= now).length;
+    const dueCount = allTasks.filter(t => t.timestamp && new Date(t.timestamp).getTime() <= now).length;
     panelBadge.textContent = dueCount > 9 ? '9+' : String(dueCount);
     panelBadge.style.display = dueCount > 0 ? '' : 'none';
   }
@@ -145,7 +154,7 @@
         tasksUpdatedEl.textContent = '새로고침: ' + new Date().toLocaleTimeString('ko-KR');
       })
       .catch(e => console.error('hubspot-tasks fetch failed', e))
-      .finally(() => { tasksRefreshBtn.disabled = false; tasksRefreshBtn.classList.remove('spinning'); });
+      .finally(() => { tasksRefreshBtn.disabled = false; tasksRefreshBtn.classList.remove('spinning'); markSectionLoaded('tasks'); });
   }
 
   tasksRefreshBtn.addEventListener('click', loadTasks);
@@ -207,7 +216,7 @@
     leadsNextBtn.disabled = (leadsPage + 1) * LEADS_PAGE_SIZE >= total;
 
     if(!total){
-      listEl.textContent = '오늘 할 일 모두 완료! 수고하셨습니다';
+      listEl.textContent = '모두 완료! 수고하셨습니다👏';
       return;
     }
     const pageDeals = allDeals.slice(leadsPage * LEADS_PAGE_SIZE, (leadsPage + 1) * LEADS_PAGE_SIZE);
@@ -274,7 +283,7 @@
         leadsUpdatedEl.textContent = '새로고침: ' + new Date().toLocaleTimeString('ko-KR');
       })
       .catch(e => console.error('hubspot-deals fetch failed', e))
-      .finally(() => { leadsRefreshBtn.disabled = false; leadsRefreshBtn.classList.remove('spinning'); });
+      .finally(() => { leadsRefreshBtn.disabled = false; leadsRefreshBtn.classList.remove('spinning'); markSectionLoaded('leads'); });
   }
 
   const leadsRefreshBtn = document.getElementById('hubspot-leads-refresh');
@@ -312,7 +321,7 @@
     intRecentNextBtn.disabled = (intRecentPage + 1) * INT_RECENT_PAGE_SIZE >= total;
 
     if(!total){
-      intRecentListEl.textContent = '일치하는 거래가 없습니다.';
+      intRecentListEl.textContent = '모두 완료! 수고하셨습니다👏';
       return;
     }
     const pageDeals = allIntRecentDeals.slice(intRecentPage * INT_RECENT_PAGE_SIZE, (intRecentPage + 1) * INT_RECENT_PAGE_SIZE);
@@ -359,7 +368,7 @@
         intRecentUpdatedEl.textContent = '새로고침: ' + new Date().toLocaleTimeString('ko-KR');
       })
       .catch(e => console.error('hubspot-int-recent fetch failed', e))
-      .finally(() => { intRecentRefreshBtn.disabled = false; intRecentRefreshBtn.classList.remove('spinning'); });
+      .finally(() => { intRecentRefreshBtn.disabled = false; intRecentRefreshBtn.classList.remove('spinning'); markSectionLoaded('intRecent'); });
   }
 
   intRecentRefreshBtn.addEventListener('click', loadIntRecentDeals);
