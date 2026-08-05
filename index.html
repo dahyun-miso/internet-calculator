@@ -629,7 +629,8 @@ textarea:focus{outline:none;border-color:#3b6ef0}
                     <select id="usim-isp" onchange="onUsimIspChange()">
                       <option value="">-- 선택 --</option>
                       <option>KT유심</option>
-                      <option>SK유심</option>
+                      <option>SKT유심</option>
+                      <option>SKB유심</option>
                     </select>
                     <button class="clear-btn" onclick="clearUsimField('usim-isp')" title="초기화">✕</button>
                   </div>
@@ -1106,7 +1107,8 @@ textarea:focus{outline:none;border-color:#3b6ef0}
         <button onclick="setUsimTableTab('kt')" id="utab-kt" style="padding:5px 11px;border-radius:7px;font-size:13px;font-weight:700;border:1.5px solid #e8001c;background:#e8001c;color:#fff;cursor:pointer">KT유심</button>
         <button onclick="setUsimTableTab('sk')" id="utab-sk" style="padding:5px 11px;border-radius:7px;font-size:13px;font-weight:700;border:1.5px solid #e0e4ee;background:#f5f7fb;color:#7a8499;cursor:pointer">SK유심</button>
         <button onclick="setUsimTableTab('ktgift')" id="utab-ktgift" style="padding:5px 11px;border-radius:7px;font-size:13px;font-weight:700;border:1.5px solid #e0e4ee;background:#f5f7fb;color:#7a8499;cursor:pointer">KT사은품</button>
-        <button onclick="setUsimTableTab('skgift')" id="utab-skgift" style="padding:5px 11px;border-radius:7px;font-size:13px;font-weight:700;border:1.5px solid #e0e4ee;background:#f5f7fb;color:#7a8499;cursor:pointer">SK사은품</button>
+        <button onclick="setUsimTableTab('sktgift')" id="utab-sktgift" style="padding:5px 11px;border-radius:7px;font-size:13px;font-weight:700;border:1.5px solid #e0e4ee;background:#f5f7fb;color:#7a8499;cursor:pointer">SKT사은품</button>
+        <button onclick="setUsimTableTab('skbgift')" id="utab-skbgift" style="padding:5px 11px;border-radius:7px;font-size:13px;font-weight:700;border:1.5px solid #e0e4ee;background:#f5f7fb;color:#7a8499;cursor:pointer">SKB사은품</button>
       </div>
       <button onclick="closeUsimTableBtn()" style="background:none;border:none;font-size:18px;cursor:pointer;color:#aaa;padding:2px 6px">✕</button>
     </div>
@@ -1175,7 +1177,8 @@ textarea:focus{outline:none;border-color:#3b6ef0}
     <div id="utbl-sk" style="display:none">
       <p style="font-size:11px;color:#e05050;font-weight:600;margin-bottom:6px">⚠️ 인단독 &gt; 33K 판매 불가 / 가족 유심 판매 불가, 번들 &gt; 모든 요금제 + 가족 유심 판매 가능</p>
       <p style="font-size:11px;color:#e05050;font-weight:600;margin-bottom:6px">⚠️ [다이렉트] 요금제는 미소에서 가입 불가</p>
-      <div style="margin-bottom:8px"><a href="https://tgateplus.sktelecom.com/main/main.do?p=b768024ac8f4eefe3a912021d6044065b9efaabff396bcad836f4ee72124b68d" target="_blank" style="color:#1a6fe8;font-size:12px;font-weight:600;text-decoration:underline">✅ 신청서</a></div>
+      <div style="margin-bottom:8px"><a href="https://tgateplus.sktelecom.com/main/main.do?p=b768024ac8f4eefe3a912021d6044065b9efaabff396bcad836f4ee72124b68d" target="_blank" style="color:#1a6fe8;font-size:12px;font-weight:600;text-decoration:underline">✅ SKT 신청서</a></div>
+      <div style="margin-bottom:8px"><a href="https://app.slack.com/client/T08J1TPKM/C07CE346V5W" target="_blank" style="color:#1a6fe8;font-size:12px;font-weight:600;text-decoration:underline">✅ SKB 신청서는 SKB 슬랙방에 요청해주세요</a></div>
       <p style="font-size:11px;color:#e05050;font-weight:600;margin-bottom:6px">⚠️ 인터넷+TV 번들 가입 시에만 가족 유심동판 신청 가능 (본인1+가족4 = 총 5회선 가능)</p>
       <p style="font-size:11px;color:#e05050;font-weight:600;margin-bottom:8px">⚠️ 인터넷 단독 가입 시 &gt; 33K 요금제 판매 불가(본인 및 가족 유심 판매 불가), 가족 유심 판매 불가(인터넷 단독은 무조건 가족 불가)</p>
       <table style="width:100%;border-collapse:collapse;font-size:12px">
@@ -1281,59 +1284,115 @@ textarea:focus{outline:none;border-color:#3b6ef0}
         </tbody>
       </table>
     </div>
-    <div id="utbl-skgift" style="display:none">
-      <p style="font-size:11px;color:#888;margin-bottom:8px">※ 사은품 최대 기준 (SK 유심 동판) — 33K 구간 단독 상품 판매불가</p>
+    <div id="utbl-sktgift" style="display:none">
+      <p style="font-size:11px;color:#888;margin-bottom:8px">※ 인터넷 명의자 사은품 + 가족 사은품 기준 (SKT 유심 동판) — 33K 구간 단독 상품 판매불가</p>
       <table style="width:100%;border-collapse:collapse;font-size:12px">
-        <thead><tr style="background:#f0f3fa"><th style="padding:6px 8px;border:1px solid #e0e4ee;width:50px;text-align:center">요금제</th><th style="padding:6px 8px;border:1px solid #e0e4ee;text-align:left">상품</th><th style="padding:6px 8px;border:1px solid #e0e4ee;width:90px;text-align:right">사은품 (max)</th></tr></thead>
+        <thead><tr style="background:#f0f3fa"><th style="padding:6px 8px;border:1px solid #e0e4ee;width:50px;text-align:center">요금제</th><th style="padding:6px 8px;border:1px solid #e0e4ee;text-align:left">상품</th><th style="padding:6px 8px;border:1px solid #e0e4ee;width:95px;text-align:right">명의자 사은품</th><th style="padding:6px 8px;border:1px solid #e0e4ee;width:80px;text-align:right">가족 사은품</th></tr></thead>
         <tbody>
-          <tr><td rowspan="12" style="padding:6px 8px;border:1px solid #e0e4ee;font-weight:800;background:#fff0f0;color:#c0001a;text-align:center;vertical-align:top">33K</td><td style="padding:5px 8px;border:1px solid #e0e4ee">100Mb 단독</td><td style="padding:5px 8px;border:1px solid #e0e4ee;text-align:right;color:#bbb">판매불가</td></tr>
-          <tr><td style="padding:5px 8px;border:1px solid #e0e4ee">500Mb 단독</td><td style="padding:5px 8px;border:1px solid #e0e4ee;text-align:right;color:#bbb">판매불가</td></tr>
-          <tr><td style="padding:5px 8px;border:1px solid #e0e4ee">1Gb 단독</td><td style="padding:5px 8px;border:1px solid #e0e4ee;text-align:right;color:#bbb">판매불가</td></tr>
-          <tr><td style="padding:5px 8px;border:1px solid #e0e4ee">100Mb + 이코노미</td><td style="padding:5px 8px;border:1px solid #e0e4ee;text-align:right;font-weight:600">₩100,000</td></tr>
-          <tr><td style="padding:5px 8px;border:1px solid #e0e4ee">500Mb + 이코노미</td><td style="padding:5px 8px;border:1px solid #e0e4ee;text-align:right;font-weight:600">₩150,000</td></tr>
-          <tr><td style="padding:5px 8px;border:1px solid #e0e4ee">1Gb + 이코노미</td><td style="padding:5px 8px;border:1px solid #e0e4ee;text-align:right;font-weight:600">₩150,000</td></tr>
-          <tr><td style="padding:5px 8px;border:1px solid #e0e4ee">100Mb + 스탠다드</td><td style="padding:5px 8px;border:1px solid #e0e4ee;text-align:right;font-weight:600">₩100,000</td></tr>
-          <tr><td style="padding:5px 8px;border:1px solid #e0e4ee">500Mb + 스탠다드</td><td style="padding:5px 8px;border:1px solid #e0e4ee;text-align:right;font-weight:600">₩150,000</td></tr>
-          <tr><td style="padding:5px 8px;border:1px solid #e0e4ee">1Gb + 스탠다드</td><td style="padding:5px 8px;border:1px solid #e0e4ee;text-align:right;font-weight:600">₩150,000</td></tr>
-          <tr><td style="padding:5px 8px;border:1px solid #e0e4ee">100Mb + ALL</td><td style="padding:5px 8px;border:1px solid #e0e4ee;text-align:right;font-weight:600">₩150,000</td></tr>
-          <tr><td style="padding:5px 8px;border:1px solid #e0e4ee">500Mb + ALL</td><td style="padding:5px 8px;border:1px solid #e0e4ee;text-align:right;font-weight:600">₩200,000</td></tr>
-          <tr><td style="padding:5px 8px;border:1px solid #e0e4ee">1Gb + ALL</td><td style="padding:5px 8px;border:1px solid #e0e4ee;text-align:right;font-weight:600">₩200,000</td></tr>
-          <tr><td rowspan="12" style="padding:6px 8px;border:1px solid #e0e4ee;font-weight:800;background:#e8f4e8;color:#2e7d32;text-align:center;vertical-align:top">43K</td><td style="padding:5px 8px;border:1px solid #e0e4ee">100Mb 단독</td><td style="padding:5px 8px;border:1px solid #e0e4ee;text-align:right;font-weight:600">₩100,000</td></tr>
-          <tr><td style="padding:5px 8px;border:1px solid #e0e4ee">500Mb 단독</td><td style="padding:5px 8px;border:1px solid #e0e4ee;text-align:right;font-weight:600">₩150,000</td></tr>
-          <tr><td style="padding:5px 8px;border:1px solid #e0e4ee">1Gb 단독</td><td style="padding:5px 8px;border:1px solid #e0e4ee;text-align:right;font-weight:600">₩150,000</td></tr>
-          <tr><td style="padding:5px 8px;border:1px solid #e0e4ee">100Mb + 이코노미</td><td style="padding:5px 8px;border:1px solid #e0e4ee;text-align:right;font-weight:600">₩150,000</td></tr>
-          <tr><td style="padding:5px 8px;border:1px solid #e0e4ee">500Mb + 이코노미</td><td style="padding:5px 8px;border:1px solid #e0e4ee;text-align:right;font-weight:600">₩200,000</td></tr>
-          <tr><td style="padding:5px 8px;border:1px solid #e0e4ee">1Gb + 이코노미</td><td style="padding:5px 8px;border:1px solid #e0e4ee;text-align:right;font-weight:600">₩200,000</td></tr>
-          <tr><td style="padding:5px 8px;border:1px solid #e0e4ee">100Mb + 스탠다드</td><td style="padding:5px 8px;border:1px solid #e0e4ee;text-align:right;font-weight:600">₩200,000</td></tr>
-          <tr><td style="padding:5px 8px;border:1px solid #e0e4ee">500Mb + 스탠다드</td><td style="padding:5px 8px;border:1px solid #e0e4ee;text-align:right;font-weight:600">₩200,000</td></tr>
-          <tr><td style="padding:5px 8px;border:1px solid #e0e4ee">1Gb + 스탠다드</td><td style="padding:5px 8px;border:1px solid #e0e4ee;text-align:right;font-weight:600">₩200,000</td></tr>
-          <tr><td style="padding:5px 8px;border:1px solid #e0e4ee">100Mb + ALL</td><td style="padding:5px 8px;border:1px solid #e0e4ee;text-align:right;font-weight:600">₩150,000</td></tr>
-          <tr><td style="padding:5px 8px;border:1px solid #e0e4ee">500Mb + ALL</td><td style="padding:5px 8px;border:1px solid #e0e4ee;text-align:right;font-weight:600">₩250,000</td></tr>
-          <tr><td style="padding:5px 8px;border:1px solid #e0e4ee">1Gb + ALL</td><td style="padding:5px 8px;border:1px solid #e0e4ee;text-align:right;font-weight:600">₩250,000</td></tr>
-          <tr><td rowspan="12" style="padding:6px 8px;border:1px solid #e0e4ee;font-weight:800;background:#f5f0ff;color:#5c35a0;text-align:center;vertical-align:top">69K</td><td style="padding:5px 8px;border:1px solid #e0e4ee">100Mb 단독</td><td style="padding:5px 8px;border:1px solid #e0e4ee;text-align:right;font-weight:600">₩100,000</td></tr>
-          <tr><td style="padding:5px 8px;border:1px solid #e0e4ee">500Mb 단독</td><td style="padding:5px 8px;border:1px solid #e0e4ee;text-align:right;font-weight:600">₩200,000</td></tr>
-          <tr><td style="padding:5px 8px;border:1px solid #e0e4ee">1Gb 단독</td><td style="padding:5px 8px;border:1px solid #e0e4ee;text-align:right;font-weight:600">₩200,000</td></tr>
-          <tr><td style="padding:5px 8px;border:1px solid #e0e4ee">100Mb + 이코노미</td><td style="padding:5px 8px;border:1px solid #e0e4ee;text-align:right;font-weight:600">₩150,000</td></tr>
-          <tr><td style="padding:5px 8px;border:1px solid #e0e4ee">500Mb + 이코노미</td><td style="padding:5px 8px;border:1px solid #e0e4ee;text-align:right;font-weight:600">₩250,000</td></tr>
-          <tr><td style="padding:5px 8px;border:1px solid #e0e4ee">1Gb + 이코노미</td><td style="padding:5px 8px;border:1px solid #e0e4ee;text-align:right;font-weight:600">₩250,000</td></tr>
-          <tr><td style="padding:5px 8px;border:1px solid #e0e4ee">100Mb + 스탠다드</td><td style="padding:5px 8px;border:1px solid #e0e4ee;text-align:right;font-weight:600">₩150,000</td></tr>
-          <tr><td style="padding:5px 8px;border:1px solid #e0e4ee">500Mb + 스탠다드</td><td style="padding:5px 8px;border:1px solid #e0e4ee;text-align:right;font-weight:600">₩300,000</td></tr>
-          <tr><td style="padding:5px 8px;border:1px solid #e0e4ee">1Gb + 스탠다드</td><td style="padding:5px 8px;border:1px solid #e0e4ee;text-align:right;font-weight:600">₩300,000</td></tr>
-          <tr><td style="padding:5px 8px;border:1px solid #e0e4ee">100Mb + ALL</td><td style="padding:5px 8px;border:1px solid #e0e4ee;text-align:right;font-weight:600">₩150,000</td></tr>
-          <tr><td style="padding:5px 8px;border:1px solid #e0e4ee">500Mb + ALL</td><td style="padding:5px 8px;border:1px solid #e0e4ee;text-align:right;font-weight:600">₩300,000</td></tr>
-          <tr><td style="padding:5px 8px;border:1px solid #e0e4ee">1Gb + ALL</td><td style="padding:5px 8px;border:1px solid #e0e4ee;text-align:right;font-weight:600">₩300,000</td></tr>
-          <tr><td rowspan="12" style="padding:6px 8px;border:1px solid #e0e4ee;font-weight:800;background:#fff4e0;color:#b85000;text-align:center;vertical-align:top">89K</td><td style="padding:5px 8px;border:1px solid #e0e4ee">100Mb 단독</td><td style="padding:5px 8px;border:1px solid #e0e4ee;text-align:right;font-weight:600">₩100,000</td></tr>
-          <tr><td style="padding:5px 8px;border:1px solid #e0e4ee">500Mb 단독</td><td style="padding:5px 8px;border:1px solid #e0e4ee;text-align:right;font-weight:600">₩200,000</td></tr>
-          <tr><td style="padding:5px 8px;border:1px solid #e0e4ee">1Gb 단독</td><td style="padding:5px 8px;border:1px solid #e0e4ee;text-align:right;font-weight:600">₩200,000</td></tr>
-          <tr><td style="padding:5px 8px;border:1px solid #e0e4ee">100Mb + 이코노미</td><td style="padding:5px 8px;border:1px solid #e0e4ee;text-align:right;font-weight:600">₩150,000</td></tr>
-          <tr><td style="padding:5px 8px;border:1px solid #e0e4ee">500Mb + 이코노미</td><td style="padding:5px 8px;border:1px solid #e0e4ee;text-align:right;font-weight:600">₩300,000</td></tr>
-          <tr><td style="padding:5px 8px;border:1px solid #e0e4ee">1Gb + 이코노미</td><td style="padding:5px 8px;border:1px solid #e0e4ee;text-align:right;font-weight:600">₩300,000</td></tr>
-          <tr><td style="padding:5px 8px;border:1px solid #e0e4ee">100Mb + 스탠다드</td><td style="padding:5px 8px;border:1px solid #e0e4ee;text-align:right;font-weight:600">₩150,000</td></tr>
-          <tr><td style="padding:5px 8px;border:1px solid #e0e4ee">500Mb + 스탠다드</td><td style="padding:5px 8px;border:1px solid #e0e4ee;text-align:right;font-weight:600">₩300,000</td></tr>
-          <tr><td style="padding:5px 8px;border:1px solid #e0e4ee">1Gb + 스탠다드</td><td style="padding:5px 8px;border:1px solid #e0e4ee;text-align:right;font-weight:600">₩300,000</td></tr>
-          <tr><td style="padding:5px 8px;border:1px solid #e0e4ee">100Mb + ALL</td><td style="padding:5px 8px;border:1px solid #e0e4ee;text-align:right;font-weight:600">₩150,000</td></tr>
-          <tr><td style="padding:5px 8px;border:1px solid #e0e4ee">500Mb + ALL</td><td style="padding:5px 8px;border:1px solid #e0e4ee;text-align:right;font-weight:600">₩350,000</td></tr>
-          <tr><td style="padding:5px 8px;border:1px solid #e0e4ee">1Gb + ALL</td><td style="padding:5px 8px;border:1px solid #e0e4ee;text-align:right;font-weight:600">₩350,000</td></tr>
+          <tr><td rowspan="12" style="padding:6px 8px;border:1px solid #e0e4ee;font-weight:800;background:#fff0f0;color:#c0001a;text-align:center;vertical-align:top">33K</td><td style="padding:5px 8px;border:1px solid #e0e4ee">100Mb 단독</td><td style="padding:5px 8px;border:1px solid #e0e4ee;text-align:right;color:#bbb">판매불가</td><td style="padding:5px 8px;border:1px solid #e0e4ee;text-align:right;color:#bbb">-</td></tr>
+          <tr><td style="padding:5px 8px;border:1px solid #e0e4ee">500Mb 단독</td><td style="padding:5px 8px;border:1px solid #e0e4ee;text-align:right;color:#bbb">판매불가</td><td style="padding:5px 8px;border:1px solid #e0e4ee;text-align:right;color:#bbb">-</td></tr>
+          <tr><td style="padding:5px 8px;border:1px solid #e0e4ee">1Gb 단독</td><td style="padding:5px 8px;border:1px solid #e0e4ee;text-align:right;color:#bbb">판매불가</td><td style="padding:5px 8px;border:1px solid #e0e4ee;text-align:right;color:#bbb">-</td></tr>
+          <tr><td style="padding:5px 8px;border:1px solid #e0e4ee">100Mb + 이코노미</td><td style="padding:5px 8px;border:1px solid #e0e4ee;text-align:right;font-weight:600">₩100,000</td><td style="padding:5px 8px;border:1px solid #e0e4ee;text-align:right;font-weight:600">₩100,000</td></tr>
+          <tr><td style="padding:5px 8px;border:1px solid #e0e4ee">500Mb + 이코노미</td><td style="padding:5px 8px;border:1px solid #e0e4ee;text-align:right;font-weight:600">₩150,000</td><td style="padding:5px 8px;border:1px solid #e0e4ee;text-align:right;font-weight:600">₩150,000</td></tr>
+          <tr><td style="padding:5px 8px;border:1px solid #e0e4ee">1Gb + 이코노미</td><td style="padding:5px 8px;border:1px solid #e0e4ee;text-align:right;font-weight:600">₩150,000</td><td style="padding:5px 8px;border:1px solid #e0e4ee;text-align:right;font-weight:600">₩150,000</td></tr>
+          <tr><td style="padding:5px 8px;border:1px solid #e0e4ee">100Mb + 스탠다드</td><td style="padding:5px 8px;border:1px solid #e0e4ee;text-align:right;font-weight:600">₩100,000</td><td style="padding:5px 8px;border:1px solid #e0e4ee;text-align:right;font-weight:600">₩100,000</td></tr>
+          <tr><td style="padding:5px 8px;border:1px solid #e0e4ee">500Mb + 스탠다드</td><td style="padding:5px 8px;border:1px solid #e0e4ee;text-align:right;font-weight:600">₩150,000</td><td style="padding:5px 8px;border:1px solid #e0e4ee;text-align:right;font-weight:600">₩150,000</td></tr>
+          <tr><td style="padding:5px 8px;border:1px solid #e0e4ee">1Gb + 스탠다드</td><td style="padding:5px 8px;border:1px solid #e0e4ee;text-align:right;font-weight:600">₩150,000</td><td style="padding:5px 8px;border:1px solid #e0e4ee;text-align:right;font-weight:600">₩150,000</td></tr>
+          <tr><td style="padding:5px 8px;border:1px solid #e0e4ee">100Mb + ALL</td><td style="padding:5px 8px;border:1px solid #e0e4ee;text-align:right;font-weight:600">₩150,000</td><td style="padding:5px 8px;border:1px solid #e0e4ee;text-align:right;font-weight:600">₩150,000</td></tr>
+          <tr><td style="padding:5px 8px;border:1px solid #e0e4ee">500Mb + ALL</td><td style="padding:5px 8px;border:1px solid #e0e4ee;text-align:right;font-weight:600">₩200,000</td><td style="padding:5px 8px;border:1px solid #e0e4ee;text-align:right;font-weight:600">₩200,000</td></tr>
+          <tr><td style="padding:5px 8px;border:1px solid #e0e4ee">1Gb + ALL</td><td style="padding:5px 8px;border:1px solid #e0e4ee;text-align:right;font-weight:600">₩200,000</td><td style="padding:5px 8px;border:1px solid #e0e4ee;text-align:right;font-weight:600">₩200,000</td></tr>
+          <tr><td rowspan="12" style="padding:6px 8px;border:1px solid #e0e4ee;font-weight:800;background:#e8f4e8;color:#2e7d32;text-align:center;vertical-align:top">43K</td><td style="padding:5px 8px;border:1px solid #e0e4ee">100Mb 단독</td><td style="padding:5px 8px;border:1px solid #e0e4ee;text-align:right;font-weight:600">₩190,000</td><td style="padding:5px 8px;border:1px solid #e0e4ee;text-align:right;font-weight:600">₩100,000</td></tr>
+          <tr><td style="padding:5px 8px;border:1px solid #e0e4ee">500Mb 단독</td><td style="padding:5px 8px;border:1px solid #e0e4ee;text-align:right;font-weight:600">₩160,000</td><td style="padding:5px 8px;border:1px solid #e0e4ee;text-align:right;font-weight:600">₩150,000</td></tr>
+          <tr><td style="padding:5px 8px;border:1px solid #e0e4ee">1Gb 단독</td><td style="padding:5px 8px;border:1px solid #e0e4ee;text-align:right;font-weight:600">₩220,000</td><td style="padding:5px 8px;border:1px solid #e0e4ee;text-align:right;font-weight:600">₩150,000</td></tr>
+          <tr><td style="padding:5px 8px;border:1px solid #e0e4ee">100Mb + 이코노미</td><td style="padding:5px 8px;border:1px solid #e0e4ee;text-align:right;font-weight:600">₩150,000</td><td style="padding:5px 8px;border:1px solid #e0e4ee;text-align:right;font-weight:600">₩150,000</td></tr>
+          <tr><td style="padding:5px 8px;border:1px solid #e0e4ee">500Mb + 이코노미</td><td style="padding:5px 8px;border:1px solid #e0e4ee;text-align:right;font-weight:600">₩200,000</td><td style="padding:5px 8px;border:1px solid #e0e4ee;text-align:right;font-weight:600">₩200,000</td></tr>
+          <tr><td style="padding:5px 8px;border:1px solid #e0e4ee">1Gb + 이코노미</td><td style="padding:5px 8px;border:1px solid #e0e4ee;text-align:right;font-weight:600">₩200,000</td><td style="padding:5px 8px;border:1px solid #e0e4ee;text-align:right;font-weight:600">₩200,000</td></tr>
+          <tr><td style="padding:5px 8px;border:1px solid #e0e4ee">100Mb + 스탠다드</td><td style="padding:5px 8px;border:1px solid #e0e4ee;text-align:right;font-weight:600">₩200,000</td><td style="padding:5px 8px;border:1px solid #e0e4ee;text-align:right;font-weight:600">₩200,000</td></tr>
+          <tr><td style="padding:5px 8px;border:1px solid #e0e4ee">500Mb + 스탠다드</td><td style="padding:5px 8px;border:1px solid #e0e4ee;text-align:right;font-weight:600">₩200,000</td><td style="padding:5px 8px;border:1px solid #e0e4ee;text-align:right;font-weight:600">₩200,000</td></tr>
+          <tr><td style="padding:5px 8px;border:1px solid #e0e4ee">1Gb + 스탠다드</td><td style="padding:5px 8px;border:1px solid #e0e4ee;text-align:right;font-weight:600">₩200,000</td><td style="padding:5px 8px;border:1px solid #e0e4ee;text-align:right;font-weight:600">₩200,000</td></tr>
+          <tr><td style="padding:5px 8px;border:1px solid #e0e4ee">100Mb + ALL</td><td style="padding:5px 8px;border:1px solid #e0e4ee;text-align:right;font-weight:600">₩150,000</td><td style="padding:5px 8px;border:1px solid #e0e4ee;text-align:right;font-weight:600">₩150,000</td></tr>
+          <tr><td style="padding:5px 8px;border:1px solid #e0e4ee">500Mb + ALL</td><td style="padding:5px 8px;border:1px solid #e0e4ee;text-align:right;font-weight:600">₩250,000</td><td style="padding:5px 8px;border:1px solid #e0e4ee;text-align:right;font-weight:600">₩250,000</td></tr>
+          <tr><td style="padding:5px 8px;border:1px solid #e0e4ee">1Gb + ALL</td><td style="padding:5px 8px;border:1px solid #e0e4ee;text-align:right;font-weight:600">₩250,000</td><td style="padding:5px 8px;border:1px solid #e0e4ee;text-align:right;font-weight:600">₩250,000</td></tr>
+          <tr><td rowspan="12" style="padding:6px 8px;border:1px solid #e0e4ee;font-weight:800;background:#f5f0ff;color:#5c35a0;text-align:center;vertical-align:top">69K</td><td style="padding:5px 8px;border:1px solid #e0e4ee">100Mb 단독</td><td style="padding:5px 8px;border:1px solid #e0e4ee;text-align:right;font-weight:600">₩190,000</td><td style="padding:5px 8px;border:1px solid #e0e4ee;text-align:right;font-weight:600">₩100,000</td></tr>
+          <tr><td style="padding:5px 8px;border:1px solid #e0e4ee">500Mb 단독</td><td style="padding:5px 8px;border:1px solid #e0e4ee;text-align:right;font-weight:600">₩200,000</td><td style="padding:5px 8px;border:1px solid #e0e4ee;text-align:right;font-weight:600">₩200,000</td></tr>
+          <tr><td style="padding:5px 8px;border:1px solid #e0e4ee">1Gb 단독</td><td style="padding:5px 8px;border:1px solid #e0e4ee;text-align:right;font-weight:600">₩220,000</td><td style="padding:5px 8px;border:1px solid #e0e4ee;text-align:right;font-weight:600">₩200,000</td></tr>
+          <tr><td style="padding:5px 8px;border:1px solid #e0e4ee">100Mb + 이코노미</td><td style="padding:5px 8px;border:1px solid #e0e4ee;text-align:right;font-weight:600">₩150,000</td><td style="padding:5px 8px;border:1px solid #e0e4ee;text-align:right;font-weight:600">₩150,000</td></tr>
+          <tr><td style="padding:5px 8px;border:1px solid #e0e4ee">500Mb + 이코노미</td><td style="padding:5px 8px;border:1px solid #e0e4ee;text-align:right;font-weight:600">₩250,000</td><td style="padding:5px 8px;border:1px solid #e0e4ee;text-align:right;font-weight:600">₩250,000</td></tr>
+          <tr><td style="padding:5px 8px;border:1px solid #e0e4ee">1Gb + 이코노미</td><td style="padding:5px 8px;border:1px solid #e0e4ee;text-align:right;font-weight:600">₩250,000</td><td style="padding:5px 8px;border:1px solid #e0e4ee;text-align:right;font-weight:600">₩250,000</td></tr>
+          <tr><td style="padding:5px 8px;border:1px solid #e0e4ee">100Mb + 스탠다드</td><td style="padding:5px 8px;border:1px solid #e0e4ee;text-align:right;font-weight:600">₩150,000</td><td style="padding:5px 8px;border:1px solid #e0e4ee;text-align:right;font-weight:600">₩150,000</td></tr>
+          <tr><td style="padding:5px 8px;border:1px solid #e0e4ee">500Mb + 스탠다드</td><td style="padding:5px 8px;border:1px solid #e0e4ee;text-align:right;font-weight:600">₩300,000</td><td style="padding:5px 8px;border:1px solid #e0e4ee;text-align:right;font-weight:600">₩300,000</td></tr>
+          <tr><td style="padding:5px 8px;border:1px solid #e0e4ee">1Gb + 스탠다드</td><td style="padding:5px 8px;border:1px solid #e0e4ee;text-align:right;font-weight:600">₩300,000</td><td style="padding:5px 8px;border:1px solid #e0e4ee;text-align:right;font-weight:600">₩300,000</td></tr>
+          <tr><td style="padding:5px 8px;border:1px solid #e0e4ee">100Mb + ALL</td><td style="padding:5px 8px;border:1px solid #e0e4ee;text-align:right;font-weight:600">₩150,000</td><td style="padding:5px 8px;border:1px solid #e0e4ee;text-align:right;font-weight:600">₩150,000</td></tr>
+          <tr><td style="padding:5px 8px;border:1px solid #e0e4ee">500Mb + ALL</td><td style="padding:5px 8px;border:1px solid #e0e4ee;text-align:right;font-weight:600">₩300,000</td><td style="padding:5px 8px;border:1px solid #e0e4ee;text-align:right;font-weight:600">₩300,000</td></tr>
+          <tr><td style="padding:5px 8px;border:1px solid #e0e4ee">1Gb + ALL</td><td style="padding:5px 8px;border:1px solid #e0e4ee;text-align:right;font-weight:600">₩300,000</td><td style="padding:5px 8px;border:1px solid #e0e4ee;text-align:right;font-weight:600">₩300,000</td></tr>
+          <tr><td rowspan="12" style="padding:6px 8px;border:1px solid #e0e4ee;font-weight:800;background:#fff4e0;color:#b85000;text-align:center;vertical-align:top">89K</td><td style="padding:5px 8px;border:1px solid #e0e4ee">100Mb 단독</td><td style="padding:5px 8px;border:1px solid #e0e4ee;text-align:right;font-weight:600">₩190,000</td><td style="padding:5px 8px;border:1px solid #e0e4ee;text-align:right;font-weight:600">₩100,000</td></tr>
+          <tr><td style="padding:5px 8px;border:1px solid #e0e4ee">500Mb 단독</td><td style="padding:5px 8px;border:1px solid #e0e4ee;text-align:right;font-weight:600">₩200,000</td><td style="padding:5px 8px;border:1px solid #e0e4ee;text-align:right;font-weight:600">₩200,000</td></tr>
+          <tr><td style="padding:5px 8px;border:1px solid #e0e4ee">1Gb 단독</td><td style="padding:5px 8px;border:1px solid #e0e4ee;text-align:right;font-weight:600">₩220,000</td><td style="padding:5px 8px;border:1px solid #e0e4ee;text-align:right;font-weight:600">₩200,000</td></tr>
+          <tr><td style="padding:5px 8px;border:1px solid #e0e4ee">100Mb + 이코노미</td><td style="padding:5px 8px;border:1px solid #e0e4ee;text-align:right;font-weight:600">₩150,000</td><td style="padding:5px 8px;border:1px solid #e0e4ee;text-align:right;font-weight:600">₩150,000</td></tr>
+          <tr><td style="padding:5px 8px;border:1px solid #e0e4ee">500Mb + 이코노미</td><td style="padding:5px 8px;border:1px solid #e0e4ee;text-align:right;font-weight:600">₩300,000</td><td style="padding:5px 8px;border:1px solid #e0e4ee;text-align:right;font-weight:600">₩300,000</td></tr>
+          <tr><td style="padding:5px 8px;border:1px solid #e0e4ee">1Gb + 이코노미</td><td style="padding:5px 8px;border:1px solid #e0e4ee;text-align:right;font-weight:600">₩300,000</td><td style="padding:5px 8px;border:1px solid #e0e4ee;text-align:right;font-weight:600">₩300,000</td></tr>
+          <tr><td style="padding:5px 8px;border:1px solid #e0e4ee">100Mb + 스탠다드</td><td style="padding:5px 8px;border:1px solid #e0e4ee;text-align:right;font-weight:600">₩150,000</td><td style="padding:5px 8px;border:1px solid #e0e4ee;text-align:right;font-weight:600">₩150,000</td></tr>
+          <tr><td style="padding:5px 8px;border:1px solid #e0e4ee">500Mb + 스탠다드</td><td style="padding:5px 8px;border:1px solid #e0e4ee;text-align:right;font-weight:600">₩300,000</td><td style="padding:5px 8px;border:1px solid #e0e4ee;text-align:right;font-weight:600">₩300,000</td></tr>
+          <tr><td style="padding:5px 8px;border:1px solid #e0e4ee">1Gb + 스탠다드</td><td style="padding:5px 8px;border:1px solid #e0e4ee;text-align:right;font-weight:600">₩300,000</td><td style="padding:5px 8px;border:1px solid #e0e4ee;text-align:right;font-weight:600">₩300,000</td></tr>
+          <tr><td style="padding:5px 8px;border:1px solid #e0e4ee">100Mb + ALL</td><td style="padding:5px 8px;border:1px solid #e0e4ee;text-align:right;font-weight:600">₩150,000</td><td style="padding:5px 8px;border:1px solid #e0e4ee;text-align:right;font-weight:600">₩150,000</td></tr>
+          <tr><td style="padding:5px 8px;border:1px solid #e0e4ee">500Mb + ALL</td><td style="padding:5px 8px;border:1px solid #e0e4ee;text-align:right;font-weight:600">₩350,000</td><td style="padding:5px 8px;border:1px solid #e0e4ee;text-align:right;font-weight:600">₩350,000</td></tr>
+          <tr><td style="padding:5px 8px;border:1px solid #e0e4ee">1Gb + ALL</td><td style="padding:5px 8px;border:1px solid #e0e4ee;text-align:right;font-weight:600">₩350,000</td><td style="padding:5px 8px;border:1px solid #e0e4ee;text-align:right;font-weight:600">₩350,000</td></tr>
+        </tbody>
+      </table>
+    </div>
+    <div id="utbl-skbgift" style="display:none">
+      <p style="font-size:11px;color:#888;margin-bottom:8px">※ 인터넷 명의자 사은품 + 가족 사은품 기준 (SKB 유심 동판) — 33K 구간 단독 상품 판매불가</p>
+      <table style="width:100%;border-collapse:collapse;font-size:12px">
+        <thead><tr style="background:#f0f3fa"><th style="padding:6px 8px;border:1px solid #e0e4ee;width:50px;text-align:center">요금제</th><th style="padding:6px 8px;border:1px solid #e0e4ee;text-align:left">상품</th><th style="padding:6px 8px;border:1px solid #e0e4ee;width:95px;text-align:right">명의자 사은품</th><th style="padding:6px 8px;border:1px solid #e0e4ee;width:80px;text-align:right">가족 사은품</th></tr></thead>
+        <tbody>
+          <tr><td rowspan="12" style="padding:6px 8px;border:1px solid #e0e4ee;font-weight:800;background:#fff0f0;color:#c0001a;text-align:center;vertical-align:top">33K</td><td style="padding:5px 8px;border:1px solid #e0e4ee">100Mb 단독</td><td style="padding:5px 8px;border:1px solid #e0e4ee;text-align:right;color:#bbb">판매불가</td><td style="padding:5px 8px;border:1px solid #e0e4ee;text-align:right;color:#bbb">-</td></tr>
+          <tr><td style="padding:5px 8px;border:1px solid #e0e4ee">500Mb 단독</td><td style="padding:5px 8px;border:1px solid #e0e4ee;text-align:right;color:#bbb">판매불가</td><td style="padding:5px 8px;border:1px solid #e0e4ee;text-align:right;color:#bbb">-</td></tr>
+          <tr><td style="padding:5px 8px;border:1px solid #e0e4ee">1Gb 단독</td><td style="padding:5px 8px;border:1px solid #e0e4ee;text-align:right;color:#bbb">판매불가</td><td style="padding:5px 8px;border:1px solid #e0e4ee;text-align:right;color:#bbb">-</td></tr>
+          <tr><td style="padding:5px 8px;border:1px solid #e0e4ee">100Mb + 이코노미</td><td style="padding:5px 8px;border:1px solid #e0e4ee;text-align:right;font-weight:600">₩100,000</td><td style="padding:5px 8px;border:1px solid #e0e4ee;text-align:right;font-weight:600">₩100,000</td></tr>
+          <tr><td style="padding:5px 8px;border:1px solid #e0e4ee">500Mb + 이코노미</td><td style="padding:5px 8px;border:1px solid #e0e4ee;text-align:right;font-weight:600">₩150,000</td><td style="padding:5px 8px;border:1px solid #e0e4ee;text-align:right;font-weight:600">₩150,000</td></tr>
+          <tr><td style="padding:5px 8px;border:1px solid #e0e4ee">1Gb + 이코노미</td><td style="padding:5px 8px;border:1px solid #e0e4ee;text-align:right;font-weight:600">₩150,000</td><td style="padding:5px 8px;border:1px solid #e0e4ee;text-align:right;font-weight:600">₩150,000</td></tr>
+          <tr><td style="padding:5px 8px;border:1px solid #e0e4ee">100Mb + 스탠다드</td><td style="padding:5px 8px;border:1px solid #e0e4ee;text-align:right;font-weight:600">₩100,000</td><td style="padding:5px 8px;border:1px solid #e0e4ee;text-align:right;font-weight:600">₩100,000</td></tr>
+          <tr><td style="padding:5px 8px;border:1px solid #e0e4ee">500Mb + 스탠다드</td><td style="padding:5px 8px;border:1px solid #e0e4ee;text-align:right;font-weight:600">₩150,000</td><td style="padding:5px 8px;border:1px solid #e0e4ee;text-align:right;font-weight:600">₩150,000</td></tr>
+          <tr><td style="padding:5px 8px;border:1px solid #e0e4ee">1Gb + 스탠다드</td><td style="padding:5px 8px;border:1px solid #e0e4ee;text-align:right;font-weight:600">₩150,000</td><td style="padding:5px 8px;border:1px solid #e0e4ee;text-align:right;font-weight:600">₩150,000</td></tr>
+          <tr><td style="padding:5px 8px;border:1px solid #e0e4ee">100Mb + ALL</td><td style="padding:5px 8px;border:1px solid #e0e4ee;text-align:right;font-weight:600">₩150,000</td><td style="padding:5px 8px;border:1px solid #e0e4ee;text-align:right;font-weight:600">₩150,000</td></tr>
+          <tr><td style="padding:5px 8px;border:1px solid #e0e4ee">500Mb + ALL</td><td style="padding:5px 8px;border:1px solid #e0e4ee;text-align:right;font-weight:600">₩200,000</td><td style="padding:5px 8px;border:1px solid #e0e4ee;text-align:right;font-weight:600">₩200,000</td></tr>
+          <tr><td style="padding:5px 8px;border:1px solid #e0e4ee">1Gb + ALL</td><td style="padding:5px 8px;border:1px solid #e0e4ee;text-align:right;font-weight:600">₩200,000</td><td style="padding:5px 8px;border:1px solid #e0e4ee;text-align:right;font-weight:600">₩200,000</td></tr>
+          <tr><td rowspan="12" style="padding:6px 8px;border:1px solid #e0e4ee;font-weight:800;background:#e8f4e8;color:#2e7d32;text-align:center;vertical-align:top">43K</td><td style="padding:5px 8px;border:1px solid #e0e4ee">100Mb 단독</td><td style="padding:5px 8px;border:1px solid #e0e4ee;text-align:right;font-weight:600">₩100,000</td><td style="padding:5px 8px;border:1px solid #e0e4ee;text-align:right;font-weight:600">₩100,000</td></tr>
+          <tr><td style="padding:5px 8px;border:1px solid #e0e4ee">500Mb 단독</td><td style="padding:5px 8px;border:1px solid #e0e4ee;text-align:right;font-weight:600">₩150,000</td><td style="padding:5px 8px;border:1px solid #e0e4ee;text-align:right;font-weight:600">₩150,000</td></tr>
+          <tr><td style="padding:5px 8px;border:1px solid #e0e4ee">1Gb 단독</td><td style="padding:5px 8px;border:1px solid #e0e4ee;text-align:right;font-weight:600">₩150,000</td><td style="padding:5px 8px;border:1px solid #e0e4ee;text-align:right;font-weight:600">₩150,000</td></tr>
+          <tr><td style="padding:5px 8px;border:1px solid #e0e4ee">100Mb + 이코노미</td><td style="padding:5px 8px;border:1px solid #e0e4ee;text-align:right;font-weight:600">₩150,000</td><td style="padding:5px 8px;border:1px solid #e0e4ee;text-align:right;font-weight:600">₩150,000</td></tr>
+          <tr><td style="padding:5px 8px;border:1px solid #e0e4ee">500Mb + 이코노미</td><td style="padding:5px 8px;border:1px solid #e0e4ee;text-align:right;font-weight:600">₩200,000</td><td style="padding:5px 8px;border:1px solid #e0e4ee;text-align:right;font-weight:600">₩200,000</td></tr>
+          <tr><td style="padding:5px 8px;border:1px solid #e0e4ee">1Gb + 이코노미</td><td style="padding:5px 8px;border:1px solid #e0e4ee;text-align:right;font-weight:600">₩200,000</td><td style="padding:5px 8px;border:1px solid #e0e4ee;text-align:right;font-weight:600">₩200,000</td></tr>
+          <tr><td style="padding:5px 8px;border:1px solid #e0e4ee">100Mb + 스탠다드</td><td style="padding:5px 8px;border:1px solid #e0e4ee;text-align:right;font-weight:600">₩200,000</td><td style="padding:5px 8px;border:1px solid #e0e4ee;text-align:right;font-weight:600">₩200,000</td></tr>
+          <tr><td style="padding:5px 8px;border:1px solid #e0e4ee">500Mb + 스탠다드</td><td style="padding:5px 8px;border:1px solid #e0e4ee;text-align:right;font-weight:600">₩200,000</td><td style="padding:5px 8px;border:1px solid #e0e4ee;text-align:right;font-weight:600">₩200,000</td></tr>
+          <tr><td style="padding:5px 8px;border:1px solid #e0e4ee">1Gb + 스탠다드</td><td style="padding:5px 8px;border:1px solid #e0e4ee;text-align:right;font-weight:600">₩200,000</td><td style="padding:5px 8px;border:1px solid #e0e4ee;text-align:right;font-weight:600">₩200,000</td></tr>
+          <tr><td style="padding:5px 8px;border:1px solid #e0e4ee">100Mb + ALL</td><td style="padding:5px 8px;border:1px solid #e0e4ee;text-align:right;font-weight:600">₩150,000</td><td style="padding:5px 8px;border:1px solid #e0e4ee;text-align:right;font-weight:600">₩150,000</td></tr>
+          <tr><td style="padding:5px 8px;border:1px solid #e0e4ee">500Mb + ALL</td><td style="padding:5px 8px;border:1px solid #e0e4ee;text-align:right;font-weight:600">₩250,000</td><td style="padding:5px 8px;border:1px solid #e0e4ee;text-align:right;font-weight:600">₩250,000</td></tr>
+          <tr><td style="padding:5px 8px;border:1px solid #e0e4ee">1Gb + ALL</td><td style="padding:5px 8px;border:1px solid #e0e4ee;text-align:right;font-weight:600">₩250,000</td><td style="padding:5px 8px;border:1px solid #e0e4ee;text-align:right;font-weight:600">₩250,000</td></tr>
+          <tr><td rowspan="12" style="padding:6px 8px;border:1px solid #e0e4ee;font-weight:800;background:#f5f0ff;color:#5c35a0;text-align:center;vertical-align:top">69K</td><td style="padding:5px 8px;border:1px solid #e0e4ee">100Mb 단독</td><td style="padding:5px 8px;border:1px solid #e0e4ee;text-align:right;font-weight:600">₩100,000</td><td style="padding:5px 8px;border:1px solid #e0e4ee;text-align:right;font-weight:600">₩100,000</td></tr>
+          <tr><td style="padding:5px 8px;border:1px solid #e0e4ee">500Mb 단독</td><td style="padding:5px 8px;border:1px solid #e0e4ee;text-align:right;font-weight:600">₩200,000</td><td style="padding:5px 8px;border:1px solid #e0e4ee;text-align:right;font-weight:600">₩200,000</td></tr>
+          <tr><td style="padding:5px 8px;border:1px solid #e0e4ee">1Gb 단독</td><td style="padding:5px 8px;border:1px solid #e0e4ee;text-align:right;font-weight:600">₩200,000</td><td style="padding:5px 8px;border:1px solid #e0e4ee;text-align:right;font-weight:600">₩200,000</td></tr>
+          <tr><td style="padding:5px 8px;border:1px solid #e0e4ee">100Mb + 이코노미</td><td style="padding:5px 8px;border:1px solid #e0e4ee;text-align:right;font-weight:600">₩150,000</td><td style="padding:5px 8px;border:1px solid #e0e4ee;text-align:right;font-weight:600">₩150,000</td></tr>
+          <tr><td style="padding:5px 8px;border:1px solid #e0e4ee">500Mb + 이코노미</td><td style="padding:5px 8px;border:1px solid #e0e4ee;text-align:right;font-weight:600">₩250,000</td><td style="padding:5px 8px;border:1px solid #e0e4ee;text-align:right;font-weight:600">₩250,000</td></tr>
+          <tr><td style="padding:5px 8px;border:1px solid #e0e4ee">1Gb + 이코노미</td><td style="padding:5px 8px;border:1px solid #e0e4ee;text-align:right;font-weight:600">₩250,000</td><td style="padding:5px 8px;border:1px solid #e0e4ee;text-align:right;font-weight:600">₩250,000</td></tr>
+          <tr><td style="padding:5px 8px;border:1px solid #e0e4ee">100Mb + 스탠다드</td><td style="padding:5px 8px;border:1px solid #e0e4ee;text-align:right;font-weight:600">₩150,000</td><td style="padding:5px 8px;border:1px solid #e0e4ee;text-align:right;font-weight:600">₩150,000</td></tr>
+          <tr><td style="padding:5px 8px;border:1px solid #e0e4ee">500Mb + 스탠다드</td><td style="padding:5px 8px;border:1px solid #e0e4ee;text-align:right;font-weight:600">₩300,000</td><td style="padding:5px 8px;border:1px solid #e0e4ee;text-align:right;font-weight:600">₩300,000</td></tr>
+          <tr><td style="padding:5px 8px;border:1px solid #e0e4ee">1Gb + 스탠다드</td><td style="padding:5px 8px;border:1px solid #e0e4ee;text-align:right;font-weight:600">₩300,000</td><td style="padding:5px 8px;border:1px solid #e0e4ee;text-align:right;font-weight:600">₩300,000</td></tr>
+          <tr><td style="padding:5px 8px;border:1px solid #e0e4ee">100Mb + ALL</td><td style="padding:5px 8px;border:1px solid #e0e4ee;text-align:right;font-weight:600">₩150,000</td><td style="padding:5px 8px;border:1px solid #e0e4ee;text-align:right;font-weight:600">₩150,000</td></tr>
+          <tr><td style="padding:5px 8px;border:1px solid #e0e4ee">500Mb + ALL</td><td style="padding:5px 8px;border:1px solid #e0e4ee;text-align:right;font-weight:600">₩300,000</td><td style="padding:5px 8px;border:1px solid #e0e4ee;text-align:right;font-weight:600">₩300,000</td></tr>
+          <tr><td style="padding:5px 8px;border:1px solid #e0e4ee">1Gb + ALL</td><td style="padding:5px 8px;border:1px solid #e0e4ee;text-align:right;font-weight:600">₩300,000</td><td style="padding:5px 8px;border:1px solid #e0e4ee;text-align:right;font-weight:600">₩300,000</td></tr>
+          <tr><td rowspan="12" style="padding:6px 8px;border:1px solid #e0e4ee;font-weight:800;background:#fff4e0;color:#b85000;text-align:center;vertical-align:top">89K</td><td style="padding:5px 8px;border:1px solid #e0e4ee">100Mb 단독</td><td style="padding:5px 8px;border:1px solid #e0e4ee;text-align:right;font-weight:600">₩100,000</td><td style="padding:5px 8px;border:1px solid #e0e4ee;text-align:right;font-weight:600">₩100,000</td></tr>
+          <tr><td style="padding:5px 8px;border:1px solid #e0e4ee">500Mb 단독</td><td style="padding:5px 8px;border:1px solid #e0e4ee;text-align:right;font-weight:600">₩200,000</td><td style="padding:5px 8px;border:1px solid #e0e4ee;text-align:right;font-weight:600">₩200,000</td></tr>
+          <tr><td style="padding:5px 8px;border:1px solid #e0e4ee">1Gb 단독</td><td style="padding:5px 8px;border:1px solid #e0e4ee;text-align:right;font-weight:600">₩200,000</td><td style="padding:5px 8px;border:1px solid #e0e4ee;text-align:right;font-weight:600">₩200,000</td></tr>
+          <tr><td style="padding:5px 8px;border:1px solid #e0e4ee">100Mb + 이코노미</td><td style="padding:5px 8px;border:1px solid #e0e4ee;text-align:right;font-weight:600">₩150,000</td><td style="padding:5px 8px;border:1px solid #e0e4ee;text-align:right;font-weight:600">₩150,000</td></tr>
+          <tr><td style="padding:5px 8px;border:1px solid #e0e4ee">500Mb + 이코노미</td><td style="padding:5px 8px;border:1px solid #e0e4ee;text-align:right;font-weight:600">₩300,000</td><td style="padding:5px 8px;border:1px solid #e0e4ee;text-align:right;font-weight:600">₩300,000</td></tr>
+          <tr><td style="padding:5px 8px;border:1px solid #e0e4ee">1Gb + 이코노미</td><td style="padding:5px 8px;border:1px solid #e0e4ee;text-align:right;font-weight:600">₩300,000</td><td style="padding:5px 8px;border:1px solid #e0e4ee;text-align:right;font-weight:600">₩300,000</td></tr>
+          <tr><td style="padding:5px 8px;border:1px solid #e0e4ee">100Mb + 스탠다드</td><td style="padding:5px 8px;border:1px solid #e0e4ee;text-align:right;font-weight:600">₩150,000</td><td style="padding:5px 8px;border:1px solid #e0e4ee;text-align:right;font-weight:600">₩150,000</td></tr>
+          <tr><td style="padding:5px 8px;border:1px solid #e0e4ee">500Mb + 스탠다드</td><td style="padding:5px 8px;border:1px solid #e0e4ee;text-align:right;font-weight:600">₩300,000</td><td style="padding:5px 8px;border:1px solid #e0e4ee;text-align:right;font-weight:600">₩300,000</td></tr>
+          <tr><td style="padding:5px 8px;border:1px solid #e0e4ee">1Gb + 스탠다드</td><td style="padding:5px 8px;border:1px solid #e0e4ee;text-align:right;font-weight:600">₩300,000</td><td style="padding:5px 8px;border:1px solid #e0e4ee;text-align:right;font-weight:600">₩300,000</td></tr>
+          <tr><td style="padding:5px 8px;border:1px solid #e0e4ee">100Mb + ALL</td><td style="padding:5px 8px;border:1px solid #e0e4ee;text-align:right;font-weight:600">₩150,000</td><td style="padding:5px 8px;border:1px solid #e0e4ee;text-align:right;font-weight:600">₩150,000</td></tr>
+          <tr><td style="padding:5px 8px;border:1px solid #e0e4ee">500Mb + ALL</td><td style="padding:5px 8px;border:1px solid #e0e4ee;text-align:right;font-weight:600">₩350,000</td><td style="padding:5px 8px;border:1px solid #e0e4ee;text-align:right;font-weight:600">₩350,000</td></tr>
+          <tr><td style="padding:5px 8px;border:1px solid #e0e4ee">1Gb + ALL</td><td style="padding:5px 8px;border:1px solid #e0e4ee;text-align:right;font-weight:600">₩350,000</td><td style="padding:5px 8px;border:1px solid #e0e4ee;text-align:right;font-weight:600">₩350,000</td></tr>
         </tbody>
       </table>
     </div>
@@ -1506,7 +1565,7 @@ function resetProductSelection(){
   calc();
 }
 
-const PRODUCTS={KT:{internet:{"(단독) 100mb":22000,"(단독) 500mb":33000,"(단독) 1GB":38500,"100mb":22000,"500mb":27500,"1GB":33000},tv:{"미가입":0,"베이직 (239채널) + 기가지니A":15400,"라이트 (243채널) + 기가지니A":16500,"에센스 (269채널) + 기가지니A":19800,"에센스 플러스 (268+채널)":24200,"넷플릭스 HD (268채널)":27800,"넷플릭스 UHD (268채널)":31300,"키즈랜드팩초이스 (268채널)":24200},"tv-extra":{"베이직 (239채널) + 기가지니A":10670,"라이트 (243채널) + 기가지니A":11220,"에센스 (269채널) + 기가지니A":13420},router:{"공유기":1100,"공유기 무료 (1GB)":0,"공유기 X":0,"7D WiFi":2200,"7D WiFi (1GB)":1100},phone:{"일반 전화":6050,"인터넷 전화 (모임스톤)":7461},addon:{"기가지니3A (AI 셋톱박스)":1100,"AI 지니 TV 올인원 사운드바 (공유기 내장 셋탑, 우드/화이트 색상 택 1)":5500,"버디증폭기":1650,"기가지니 4A":3300},bundle:{"~22,000원 휴대폰 요금제&100mb/총액결합": 1650, "~64,900원 휴대폰 요금제&100mb/총액결합": 3300, "64,900원 이상 요금제&100mb/총액결합": 5500, "100mb + TV/패밀리 결합": 5500, "(단독) 100mb/알뜰폰 결합": 3300, "~22,000원 휴대폰 요금제&(단독) 500mb/총액결합": 7700, "22,000원 이상 요금제&(단독) 500mb/총액결합": 11000, "~22,000원 휴대폰 요금제&500mb/총액결합": 2200, "22,000원 이상 요금제&500mb/총액결합": 5500, "77,000원 이상 휴대폰 요금제 2회선 &500mb/프리미엄 가족결합": 5500, "77,000원 이상 요금제&(단독) 500mb/프리미엄 싱글 결합": 5500, "77,000원 이상 휴대폰 요금제 2회선 &(단독) 500mb/프리미엄 가족결합": 11000, "77,000원 이상 요금제&500mb/프리미엄 싱글 결합": 0, "(단독) 500mb/알뜰폰 결합": 11000, "500mb+TV/패밀리 결합": 5500, "1GB + TV 핸드폰 결합/총액결합": 5500, "77,000원 이상 휴대폰 요금제 2회선 & 1GB/프리미엄 가족결합": 5500, "1GB + TV/패밀리 결합": 5500, "(단독) 100mb/패밀리 결합": 5500, "(단독) 500mb/패밀리 결합": 11000, "~22,000원 휴대폰 요금제&(단독) 1GB/총액결합": 7700, "22,000원 이상 휴대폰 요금제&(단독) 1GB/총액결합": 11000, "77,000원 이상 휴대폰 요금제 2회선 &(단독) 1GB/프리미엄 가족결합": 11000, "77,000원 이상 요금제&(단독) 1GB/프리미엄 싱글 결합": 5500, "77,000원 이상 요금제&1GB/프리미엄 싱글 결합": 0, "(단독) 1GB/알뜰폰 결합": 11000, "(단독) 1GB/패밀리 결합": 11000, "100mb + TV/알뜰폰 결합": 3300, "500mb + TV/알뜰폰 결합": 5500, "1GB + TV/알뜰폰 결합": 5500, "~22,000원 휴대폰 요금제&500mb/총액결합+따살결": 9900, "~22,000원 휴대폰 요금제&1GB/총액결합+따살결": 11000, "~22,000원 요금제&500mb/총액결합+따살결": 9900, "~22,000원 요금제&1GB/총액결합+따살결": 11000, "22,000원 이상 휴대폰 요금제&500mb/총액결합+따살결": 13200, "22,000원 이상 휴대폰 요금제&1GB/총액결합+따살결": 14300, "22,000원 이상 요금제&500mb/총액결합+따살결": 9900, "22,000원 이상 요금제&1GB/총액결합+따살결": 11000, "(단독) 100mb/정액결합": 5500, "(단독) 500mb/정액결합": 11000, "(단독) 1GB/정액결합": 11000, "100mb+TV/정액결합": 5500, "500mb+TV/정액결합": 5500, "1GB+TV/정액결합": 5500},install:{"인터넷 설치비":36000,"인터넷+TV 설치비":56200,"인터넷 + 일반전화 설치비":68000,"인터넷 + 070전화 설치비":60000,"인터넷+TV + 일반전화 설치비":88200,"인터넷+TV + 070전화 설치비":80200,"인터넷+TV + TV 추가 설치비":71600,"인터넷 설치비 (주말)":45000,"인터넷 + 일반전화 설치비 (주말)":86000,"인터넷 + 070전화 설치비 (주말)":78000,"인터넷+TV 설치비 (주말)":71250,"인터넷+TV + 일반전화 설치비 (주말)":112250,"인터넷+TV + 070전화 설치비 (주말)":104250,"인터넷+TV + TV 추가 설치비 (주말)":90500},gift:{"(단독) 100mb":{t:90000,c:50000,v:40000},"(단독) 500mb":{t:140000,c:100000,v:40000},"(단독) 1GB":{t:140000,c:90000,v:50000},"100mb+tv":{t:370000,c:310000,v:60000},"500mb+tv":{t:450000,c:390000,v:60000},"1GB+tv":{t:450000,c:360000,v:90000}}},"KT 오피스넷":{internet:{"(단독) 100mb 유동":30800,"(단독) 500mb 유동":44000,"(단독) 1GB 유동":49500,"100mb 유동":30800,"500mb 유동":44000,"1GB 유동":49500},tv:{"미가입":0,"베이직 (239채널) + 기가지니A":15400,"라이트 (243채널) + 기가지니A":16500,"에센스 (269채널) + 기가지니A":19800},"tv-extra":{"베이직 (239채널) + 기가지니A":10670,"라이트 (243채널) + 기가지니A":11220,"에센스 (269채널) + 기가지니A":13420},router:{"공유기":1100},phone:{"일반 전화":6050,"인터넷 전화":6294},addon:{"100MB 고정IP":41800,"500MB 고정IP":49500,"1GB 고정IP":55000},bundle:{"(단독) 500mb 유동 & 전화":2200,"(단독) 1GB 유동 & 전화":2200,"500mb 유동(& TV or & 전화+TV)":5500,"1GB 유동(& TV or & 전화+TV)":5500},install:{"인터넷 설치비":36000,"인터넷+TV 설치비":56200,"인터넷 + 일반전화 설치비":68000,"인터넷 + 070전화 설치비":60000,"인터넷+TV + 일반전화 설치비":88200,"인터넷+TV + 070전화 설치비":80200,"인터넷+TV + TV 추가 설치비":71600,"인터넷 설치비 (주말)":45000,"인터넷 + 일반전화 설치비 (주말)":86000,"인터넷 + 070전화 설치비 (주말)":78000,"인터넷+TV 설치비 (주말)":71250,"인터넷+TV + 일반전화 설치비 (주말)":112250,"인터넷+TV + 070전화 설치비 (주말)":104250,"인터넷+TV + TV 추가 설치비 (주말)":90500},gift:{"(단독) 100mb 유동":{t:90000,c:50000,v:40000},"(단독) 500mb 유동":{t:140000,c:100000,v:40000},"(단독) 1GB 유동":{t:140000,c:90000,v:50000},"100mb 유동+tv":{t:370000,c:300000,v:70000},"500mb 유동+tv":{t:450000,c:380000,v:70000},"1GB 유동+tv":{t:450000,c:350000,v:100000}}},LGU:{internet:{"(단독) 100mb":22000,"(단독) 200mb":25300,"(단독) 500mb":33000,"(단독) 1GB":38500,"100mb":22000,"200mb":25300,"500mb":27500,"1GB":33000},tv:{"미가입":0,"실속형 (217채널) + UHD4":17600,"기본형 (233채널) + UHD4":18700,"프리미엄 (252채널)":20900,"프리미엄 라이트 (259채널)":23100,"프리미엄 디즈니":29000,"프리미엄 넷플릭스 HD":32200,"프리미엄 넷플릭스 UHD":35700},"tv-extra":{"실속형 (217채널) + UHD3 / 500mb 이상":9900,"기본형 (233채널) + UHD3 / 500mb 이상":10450,"실속형 (217채널) + UHD4":12100,"기본형 (233채널) + UHD4":12650,"실속형(고급형) / 100mb할 경우":11000,"프리미엄(UHD4)":13750},router:{"공유기 무료":0},phone:{"인터넷 전화(070) - 단말기 보유":3300,"인터넷 전화(070) - 단말기 구매":5562},addon:{"증폭기 (GAPK-7600)":2200,"네이버 클로버 클락":3300,"사운드바 셋톱박스 블랙":2200,"(100/200/1G 번들) 아이패드 - 프리미엄X":14694,"(500mb 번들) 아이패드 - 프리미엄 X":13200},bundle:{"100mb + TV/참쉬운가족결합":5500,"100mb + TV/인터넷 가족끼리 다모여 결합(패밀리)":5500,"200mb + TV/참쉬운가족결합":5500,"200mb + TV/인터넷 가족끼리 다모여 결합(패밀리)":5500,"500mb + TV/참쉬운가족결합":9900,"500mb + TV/인터넷 가족끼리 다모여 결합(패밀리)":5500,"500mb + TV/투게더결합":11000,"1GB + TV/참쉬운가족결합":13200,"1GB + TV/인터넷 가족끼리 다모여 결합(패밀리)":5500,"1GB + TV/투게더결합":11000,"(단독) 100mb/참쉬운가족결합":5500,"(단독) 100mb/인터넷 가족끼리 다모여 결합(패밀리)":5500,"(단독) 200mb/참쉬운가족결합":5500,"(단독) 200mb/인터넷 가족끼리 다모여 결합(패밀리)":5500,"(단독) 500mb/참쉬운가족결합":9900,"(단독) 500mb/인터넷 가족끼리 다모여 결합(패밀리)":5500,"(단독) 500mb/투게더결합":11000,"(단독) 1GB/참쉬운가족결합":13200,"(단독) 1GB/인터넷 가족끼리 다모여 결합(패밀리)":5500,"(단독) 1GB/투게더결합":11000},install:{"인터넷 설치비":36300,"인터넷 + 일반전화 설치비":36300,"인터넷 + 인터넷전화 설치비":36300,"인터넷 + TV 설치비":56100,"인터넷 + TV + 일반/070전화 설치비":56100,"인터넷 + TV + TV추가 설치비":78100,"인터넷 설치비 (주말)":45375,"인터넷 + 일반전화 설치비 (주말)":45375,"인터넷 + 인터넷전화 설치비 (주말)":45375,"인터넷 + TV 설치비 (주말)":70125,"인터넷 + TV + 일반/070전화 설치비 (주말)":70125,"인터넷 + TV + TV추가 설치비 (주말)":97625},gift:{"(단독) 100mb":200000,"(단독) 200mb":200000,"(단독) 500mb":230000,"(단독) 1GB":230000,"100mb+tv":330000,"200mb+tv":330000,"500mb+tv":470000,"1GB+tv":470000}},"LG 소호":{internet:{"(단독) 100mb":22000,"(단독) 200mb":25300,"(단독) 500mb":33000,"(단독) 1GB":38500,"100mb":22000,"200mb":25300,"500mb":27500,"1GB":33000},tv:{"미가입":0,"실속형 (217채널) + UHD4":17600,"기본형 (233채널) + UHD4":18700,"프리미엄 (254채널)":20900,"프리미엄 라이트 (259채널)":23100,"프리미엄 디즈니":29000,"프리미엄 넷플릭스 HD":32200,"프리미엄 넷플릭스 UHD":35700},"tv-extra":{"실속형 (217채널) + UHD4":12100,"기본형 (233채널) + UHD4":12650,"실속형(고급형) / 100mb할 경우":11000,"프리미엄(UHD4)":13750},router:{"공유기 무료":0,"SOHO 안심 보상 (100M/500M)":3300,"SOHO 안심 보상 (1G)":4400},phone:{"일반전화(지역번호)- CPG(기존 소유 전화 단말기 사용 시) / 신규가입 시, 가입비 33,000원 포함":35200,"일반 전화 (지역번호) - CPG(기존 소유 전화 단말기 사용 시)":2200,"인터넷 전화 (070) - CPG(기존 소유 전화 단말기 사용 시)":2200,"100mb/인터넷 전화 (070) - (IP450S 단말기 대여 포함) 월 요금 3,300원 + 단말기(611원)":3911,"500mb이상/인터넷 전화 (070) - 고급형센트릭스 월 요금 3,300원 + IP520G 단말기 대여비 (월 요금 1405원)":4705},addon:{"CCTV 1대":13200,"CCTV 2대":26400,"CCTV 3대":39600},bundle:{"100mb + TV/참쉬운가족결합":5500,"100mb + TV/인터넷 가족끼리 다모여 결합(패밀리)":5500,"200mb + TV/참쉬운가족결합":5500,"200mb + TV/인터넷 가족끼리 다모여 결합(패밀리)":5500,"500mb + TV/참쉬운가족결합":9900,"500mb + TV/인터넷 가족끼리 다모여 결합(패밀리)":5500,"500mb + TV/투게더결합":11000,"1GB + TV/참쉬운가족결합":13200,"1GB + TV/인터넷 가족끼리 다모여 결합(패밀리)":5500,"1GB + TV/투게더결합":11000,"(단독) 100mb/참쉬운가족결합":5500,"(단독) 100mb/인터넷 가족끼리 다모여 결합(패밀리)":5500,"(단독) 200mb/참쉬운가족결합":5500,"(단독) 200mb/인터넷 가족끼리 다모여 결합(패밀리)":5500,"(단독) 500mb/참쉬운가족결합":9900,"(단독) 500mb/인터넷 가족끼리 다모여 결합(패밀리)":5500,"(단독) 500mb/투게더결합":11000,"(단독) 1GB/참쉬운가족결합":13200,"(단독) 1GB/인터넷 가족끼리 다모여 결합(패밀리)":5500,"(단독) 1GB/투게더결합":11000},install:{"인터넷 설치비":36300,"인터넷 + 일반전화 설치비":36300,"인터넷 + 인터넷전화 설치비":36300,"인터넷 + TV 설치비":56100,"인터넷 + TV + 일반/070전화 설치비":56100,"인터넷 + TV + TV추가 설치비":78100,"인터넷 설치비 (주말)":45375,"인터넷 + 일반전화 설치비 (주말)":45375,"인터넷 + 인터넷전화 설치비 (주말)":45375,"인터넷 + TV 설치비 (주말)":70125,"인터넷 + TV + 일반/070전화 설치비 (주말)":70125,"인터넷 + TV + TV추가 설치비 (주말)":97625},gift:{"(단독) 100mb":130000,"(단독) 200mb":200000,"(단독) 500mb":250000,"(단독) 1GB":250000,"100mb+tv":400000,"200mb+tv":400000,"500mb+tv":470000,"1GB+tv":470000}},SKB:{internet:{"(단독) 100mb":22000,"(단독) 500mb":33000,"(단독) 1GB":38500,"100mb":19800,"500mb":27500,"1GB":33000},tv:{"미가입":0,"이코노미 (182채널) + 스마트3":14300,"스탠다드 (236채널) + 스마트3":17600,"ALL (256채널) + 스마트3":20900,"Btv Max (256채널) + 스마트3":27500,"스탠다드 넷플릭스 29,900원":29900,"스탠다드 넷플릭스 프리미엄 32,900원":32900,"ALL 넷플릭스 32,400원":32400,"ALL 넷플릭스 프리미엄 35,400원":35400},"tv-extra":{"이코노미 (182채널) + 스마트3":8250,"이코노미(애플셋탑)":10450,"스탠다드 (236채널) + 스마트3":9900,"스탠다드(애플셋탑)":12100,"ALL (256채널) + 스마트3":11550,"ALL(애플셋탑)":13750,"Btv Max (256채널) + 스마트3":18150},router:{"공유기":1100,"7D WiFi":2200,"공유기 X":0},phone:{"일반 전화":1100,"070 전화 (인터넷+전화 기본)":1100,"070 전화 (인터넷+TV+전화 기본)":1100,"070 전화 (인터넷+집전화 프리)":4400,"070 전화 (인터넷+TV+집전화 프리)":2200},addon:{"WINGS (증폭기)":1650,"AI 사운드바 맥스":4400,"애플셋탑 (프로모션 진행 중)":0,"AI5":3300},bundle:{"100mb + TV/요즘가족결합":3300,"100mb + TV/패밀리결합":3300,"100mb + TV/알뜰한 결합":3300,"500mb + TV/요즘가족결합":6600,"500mb + TV/패밀리결합":5500,"500mb + TV/알뜰한 결합":6600,"1GB + TV/요즘가족결합":8800,"1GB + TV/패밀리결합":5500,"1GB + TV/알뜰한 결합":8800,"(단독) 100mb/요즘가족결합":4400,"(단독) 100mb/패밀리결합":5500,"(단독) 100mb/알뜰한 결합":4400,"(단독) 500mb/요즘가족결합":11000,"(단독) 500mb/패밀리결합":11000,"(단독) 500mb/알뜰한 결합":11000,"(단독) 1GB/요즘가족결합":13200,"(단독) 1GB/패밀리결합":11000,"(단독) 1GB/알뜰한 결합":13200},install:{"인터넷 설치비":36300,"인터넷 + 일반전화 설치비":44000,"인터넷 + 070전화 설치비":37400,"인터넷 + TV 설치비":56100,"인터넷 + TV + 일반/070전화 설치비":56100,"인터넷 + TV + TV추가 설치비":73700,"인터넷 설치비 (주말)":45375,"인터넷 + 일반전화 설치비 (주말)":51700,"인터넷 + 070전화 설치비 (주말)":45100,"인터넷 + TV 설치비 (주말)":70125,"인터넷 + TV + 일반/070전화 설치비 (주말)":70125,"인터넷 + TV + TV추가 설치비 (주말)":92125},gift:{"(단독) 100mb":100000,"(단독) 500mb":170000,"(단독) 1GB":170000,"100mb+tv":390000,"500mb+tv":490000,"1GB+tv":490000}},SKT:{internet:{"(단독) 100mb":22000,"(단독) 500mb":33000,"(단독) 1GB":38500,"100mb":19800,"500mb":27500,"1GB":33000},tv:{"미가입":0,"이코노미 (182채널) + 스마트3":14300,"스탠다드 (236채널) + 스마트3":17600,"ALL (256채널) + 스마트3":20900,"Btv Max (256채널) + 스마트3":27500,"스탠다드 넷플릭스 29,900원":29900,"스탠다드 넷플릭스 프리미엄 32,900원":32900,"ALL 넷플릭스 32,400원":32400,"ALL 넷플릭스 프리미엄 35,400원":35400},"tv-extra":{"이코노미 (182채널) + 스마트3":8250,"이코노미(애플셋탑)":10450,"스탠다드 (236채널) + 스마트3":9900,"스탠다드(애플셋탑)":12100,"ALL (256채널) + 스마트3":11550,"ALL(애플셋탑)":13750,"Btv Max (256채널) + 스마트3":18150},router:{"공유기":1100,"7D WiFi":2200,"공유기 X":0},phone:{"일반 전화":1100,"070 전화 (인터넷+전화 기본)":1100,"070 전화 (인터넷+TV+전화 기본)":1100,"070 전화 (인터넷+집전화 프리)":4400,"070 전화 (인터넷+TV+집전화 프리)":2200},addon:{"WINGS (증폭기)":1650,"AI 사운드바 맥스":4400,"애플셋탑 (프로모션 진행 중)":0,"AI5":3300},bundle:{"100mb + TV/요즘가족결합":3300,"100mb + TV/패밀리결합":3300,"500mb + TV/요즘가족결합":6600,"500mb + TV/패밀리결합":5500,"1GB + TV/요즘가족결합":8800,"1GB + TV/패밀리결합":5500,"(단독) 100mb/요즘가족결합":4400,"(단독) 100mb/패밀리결합":5500,"(단독) 500mb/요즘가족결합":11000,"(단독) 500mb/패밀리결합":11000,"(단독) 1GB/요즘가족결합":13200,"(단독) 1GB/패밀리결합":11000},install:{"인터넷 설치비":36300,"인터넷 + 일반전화 설치비":44000,"인터넷 + 070전화 설치비":37400,"인터넷 + TV 설치비":56100,"인터넷 + TV + 일반/070전화 설치비":56100,"인터넷 + TV + TV추가 설치비":73700,"인터넷 설치비 (주말)":45375,"인터넷 + 일반전화 설치비 (주말)":51700,"인터넷 + 070전화 설치비 (주말)":45100,"인터넷 + TV 설치비 (주말)":70125,"인터넷 + TV + 일반/070전화 설치비 (주말)":70125,"인터넷 + TV + TV추가 설치비 (주말)":92125},gift:{"(단독) 100mb":110000,"(단독) 500mb":170000,"(단독) 1GB":170000,"100mb+tv":380000,"500mb+tv":430000,"1GB+tv":520000}},헬로비전:{internet:{"(단독) 100mb":20790,"(단독) 160mb":26510,"(단독) 500mb":30360,"(단독) 1GB":31900,"100mb":16330,"160mb":21060,"500mb":24090,"1GB":25300},tv:{"미가입":0,"이코노미 UHD (108채널)":15400,"뉴베이직 UHD (247채널)":17600,"프로라이트 UHD (222채널)":17600,"프로맥스 UHD (249채널)":19800},"tv-extra":{"이코노미 HD (108채널)":5500,"뉴베이직 HD (247채널)":8800,"뉴베이직 UHD (247채널)":11000,"프로라이트 UHD (222채널)":11550,"프로맥스 UHD (249채널)":13750},router:{"공유기":1100,"공유기 X (100mb 가입시 선택 가능)":0},phone:{},addon:{},bundle:{"160mb 단독 / SK 동등 결합":5530,"160mb 단독 / KT 동등 결합":5530,"160mb 단독 / LG 동등 결합":5530,"500mb 단독 / SK 동등 결합":6300,"500mb 단독 / KT 동등 결합":6300,"500mb 단독 / LG 동등 결합":6300,"1GB 단독 / SK 동등 결합":9900,"1GB 단독 / KT 동등 결합":9900,"1GB 단독 / LG 동등 결합":9900,"160mb + TV / SK 동등 결합":5520,"160mb + TV / KT 동등 결합":5520,"160mb + TV / LG 동등 결합":5520,"500mb + TV / SK 동등 결합":6300,"500mb + TV / KT 동등 결합":6300,"500mb + TV / LG 동등 결합":6300,"1GB + TV / SK 동등 결합":9900,"1GB + TV / KT 동등 결합":9900,"1GB + TV / LG 동등 결합":9900},install:{"인터넷 설치비":36300,"인터넷 + TV 설치비":56100,"인터넷 + TV 설치비 + TV 설치비":78100},gift:{"(단독) 100mb":0,"(단독) 160mb":{t:110000,c:90000,v:20000},"(단독) 500mb":{t:160000,c:140000,v:20000},"(단독) 1GB":{t:180000,c:160000,v:20000},"160mb+tv":{t:360000,c:340000,v:20000},"500mb+tv":{t:400000,c:380000,v:20000},"1GB+tv":{t:430000,c:410000,v:20000}}},SKY:{internet:{"(단독) 100mb":23100,"(단독) 200mb":25300,"(단독) 500mb":30800,"(단독) 1GB":36300,"100mb(SKY)":19800,"100mb(IPTV)":19800,"200mb(SKY)":22000,"200mb(IPTV)":22000,"500mb(SKY)":27500,"500mb(IPTV)":27500,"1GB(SKY)":33000,"1GB(IPTV)":33000},tv:{"미가입":0,"SKY ALL 244채널(UHD셋탑)":9900,"SKY 포인트 244채널(UHD셋탑)":12100,"베이직 194채널(기가지니A)":13200,"플러스 209채널(기가지니A)":14300,"초이스 209채널(기가지니A)":23100},"tv-extra":{"SKY ALL 244채널(UHD셋탑)":6600,"베이직 194채널(기가지니A)":9350,"플러스 209채널(기가지니A)":9900},router:{"100mb 공유기":1100,"200mb 이상 공유기 무료":0},phone:{},addon:{},bundle:{"(100MB사은품 없음) 30% 할인":8800,"(200MB사은품 없음) 30% 할인":8800},install:{"인터넷 설치비":36000,"인터넷 설치비 (주말)":45000,"(위성)인터넷 + TV 설치비":48500,"(위성)인터넷 + TV + TV 추가 설치비":58500,"(IPTV)인터넷 + TV 설치비":48500,"(IPTV)인터넷 + TV + TV 추가 설치비":58500},gift:{"(단독) 100mb":{t:100000,c:60000,v:40000},"(단독) 200mb":{t:120000,c:80000,v:40000},"(단독) 500mb":{t:140000,c:90000,v:50000},"(단독) 1GB":{t:150000,c:100000,v:50000},"100mb(SKY)+tv":{t:350000,c:310000,v:40000},"100mb(IPTV)+tv":{t:350000,c:310000,v:40000},"200mb(SKY)+tv":{t:360000,c:320000,v:40000},"200mb(IPTV)+tv":{t:360000,c:320000,v:40000},"500mb(SKY)+tv":{t:420000,c:370000,v:50000},"500mb(IPTV)+tv":{t:420000,c:370000,v:50000},"1GB(SKY)+tv":{t:480000,c:430000,v:50000},"1GB(IPTV)+tv":{t:480000,c:430000,v:50000}}}};
+const PRODUCTS={KT:{internet:{"(단독) 100mb":22000,"(단독) 500mb":33000,"(단독) 1GB":38500,"100mb":22000,"500mb":27500,"1GB":33000},tv:{"미가입":0,"베이직 (239채널) + 기가지니A":15400,"라이트 (243채널) + 기가지니A":16500,"에센스 (269채널) + 기가지니A":19800,"에센스 플러스 (268+채널)":24200,"넷플릭스 HD (268채널)":27800,"넷플릭스 UHD (268채널)":31300,"키즈랜드팩초이스 (268채널)":24200},"tv-extra":{"베이직 (239채널) + 기가지니A":10670,"라이트 (243채널) + 기가지니A":11220,"에센스 (269채널) + 기가지니A":13420},router:{"공유기":1100,"공유기 무료 (1GB)":0,"공유기 X":0,"7D WiFi":2200,"7D WiFi (1GB)":1100},phone:{"일반 전화":6050,"인터넷 전화 (모임스톤)":7461},addon:{"기가지니3A (AI 셋톱박스)":1100,"AI 지니 TV 올인원 사운드바 (공유기 내장 셋탑, 우드/화이트 색상 택 1)":5500,"버디증폭기":1650,"기가지니 4A":3300},bundle:{"~22,000원 휴대폰 요금제&100mb/총액결합": 1650, "~64,900원 휴대폰 요금제&100mb/총액결합": 3300, "64,900원 이상 요금제&100mb/총액결합": 5500, "100mb + TV/패밀리 결합": 5500, "(단독) 100mb/알뜰폰 결합": 3300, "~22,000원 휴대폰 요금제&(단독) 500mb/총액결합": 7700, "22,000원 이상 요금제&(단독) 500mb/총액결합": 11000, "~22,000원 휴대폰 요금제&500mb/총액결합": 2200, "22,000원 이상 요금제&500mb/총액결합": 5500, "77,000원 이상 휴대폰 요금제 2회선 &500mb/프리미엄 가족결합": 5500, "77,000원 이상 요금제&(단독) 500mb/프리미엄 싱글 결합": 5500, "77,000원 이상 휴대폰 요금제 2회선 &(단독) 500mb/프리미엄 가족결합": 11000, "77,000원 이상 요금제&500mb/프리미엄 싱글 결합": 0, "(단독) 500mb/알뜰폰 결합": 11000, "500mb+TV/패밀리 결합": 5500, "1GB + TV 핸드폰 결합/총액결합": 5500, "77,000원 이상 휴대폰 요금제 2회선 & 1GB/프리미엄 가족결합": 5500, "1GB + TV/패밀리 결합": 5500, "(단독) 100mb/패밀리 결합": 5500, "(단독) 500mb/패밀리 결합": 11000, "~22,000원 휴대폰 요금제&(단독) 1GB/총액결합": 7700, "22,000원 이상 휴대폰 요금제&(단독) 1GB/총액결합": 11000, "77,000원 이상 휴대폰 요금제 2회선 &(단독) 1GB/프리미엄 가족결합": 11000, "77,000원 이상 요금제&(단독) 1GB/프리미엄 싱글 결합": 5500, "77,000원 이상 요금제&1GB/프리미엄 싱글 결합": 0, "(단독) 1GB/알뜰폰 결합": 11000, "(단독) 1GB/패밀리 결합": 11000, "100mb + TV/알뜰폰 결합": 3300, "500mb + TV/알뜰폰 결합": 5500, "1GB + TV/알뜰폰 결합": 5500, "~22,000원 휴대폰 요금제&500mb/총액결합+따살결": 9900, "~22,000원 휴대폰 요금제&1GB/총액결합+따살결": 11000, "~22,000원 요금제&500mb/총액결합+따살결": 9900, "~22,000원 요금제&1GB/총액결합+따살결": 11000, "22,000원 이상 휴대폰 요금제&500mb/총액결합+따살결": 13200, "22,000원 이상 휴대폰 요금제&1GB/총액결합+따살결": 14300, "22,000원 이상 요금제&500mb/총액결합+따살결": 9900, "22,000원 이상 요금제&1GB/총액결합+따살결": 11000, "(단독) 100mb/정액결합": 5500, "(단독) 500mb/정액결합": 11000, "(단독) 1GB/정액결합": 11000, "100mb+TV/정액결합": 5500, "500mb+TV/정액결합": 5500, "1GB+TV/정액결합": 5500},install:{"인터넷 설치비":36000,"인터넷+TV 설치비":56200,"인터넷 + 일반전화 설치비":68000,"인터넷 + 070전화 설치비":60000,"인터넷+TV + 일반전화 설치비":88200,"인터넷+TV + 070전화 설치비":80200,"인터넷+TV + TV 추가 설치비":71600,"인터넷 설치비 (주말)":45000,"인터넷 + 일반전화 설치비 (주말)":86000,"인터넷 + 070전화 설치비 (주말)":78000,"인터넷+TV 설치비 (주말)":71250,"인터넷+TV + 일반전화 설치비 (주말)":112250,"인터넷+TV + 070전화 설치비 (주말)":104250,"인터넷+TV + TV 추가 설치비 (주말)":90500},gift:{"(단독) 100mb":{t:90000,c:50000,v:40000},"(단독) 500mb":{t:140000,c:100000,v:40000},"(단독) 1GB":{t:140000,c:90000,v:50000},"100mb+tv":{t:370000,c:310000,v:60000},"500mb+tv":{t:450000,c:390000,v:60000},"1GB+tv":{t:450000,c:360000,v:90000}}},"KT 오피스넷":{internet:{"(단독) 100mb 유동":30800,"(단독) 500mb 유동":44000,"(단독) 1GB 유동":49500,"100mb 유동":30800,"500mb 유동":44000,"1GB 유동":49500},tv:{"미가입":0,"베이직 (239채널) + 기가지니A":15400,"라이트 (243채널) + 기가지니A":16500,"에센스 (269채널) + 기가지니A":19800},"tv-extra":{"베이직 (239채널) + 기가지니A":10670,"라이트 (243채널) + 기가지니A":11220,"에센스 (269채널) + 기가지니A":13420},router:{"공유기":1100},phone:{"일반 전화":6050,"인터넷 전화":6294},addon:{"100MB 고정IP":41800,"500MB 고정IP":49500,"1GB 고정IP":55000},bundle:{"(단독) 500mb 유동 & 전화":2200,"(단독) 1GB 유동 & 전화":2200,"500mb 유동(& TV or & 전화+TV)":5500,"1GB 유동(& TV or & 전화+TV)":5500},install:{"인터넷 설치비":36000,"인터넷+TV 설치비":56200,"인터넷 + 일반전화 설치비":68000,"인터넷 + 070전화 설치비":60000,"인터넷+TV + 일반전화 설치비":88200,"인터넷+TV + 070전화 설치비":80200,"인터넷+TV + TV 추가 설치비":71600,"인터넷 설치비 (주말)":45000,"인터넷 + 일반전화 설치비 (주말)":86000,"인터넷 + 070전화 설치비 (주말)":78000,"인터넷+TV 설치비 (주말)":71250,"인터넷+TV + 일반전화 설치비 (주말)":112250,"인터넷+TV + 070전화 설치비 (주말)":104250,"인터넷+TV + TV 추가 설치비 (주말)":90500},gift:{"(단독) 100mb 유동":{t:90000,c:50000,v:40000},"(단독) 500mb 유동":{t:140000,c:100000,v:40000},"(단독) 1GB 유동":{t:140000,c:90000,v:50000},"100mb 유동+tv":{t:370000,c:300000,v:70000},"500mb 유동+tv":{t:450000,c:380000,v:70000},"1GB 유동+tv":{t:450000,c:350000,v:100000}}},LGU:{internet:{"(단독) 100mb":22000,"(단독) 200mb":25300,"(단독) 500mb":33000,"(단독) 1GB":38500,"100mb":22000,"200mb":25300,"500mb":27500,"1GB":33000},tv:{"미가입":0,"실속형 (217채널) + UHD4":17600,"기본형 (233채널) + UHD4":18700,"프리미엄 (252채널)":20900,"프리미엄 라이트 (259채널)":23100,"프리미엄 디즈니":29000,"프리미엄 넷플릭스 HD":32200,"프리미엄 넷플릭스 UHD":35700},"tv-extra":{"실속형 (217채널) + UHD3 / 500mb 이상":9900,"기본형 (233채널) + UHD3 / 500mb 이상":10450,"실속형 (217채널) + UHD4":12100,"기본형 (233채널) + UHD4":12650,"실속형(고급형) / 100mb할 경우":11000,"프리미엄(UHD4)":13750},router:{"공유기 무료":0},phone:{"인터넷 전화(070) - 단말기 보유":3300,"인터넷 전화(070) - 단말기 구매":5562},addon:{"증폭기 (GAPK-7600)":2200,"네이버 클로버 클락":3300,"사운드바 셋톱박스 블랙":2200,"(100/200/1G 번들) 아이패드 - 프리미엄X":14694,"(500mb 번들) 아이패드 - 프리미엄 X":13200},bundle:{"100mb + TV/참쉬운가족결합":5500,"100mb + TV/인터넷 가족끼리 다모여 결합(패밀리)":5500,"200mb + TV/참쉬운가족결합":5500,"200mb + TV/인터넷 가족끼리 다모여 결합(패밀리)":5500,"500mb + TV/참쉬운가족결합":9900,"500mb + TV/인터넷 가족끼리 다모여 결합(패밀리)":5500,"500mb + TV/투게더결합":11000,"1GB + TV/참쉬운가족결합":13200,"1GB + TV/인터넷 가족끼리 다모여 결합(패밀리)":5500,"1GB + TV/투게더결합":11000,"(단독) 100mb/참쉬운가족결합":5500,"(단독) 100mb/인터넷 가족끼리 다모여 결합(패밀리)":5500,"(단독) 200mb/참쉬운가족결합":5500,"(단독) 200mb/인터넷 가족끼리 다모여 결합(패밀리)":5500,"(단독) 500mb/참쉬운가족결합":9900,"(단독) 500mb/인터넷 가족끼리 다모여 결합(패밀리)":5500,"(단독) 500mb/투게더결합":11000,"(단독) 1GB/참쉬운가족결합":13200,"(단독) 1GB/인터넷 가족끼리 다모여 결합(패밀리)":5500,"(단독) 1GB/투게더결합":11000},install:{"인터넷 설치비":36300,"인터넷 + 일반전화 설치비":36300,"인터넷 + 인터넷전화 설치비":36300,"인터넷 + TV 설치비":56100,"인터넷 + TV + 일반/070전화 설치비":56100,"인터넷 + TV + TV추가 설치비":78100,"인터넷 설치비 (주말)":45375,"인터넷 + 일반전화 설치비 (주말)":45375,"인터넷 + 인터넷전화 설치비 (주말)":45375,"인터넷 + TV 설치비 (주말)":70125,"인터넷 + TV + 일반/070전화 설치비 (주말)":70125,"인터넷 + TV + TV추가 설치비 (주말)":97625},gift:{"(단독) 100mb":200000,"(단독) 200mb":200000,"(단독) 500mb":230000,"(단독) 1GB":230000,"100mb+tv":330000,"200mb+tv":330000,"500mb+tv":470000,"1GB+tv":470000}},"LG 소호":{internet:{"(단독) 100mb":22000,"(단독) 200mb":25300,"(단독) 500mb":33000,"(단독) 1GB":38500,"100mb":22000,"200mb":25300,"500mb":27500,"1GB":33000},tv:{"미가입":0,"실속형 (217채널) + UHD4":17600,"기본형 (233채널) + UHD4":18700,"프리미엄 (254채널)":20900,"프리미엄 라이트 (259채널)":23100,"프리미엄 디즈니":29000,"프리미엄 넷플릭스 HD":32200,"프리미엄 넷플릭스 UHD":35700},"tv-extra":{"실속형 (217채널) + UHD4":12100,"기본형 (233채널) + UHD4":12650,"실속형(고급형) / 100mb할 경우":11000,"프리미엄(UHD4)":13750},router:{"공유기 무료":0,"SOHO 안심 보상 (100M/500M)":3300,"SOHO 안심 보상 (1G)":4400},phone:{"일반전화(지역번호)- CPG(기존 소유 전화 단말기 사용 시) / 신규가입 시, 가입비 33,000원 포함":35200,"일반 전화 (지역번호) - CPG(기존 소유 전화 단말기 사용 시)":2200,"인터넷 전화 (070) - CPG(기존 소유 전화 단말기 사용 시)":2200,"100mb/인터넷 전화 (070) - (IP450S 단말기 대여 포함) 월 요금 3,300원 + 단말기(611원)":3911,"500mb이상/인터넷 전화 (070) - 고급형센트릭스 월 요금 3,300원 + IP520G 단말기 대여비 (월 요금 1405원)":4705},addon:{"CCTV 1대":13200,"CCTV 2대":26400,"CCTV 3대":39600},bundle:{"100mb + TV/참쉬운가족결합":5500,"100mb + TV/인터넷 가족끼리 다모여 결합(패밀리)":5500,"200mb + TV/참쉬운가족결합":5500,"200mb + TV/인터넷 가족끼리 다모여 결합(패밀리)":5500,"500mb + TV/참쉬운가족결합":9900,"500mb + TV/인터넷 가족끼리 다모여 결합(패밀리)":5500,"500mb + TV/투게더결합":11000,"1GB + TV/참쉬운가족결합":13200,"1GB + TV/인터넷 가족끼리 다모여 결합(패밀리)":5500,"1GB + TV/투게더결합":11000,"(단독) 100mb/참쉬운가족결합":5500,"(단독) 100mb/인터넷 가족끼리 다모여 결합(패밀리)":5500,"(단독) 200mb/참쉬운가족결합":5500,"(단독) 200mb/인터넷 가족끼리 다모여 결합(패밀리)":5500,"(단독) 500mb/참쉬운가족결합":9900,"(단독) 500mb/인터넷 가족끼리 다모여 결합(패밀리)":5500,"(단독) 500mb/투게더결합":11000,"(단독) 1GB/참쉬운가족결합":13200,"(단독) 1GB/인터넷 가족끼리 다모여 결합(패밀리)":5500,"(단독) 1GB/투게더결합":11000},install:{"인터넷 설치비":36300,"인터넷 + 일반전화 설치비":36300,"인터넷 + 인터넷전화 설치비":36300,"인터넷 + TV 설치비":56100,"인터넷 + TV + 일반/070전화 설치비":56100,"인터넷 + TV + TV추가 설치비":78100,"인터넷 설치비 (주말)":45375,"인터넷 + 일반전화 설치비 (주말)":45375,"인터넷 + 인터넷전화 설치비 (주말)":45375,"인터넷 + TV 설치비 (주말)":70125,"인터넷 + TV + 일반/070전화 설치비 (주말)":70125,"인터넷 + TV + TV추가 설치비 (주말)":97625},gift:{"(단독) 100mb":130000,"(단독) 200mb":200000,"(단독) 500mb":250000,"(단독) 1GB":250000,"100mb+tv":400000,"200mb+tv":400000,"500mb+tv":470000,"1GB+tv":470000}},SKB:{internet:{"(단독) 100mb":22000,"(단독) 500mb":33000,"(단독) 1GB":38500,"100mb":19800,"500mb":27500,"1GB":33000},tv:{"미가입":0,"이코노미 (183채널) + 스마트3":14300,"스탠다드 (235채널) + 스마트3":17600,"ALL (255채널) + 스마트3":20900,"Btv Max (256채널) + 스마트3":27500,"스탠다드 넷플릭스 29,900원":29900,"스탠다드 넷플릭스 프리미엄 32,900원":32900,"ALL 넷플릭스 32,400원":32400,"ALL 넷플릭스 프리미엄 35,400원":35400},"tv-extra":{"이코노미 (183채널) + 스마트3":8250,"이코노미(애플셋탑)":10450,"스탠다드 (235채널) + 스마트3":9900,"스탠다드(애플셋탑)":12100,"ALL (255채널) + 스마트3":11550,"ALL(애플셋탑)":13750,"Btv Max (256채널) + 스마트3":18150},router:{"공유기":1100,"7D WiFi":2200,"공유기 X":0},phone:{"일반 전화":1100,"070 전화 (인터넷+전화 기본)":1100,"070 전화 (인터넷+TV+전화 기본)":1100,"070 전화 (인터넷+집전화 프리)":4400,"070 전화 (인터넷+TV+집전화 프리)":2200},addon:{"WINGS (증폭기)":1650,"AI 사운드바 맥스":4400,"애플셋탑 (프로모션 진행 중)":0,"AI5":3300},bundle:{"100mb + TV/요즘가족결합":3300,"100mb + TV/패밀리결합":3300,"100mb + TV/알뜰한 결합":3300,"500mb + TV/요즘가족결합":6600,"500mb + TV/패밀리결합":5500,"500mb + TV/알뜰한 결합":6600,"1GB + TV/요즘가족결합":8800,"1GB + TV/패밀리결합":5500,"1GB + TV/알뜰한 결합":8800,"(단독) 100mb/요즘가족결합":4400,"(단독) 100mb/패밀리결합":5500,"(단독) 100mb/알뜰한 결합":4400,"(단독) 500mb/요즘가족결합":11000,"(단독) 500mb/패밀리결합":11000,"(단독) 500mb/알뜰한 결합":11000,"(단독) 1GB/요즘가족결합":13200,"(단독) 1GB/패밀리결합":11000,"(단독) 1GB/알뜰한 결합":13200},install:{"인터넷 설치비":36300,"인터넷 + 일반전화 설치비":44000,"인터넷 + 070전화 설치비":37400,"인터넷 + TV 설치비":56100,"인터넷 + TV + 일반/070전화 설치비":56100,"인터넷 + TV + TV추가 설치비":73700,"인터넷 설치비 (주말)":45375,"인터넷 + 일반전화 설치비 (주말)":51700,"인터넷 + 070전화 설치비 (주말)":45100,"인터넷 + TV 설치비 (주말)":70125,"인터넷 + TV + 일반/070전화 설치비 (주말)":70125,"인터넷 + TV + TV추가 설치비 (주말)":92125},gift:{"(단독) 100mb":100000,"(단독) 500mb":170000,"(단독) 1GB":170000,"100mb+tv":390000,"500mb+tv":490000,"1GB+tv":490000}},SKT:{internet:{"(단독) 100mb":22000,"(단독) 500mb":33000,"(단독) 1GB":38500,"100mb":19800,"500mb":27500,"1GB":33000},tv:{"미가입":0,"이코노미 (183채널) + 스마트3":14300,"스탠다드 (235채널) + 스마트3":17600,"ALL (255채널) + 스마트3":20900,"Btv Max (256채널) + 스마트3":27500,"스탠다드 넷플릭스 29,900원":29900,"스탠다드 넷플릭스 프리미엄 32,900원":32900,"ALL 넷플릭스 32,400원":32400,"ALL 넷플릭스 프리미엄 35,400원":35400},"tv-extra":{"이코노미 (183채널) + 스마트3":8250,"이코노미(애플셋탑)":10450,"스탠다드 (235채널) + 스마트3":9900,"스탠다드(애플셋탑)":12100,"ALL (255채널) + 스마트3":11550,"ALL(애플셋탑)":13750,"Btv Max (256채널) + 스마트3":18150},router:{"공유기":1100,"7D WiFi":2200,"공유기 X":0},phone:{"일반 전화":1100,"070 전화 (인터넷+전화 기본)":1100,"070 전화 (인터넷+TV+전화 기본)":1100,"070 전화 (인터넷+집전화 프리)":4400,"070 전화 (인터넷+TV+집전화 프리)":2200},addon:{"WINGS (증폭기)":1650,"AI 사운드바 맥스":4400,"애플셋탑 (프로모션 진행 중)":0,"AI5":3300},bundle:{"100mb + TV/요즘가족결합":3300,"100mb + TV/패밀리결합":3300,"500mb + TV/요즘가족결합":6600,"500mb + TV/패밀리결합":5500,"1GB + TV/요즘가족결합":8800,"1GB + TV/패밀리결합":5500,"(단독) 100mb/요즘가족결합":4400,"(단독) 100mb/패밀리결합":5500,"(단독) 500mb/요즘가족결합":11000,"(단독) 500mb/패밀리결합":11000,"(단독) 1GB/요즘가족결합":13200,"(단독) 1GB/패밀리결합":11000},install:{"인터넷 설치비":36300,"인터넷 + 일반전화 설치비":44000,"인터넷 + 070전화 설치비":37400,"인터넷 + TV 설치비":56100,"인터넷 + TV + 일반/070전화 설치비":56100,"인터넷 + TV + TV추가 설치비":73700,"인터넷 설치비 (주말)":45375,"인터넷 + 일반전화 설치비 (주말)":51700,"인터넷 + 070전화 설치비 (주말)":45100,"인터넷 + TV 설치비 (주말)":70125,"인터넷 + TV + 일반/070전화 설치비 (주말)":70125,"인터넷 + TV + TV추가 설치비 (주말)":92125},gift:{"(단독) 100mb":110000,"(단독) 500mb":170000,"(단독) 1GB":170000,"100mb+tv":380000,"500mb+tv":430000,"1GB+tv":520000}},헬로비전:{internet:{"(단독) 100mb":20790,"(단독) 160mb":26510,"(단독) 500mb":30360,"(단독) 1GB":31900,"100mb":16330,"160mb":21060,"500mb":24090,"1GB":25300},tv:{"미가입":0,"이코노미 UHD (108채널)":15400,"뉴베이직 UHD (247채널)":17600,"프로라이트 UHD (222채널)":17600,"프로맥스 UHD (249채널)":19800},"tv-extra":{"이코노미 HD (108채널)":5500,"뉴베이직 HD (247채널)":8800,"뉴베이직 UHD (247채널)":11000,"프로라이트 UHD (222채널)":11550,"프로맥스 UHD (249채널)":13750},router:{"공유기":1100,"공유기 X (100mb 가입시 선택 가능)":0},phone:{},addon:{},bundle:{"160mb 단독 / SK 동등 결합":5530,"160mb 단독 / KT 동등 결합":5530,"160mb 단독 / LG 동등 결합":5530,"500mb 단독 / SK 동등 결합":6300,"500mb 단독 / KT 동등 결합":6300,"500mb 단독 / LG 동등 결합":6300,"1GB 단독 / SK 동등 결합":9900,"1GB 단독 / KT 동등 결합":9900,"1GB 단독 / LG 동등 결합":9900,"160mb + TV / SK 동등 결합":5520,"160mb + TV / KT 동등 결합":5520,"160mb + TV / LG 동등 결합":5520,"500mb + TV / SK 동등 결합":6300,"500mb + TV / KT 동등 결합":6300,"500mb + TV / LG 동등 결합":6300,"1GB + TV / SK 동등 결합":9900,"1GB + TV / KT 동등 결합":9900,"1GB + TV / LG 동등 결합":9900},install:{"인터넷 설치비":36300,"인터넷 + TV 설치비":56100,"인터넷 + TV 설치비 + TV 설치비":78100},gift:{"(단독) 100mb":0,"(단독) 160mb":{t:110000,c:90000,v:20000},"(단독) 500mb":{t:160000,c:140000,v:20000},"(단독) 1GB":{t:180000,c:160000,v:20000},"160mb+tv":{t:360000,c:340000,v:20000},"500mb+tv":{t:400000,c:380000,v:20000},"1GB+tv":{t:430000,c:410000,v:20000}}},SKY:{internet:{"(단독) 100mb":23100,"(단독) 200mb":25300,"(단독) 500mb":30800,"(단독) 1GB":36300,"100mb(SKY)":19800,"100mb(IPTV)":19800,"200mb(SKY)":22000,"200mb(IPTV)":22000,"500mb(SKY)":27500,"500mb(IPTV)":27500,"1GB(SKY)":33000,"1GB(IPTV)":33000},tv:{"미가입":0,"SKY ALL 244채널(UHD셋탑)":9900,"SKY 포인트 244채널(UHD셋탑)":12100,"베이직 194채널(기가지니A)":13200,"플러스 209채널(기가지니A)":14300,"초이스 209채널(기가지니A)":23100},"tv-extra":{"SKY ALL 244채널(UHD셋탑)":6600,"베이직 194채널(기가지니A)":9350,"플러스 209채널(기가지니A)":9900},router:{"100mb 공유기":1100,"200mb 이상 공유기 무료":0},phone:{},addon:{},bundle:{"(100MB사은품 없음) 30% 할인":8800,"(200MB사은품 없음) 30% 할인":8800},install:{"인터넷 설치비":36000,"인터넷 설치비 (주말)":45000,"(위성)인터넷 + TV 설치비":48500,"(위성)인터넷 + TV + TV 추가 설치비":58500,"(IPTV)인터넷 + TV 설치비":48500,"(IPTV)인터넷 + TV + TV 추가 설치비":58500},gift:{"(단독) 100mb":{t:100000,c:60000,v:40000},"(단독) 200mb":{t:120000,c:80000,v:40000},"(단독) 500mb":{t:140000,c:90000,v:50000},"(단독) 1GB":{t:150000,c:100000,v:50000},"100mb(SKY)+tv":{t:350000,c:310000,v:40000},"100mb(IPTV)+tv":{t:350000,c:310000,v:40000},"200mb(SKY)+tv":{t:360000,c:320000,v:40000},"200mb(IPTV)+tv":{t:360000,c:320000,v:40000},"500mb(SKY)+tv":{t:420000,c:370000,v:50000},"500mb(IPTV)+tv":{t:420000,c:370000,v:50000},"1GB(SKY)+tv":{t:480000,c:430000,v:50000},"1GB(IPTV)+tv":{t:480000,c:430000,v:50000}}}};
 const BUNDLE_SPEED_MAP={
 "KT":{"~22,000원 휴대폰 요금제&100mb/총액결합":["(단독) 100mb","100mb"],"~64,900원 휴대폰 요금제&100mb/총액결합":["(단독) 100mb","100mb"],"64,900원 이상 요금제&100mb/총액결합":["(단독) 100mb","100mb"],"100mb + TV/패밀리 결합":["100mb"],"~22,000원 휴대폰 요금제&500mb/총액결합":["500mb"],"22,000원 이상 요금제&500mb/총액결합":["500mb"],"77,000원 이상 요금제&500mb/프리미엄 싱글 결합":["500mb"],"77,000원 이상 휴대폰 요금제 2회선 &500mb/프리미엄 가족결합":["500mb"],"500mb+TV/패밀리 결합":["500mb"],"1GB + TV 핸드폰 결합/총액결합":["1GB"],"77,000원 이상 요금제&1GB/프리미엄 싱글 결합":["1GB"],"77,000원 이상 휴대폰 요금제 2회선 & 1GB/프리미엄 가족결합":["1GB"],"1GB + TV/패밀리 결합":["1GB"],"(단독) 100mb/패밀리 결합":["(단독) 100mb"],"(단독) 100mb/알뜰폰 결합":["(단독) 100mb"],"~22,000원 휴대폰 요금제&(단독) 500mb/총액결합":["(단독) 500mb"],"22,000원 이상 요금제&(단독) 500mb/총액결합":["(단독) 500mb"],"77,000원 이상 요금제&(단독) 500mb/프리미엄 싱글 결합":["(단독) 500mb"],"77,000원 이상 휴대폰 요금제 2회선 &(단독) 500mb/프리미엄 가족결합":["(단독) 500mb"],"(단독) 500mb/알뜰폰 결합":["(단독) 500mb"],"(단독) 500mb/패밀리 결합":["(단독) 500mb"],"(단독) 1GB/알뜰폰 결합":["(단독) 1GB"],"~22,000원 휴대폰 요금제&(단독) 1GB/총액결합":["(단독) 1GB"],"22,000원 이상 휴대폰 요금제&(단독) 1GB/총액결합":["(단독) 1GB"],"77,000원 이상 요금제&(단독) 1GB/프리미엄 싱글 결합":["(단독) 1GB"],"77,000원 이상 휴대폰 요금제 2회선 &(단독) 1GB/프리미엄 가족결합":["(단독) 1GB"],"(단독) 1GB/패밀리 결합":["(단독) 1GB"],"100mb + TV/알뜰폰 결합":["100mb"],"500mb + TV/알뜰폰 결합":["500mb"],"1GB + TV/알뜰폰 결합":["1GB"],"~22,000원 휴대폰 요금제&500mb/총액결합+따살결":["(단독) 500mb"],"~22,000원 휴대폰 요금제&1GB/총액결합+따살결":["(단독) 1GB"],"~22,000원 요금제&500mb/총액결합+따살결":["500mb"],"~22,000원 요금제&1GB/총액결합+따살결":["1GB"],"22,000원 이상 휴대폰 요금제&500mb/총액결합+따살결":["(단독) 500mb"],"22,000원 이상 휴대폰 요금제&1GB/총액결합+따살결":["(단독) 1GB"],"22,000원 이상 요금제&500mb/총액결합+따살결":["500mb"],"22,000원 이상 요금제&1GB/총액결합+따살결":["1GB"],"(단독) 100mb/정액결합":["(단독) 100mb"],"(단독) 500mb/정액결합":["(단독) 500mb"],"(단독) 1GB/정액결합":["(단독) 1GB"],"100mb+TV/정액결합":["100mb"],"500mb+TV/정액결합":["500mb"],"1GB+TV/정액결합":["1GB"]},
 "LGU":{"100mb + TV/참쉬운가족결합":["100mb"],"100mb + TV/인터넷 가족끼리 다모여 결합(패밀리)":["100mb"],"200mb + TV/참쉬운가족결합":["200mb"],"200mb + TV/인터넷 가족끼리 다모여 결합(패밀리)":["200mb"],"500mb + TV/참쉬운가족결합":["500mb"],"500mb + TV/인터넷 가족끼리 다모여 결합(패밀리)":["500mb"],"500mb + TV/투게더결합":["500mb"],"1GB + TV/참쉬운가족결합":["1GB"],"1GB + TV/인터넷 가족끼리 다모여 결합(패밀리)":["1GB"],"1GB + TV/투게더결합":["1GB"],"(단독) 100mb/참쉬운가족결합":["(단독) 100mb"],"(단독) 100mb/인터넷 가족끼리 다모여 결합(패밀리)":["(단독) 100mb"],"(단독) 200mb/참쉬운가족결합":["(단독) 200mb"],"(단독) 200mb/인터넷 가족끼리 다모여 결합(패밀리)":["(단독) 200mb"],"(단독) 500mb/참쉬운가족결합":["(단독) 500mb"],"(단독) 500mb/인터넷 가족끼리 다모여 결합(패밀리)":["(단독) 500mb"],"(단독) 500mb/투게더결합":["(단독) 500mb"],"(단독) 1GB/참쉬운가족결합":["(단독) 1GB"],"(단독) 1GB/인터넷 가족끼리 다모여 결합(패밀리)":["(단독) 1GB"],"(단독) 1GB/투게더결합":["(단독) 1GB"],"100mb는 투게더불가!!!!":["(단독) 100mb","100mb"],"200mb는 투게더불가!!!!":["(단독) 200mb","200mb"]},
@@ -1574,9 +1633,9 @@ const ONGAJOK_SPEED_MAP = {
 
 const ONGAJOK_TV = {
   "미가입": 0,
-  "이코노미 (182채널) + 스마트3": 14300,
-  "스탠다드 (236채널) + 스마트3": 17600,
-  "ALL (256채널) + 스마트3": 20900,
+  "이코노미 (183채널) + 스마트3": 14300,
+  "스탠다드 (235채널) + 스마트3": 17600,
+  "ALL (255채널) + 스마트3": 20900,
   "스탠다드 넷플릭스 29,900원 (동시시청 2인/해상도 1080p)": 29900,
   "스탠다드 넷플릭스 프리미엄 32,900원 (동시시청 4인/해상도 4K+HDR)": 32900,
   "ALL 넷플릭스 32,400원 (동시시청 2인/해상도 1080p)": 32400,
@@ -2708,7 +2767,8 @@ const USIM_KT_GIFT = {
     '1gb+tv 패밀리':    {owner:400000, family:130000},
   }
 };
-const USIM_SK_GIFT = {
+// SKB유심: 2026-08-05 기준 기존 SK유심 값과 동일 (변경 없음)
+const USIM_SKB_GIFT = {
   '33K': {
     '100mb 단독':       null,
     '500mb 단독':       null,
@@ -2767,11 +2827,71 @@ const USIM_SK_GIFT = {
   }
 };
 
+// SKT유심: 2026-08-05 "단독" 상품 사은품 인상 (43K/69K/89K), 나머지는 SKB와 동일
+const USIM_SKT_GIFT = {
+  '33K': {
+    '100mb 단독':       null,
+    '500mb 단독':       null,
+    '1gb 단독':         null,
+    '100mb + 이코노미': {owner:100000, family:100000},
+    '500mb + 이코노미': {owner:150000, family:150000},
+    '1gb + 이코노미':   {owner:150000, family:150000},
+    '100mb + 스탠다드': {owner:100000, family:100000},
+    '500mb + 스탠다드': {owner:150000, family:150000},
+    '1gb + 스탠다드':   {owner:150000, family:150000},
+    '100mb + all':      {owner:150000, family:150000},
+    '500mb + all':      {owner:200000, family:200000},
+    '1gb + all':        {owner:200000, family:200000},
+  },
+  '43K': {
+    '100mb 단독':       {owner:190000, family:100000},
+    '500mb 단독':       {owner:160000, family:150000},
+    '1gb 단독':         {owner:220000, family:150000},
+    '100mb + 이코노미': {owner:150000, family:150000},
+    '500mb + 이코노미': {owner:200000, family:200000},
+    '1gb + 이코노미':   {owner:200000, family:200000},
+    '100mb + 스탠다드': {owner:200000, family:200000},
+    '500mb + 스탠다드': {owner:200000, family:200000},
+    '1gb + 스탠다드':   {owner:200000, family:200000},
+    '100mb + all':      {owner:150000, family:150000},
+    '500mb + all':      {owner:250000, family:250000},
+    '1gb + all':        {owner:250000, family:250000},
+  },
+  '69K': {
+    '100mb 단독':       {owner:190000, family:100000},
+    '500mb 단독':       {owner:200000, family:200000},
+    '1gb 단독':         {owner:220000, family:200000},
+    '100mb + 이코노미': {owner:150000, family:150000},
+    '500mb + 이코노미': {owner:250000, family:250000},
+    '1gb + 이코노미':   {owner:250000, family:250000},
+    '100mb + 스탠다드': {owner:150000, family:150000},
+    '500mb + 스탠다드': {owner:300000, family:300000},
+    '1gb + 스탠다드':   {owner:300000, family:300000},
+    '100mb + all':      {owner:150000, family:150000},
+    '500mb + all':      {owner:300000, family:300000},
+    '1gb + all':        {owner:300000, family:300000},
+  },
+  '89K': {
+    '100mb 단독':       {owner:190000, family:100000},
+    '500mb 단독':       {owner:200000, family:200000},
+    '1gb 단독':         {owner:220000, family:200000},
+    '100mb + 이코노미': {owner:150000, family:150000},
+    '500mb + 이코노미': {owner:300000, family:300000},
+    '1gb + 이코노미':   {owner:300000, family:300000},
+    '100mb + 스탠다드': {owner:150000, family:150000},
+    '500mb + 스탠다드': {owner:300000, family:300000},
+    '1gb + 스탠다드':   {owner:300000, family:300000},
+    '100mb + all':      {owner:150000, family:150000},
+    '500mb + all':      {owner:350000, family:350000},
+    '1gb + all':        {owner:350000, family:350000},
+  }
+};
+
 function openUsimTable(){
   const isp = document.getElementById('usim-isp').value;
   const m = document.getElementById('usim-table-modal');
   m.style.display='flex';
-  setUsimTableTab(isp==='SK유심'?'sk':'kt');
+  setUsimTableTab((isp==='SKT유심'||isp==='SKB유심')?'sk':'kt');
 }
 function closeUsimTable(e){ if(e.target===e.currentTarget) document.getElementById('usim-table-modal').style.display='none'; }
 function closeUsimTableBtn(){ document.getElementById('usim-table-modal').style.display='none'; }
@@ -2786,12 +2906,14 @@ function setUsimTableTab(tab){
   document.getElementById('utbl-kt').style.display = tab==='kt'?'block':'none';
   document.getElementById('utbl-sk').style.display = tab==='sk'?'block':'none';
   document.getElementById('utbl-ktgift').style.display = tab==='ktgift'?'block':'none';
-  document.getElementById('utbl-skgift').style.display = tab==='skgift'?'block':'none';
+  document.getElementById('utbl-sktgift').style.display = tab==='sktgift'?'block':'none';
+  document.getElementById('utbl-skbgift').style.display = tab==='skbgift'?'block':'none';
   const tabs = {
-    'kt':     {id:'utab-kt',      active:'#e8001c'},
-    'sk':     {id:'utab-sk',      active:'#e85000'},
-    'ktgift': {id:'utab-ktgift',  active:'#e8001c'},
-    'skgift': {id:'utab-skgift',  active:'#e85000'},
+    'kt':      {id:'utab-kt',      active:'#e8001c'},
+    'sk':      {id:'utab-sk',      active:'#e85000'},
+    'ktgift':  {id:'utab-ktgift',  active:'#e8001c'},
+    'sktgift': {id:'utab-sktgift', active:'#e85000'},
+    'skbgift': {id:'utab-skbgift', active:'#e85000'},
   };
   Object.entries(tabs).forEach(([key, cfg]) => {
     const b = document.getElementById(cfg.id);
@@ -2805,8 +2927,8 @@ function setUsimTableTab(tab){
 const USIM_ISP_MAP = {
   'KT': ['KT유심'],
   'KT 오피스넷': ['KT유심'],
-  'SKB': ['SK유심'],
-  'SKT': ['SK유심'],
+  'SKB': ['SKB유심'],
+  'SKT': ['SKT유심'],
 };
 
 function syncUsimIspToInternet(){
@@ -2821,7 +2943,7 @@ function syncUsimIspToInternet(){
 
   if(!isp){
     // 인터넷 통신사 미선택 → 전체 노출
-    ['KT유심','SK유심'].forEach(v => {
+    ['KT유심','SKT유심','SKB유심'].forEach(v => {
       const o = document.createElement('option'); o.value=v; o.textContent=v; usimSel.appendChild(o);
     });
     notice.style.display = 'none';
@@ -2858,7 +2980,7 @@ function onUsimIspChange(){
     ['37K 요금제','61K 요금제','90K 요금제'].forEach(v=>{
       const o = document.createElement('option'); o.value=v; o.textContent=v; plan.appendChild(o);
     });
-  } else if(isp === 'SK유심'){
+  } else if(isp === 'SKT유심' || isp === 'SKB유심'){
     ['33K 요금제','43K 요금제','69K 요금제','89K 요금제'].forEach(v=>{
       const o = document.createElement('option'); o.value=v; o.textContent=v; plan.appendChild(o);
     });
@@ -2894,12 +3016,12 @@ function getUsimProductKey(){
 }
 
 /* ── 가족유심 동적 추가/삭제 ── */
-const FAMILY_USIM_MAX = { 'KT유심': 2, 'SK유심': 4 };
+const FAMILY_USIM_MAX = { 'KT유심': 2, 'SKT유심': 4, 'SKB유심': 4 };
 
 function getFamilyUsimOptions(){
   const isp = document.getElementById('usim-isp').value;
   if(isp === 'KT유심') return ['37K 요금제','61K 요금제','90K 요금제'];
-  if(isp === 'SK유심') return ['33K 요금제','43K 요금제','69K 요금제','89K 요금제'];
+  if(isp === 'SKT유심' || isp === 'SKB유심') return ['33K 요금제','43K 요금제','69K 요금제','89K 요금제'];
   return [];
 }
 
@@ -2987,7 +3109,7 @@ function calcUsimGift(){
     else if(inet.includes('500mb')||inet.includes('500Mb')) speed='500mb';
     else if(inet.includes('1gb')||inet.includes('1GB')) speed='1gb';
     if(!speed){ box.classList.remove('show'); calcGiftDisplay(); return; }
-    const tbl = USIM_SK_GIFT[planKey];
+    const tbl = (ispEl==='SKB유심' ? USIM_SKB_GIFT : USIM_SKT_GIFT)[planKey];
     if(tbl){
       let tvType = '';
       if(tv.includes('이코노미')) tvType=' + 이코노미';
@@ -3023,7 +3145,7 @@ function calcUsimGift(){
         if(tbl) fGiftData = tbl[prodKey.toLowerCase()] || tbl[prodKey.toLowerCase().replace(' 일반','').replace(' 패밀리','')] || null;
       }
     } else {
-      const tbl = USIM_SK_GIFT[fPlanKey];
+      const tbl = (ispEl==='SKB유심' ? USIM_SKB_GIFT : USIM_SKT_GIFT)[fPlanKey];
       if(tbl){
         const tv = document.getElementById('tv').value||'';
         const inet = document.getElementById('internet').value||'';
@@ -3659,5 +3781,271 @@ function updateComboCard(bundleValue){
 </script>
 
 <script src="/hubspot-widget.js"></script>
+
+<!--
+── 관리자 전용: 엑셀 업로드로 단품요금/사은품 데이터 반영 (agent 파라미터 없을 때만) ──
+잠시 보류 (2026-08-04) — 나중에 GitHub 토큰 설정 후 이어서 진행 예정. 주석 해제하면 바로 재사용 가능.
+<script>
+(function(){
+  if (new URLSearchParams(location.search).get('agent')) return; // agent 파라미터 있으면(=상담사 접속) 노출 안 함
+
+  const SERVICE_MAP = {'인터넷':'internet','TV':'tv','TV추가':'tv-extra','TV 추가':'tv-extra','공유기':'router','전화':'phone','일반 전화':'phone','부가서비스':'addon','결합할인':'bundle','설치비':'install'};
+  const KT_BASIC_TV_ISPS = new Set(['KT','KT 오피스넷']);
+  const BASIC_TV = '베이직 (239채널) + 기가지니A';
+  const SHEET_CANDIDATES_PRICE = ['인터넷_단품 상품 정보', '인터넷_상품 정보'];
+  const SHEET_CANDIDATES_GIFT = ['인터넷_사은품 정보'];
+
+  let xlsxLoading = null;
+  function ensureXlsxLib(){
+    if (window.XLSX) return Promise.resolve();
+    if (xlsxLoading) return xlsxLoading;
+    xlsxLoading = new Promise((resolve, reject) => {
+      const s = document.createElement('script');
+      s.src = '/vendor/xlsx.full.min.js';
+      s.onload = resolve;
+      s.onerror = () => reject(new Error('엑셀 파싱 라이브러리 로드 실패'));
+      document.body.appendChild(s);
+    });
+    return xlsxLoading;
+  }
+
+  const btn = document.createElement('button');
+  btn.textContent = '⚙️ 데이터 업로드';
+  btn.style.cssText = 'position:fixed;right:16px;bottom:32px;z-index:1500;background:#1e2b3a;color:#fff;border:none;border-radius:24px;padding:10px 18px;font-size:13px;font-weight:700;cursor:pointer;box-shadow:0 4px 16px rgba(0,0,0,.25)';
+  document.body.appendChild(btn);
+
+  const overlay = document.createElement('div');
+  overlay.style.cssText = 'display:none;position:fixed;inset:0;background:rgba(0,0,0,.45);z-index:4000;align-items:center;justify-content:center';
+  overlay.innerHTML =
+    '<div style="background:#fff;border-radius:12px;width:min(720px,92vw);max-height:86vh;overflow-y:auto;padding:22px;box-sizing:border-box">' +
+      '<h2 style="margin:0 0 4px;font-size:16px">📊 계산기 데이터 업로드</h2>' +
+      '<p style="margin:0 0 14px;font-size:12px;color:#888">"인터넷_단품 상품 정보"(또는 "인터넷_상품 정보") · "인터넷_사은품 정보" 시트만 반영됩니다. 유심/드롭다운 조합 데이터는 이 기능 범위 밖입니다.</p>' +
+      '<input type="file" id="admin-xlsx-input" accept=".xlsx" style="margin-bottom:14px">' +
+      '<div id="admin-upload-status" style="font-size:12px;color:#666;margin-bottom:10px"></div>' +
+      '<div id="admin-diff-box" style="display:none;font-size:12px;line-height:1.6;border:1px solid #e0e4ee;border-radius:8px;padding:10px;max-height:360px;overflow-y:auto"></div>' +
+      '<div style="margin-top:16px;display:flex;gap:8px;justify-content:flex-end">' +
+        '<button id="admin-cancel-btn" style="padding:8px 16px;border-radius:8px;border:1px solid #d3d7e0;background:#fff;cursor:pointer;font-size:13px">닫기</button>' +
+        '<button id="admin-apply-btn" disabled style="padding:8px 16px;border-radius:8px;border:none;background:#c9cfda;color:#fff;cursor:not-allowed;font-size:13px;font-weight:700">반영하기</button>' +
+      '</div>' +
+    '</div>';
+  document.body.appendChild(overlay);
+
+  const fileInput = overlay.querySelector('#admin-xlsx-input');
+  const statusEl = overlay.querySelector('#admin-upload-status');
+  const diffBox = overlay.querySelector('#admin-diff-box');
+  const applyBtn = overlay.querySelector('#admin-apply-btn');
+  const cancelBtn = overlay.querySelector('#admin-cancel-btn');
+
+  let pendingPatch = null;
+
+  btn.onclick = () => { overlay.style.display = 'flex'; };
+  cancelBtn.onclick = resetModal;
+  overlay.onclick = (e) => { if (e.target === overlay) resetModal(); };
+
+  function resetModal(){
+    overlay.style.display = 'none';
+    fileInput.value = '';
+    statusEl.textContent = '';
+    diffBox.style.display = 'none';
+    diffBox.innerHTML = '';
+    setApplyEnabled(false);
+    pendingPatch = null;
+  }
+
+  function setApplyEnabled(on){
+    applyBtn.disabled = !on;
+    applyBtn.style.background = on ? '#1e6b3a' : '#c9cfda';
+    applyBtn.style.cursor = on ? 'pointer' : 'not-allowed';
+  }
+
+  function findSheet(wb, candidates){
+    for (const name of candidates) { if (wb.Sheets[name]) return wb.Sheets[name]; }
+    return null;
+  }
+
+  // 엑셀 "인터넷_단품 상품 정보" → PRODUCTS[isp][field] 전체 재구성 패치
+  function buildPricePatch(rows){
+    const grouped = {};
+    for (const r of rows) {
+      const isp = r['통신사'], service = r['서비스'];
+      const product = (r['상품'] == null ? '' : String(r['상품'])).trim();
+      const price = r['금액'];
+      if (!isp || !service || !product || price == null || price === '') continue;
+      const skey = SERVICE_MAP[service];
+      if (!skey) continue;
+      grouped[isp] = grouped[isp] || {};
+      grouped[isp][skey] = grouped[isp][skey] || {};
+      grouped[isp][skey][product] = Number(price);
+    }
+    // 엑셀엔 없는 UI 내부 플레이스홀더 키(미가입/없음)는 기존 값 그대로 보존
+    const patch = {};
+    for (const isp in grouped) {
+      patch[isp] = {};
+      for (const skey in grouped[isp]) {
+        const rebuilt = Object.assign({}, grouped[isp][skey]);
+        const orig = (PRODUCTS[isp] && PRODUCTS[isp][skey]) || {};
+        ['미가입', '없음'].forEach(pk => {
+          if (orig[pk] !== undefined && rebuilt[pk] === undefined) rebuilt[pk] = orig[pk];
+        });
+        patch[isp][skey] = rebuilt;
+      }
+    }
+    return patch;
+  }
+
+  // 엑셀 "인터넷_사은품 정보" → PRODUCTS[isp].gift 재구성 (run_tests.py [11] 로직과 동일)
+  function buildGiftGrouped(rows){
+    const grouped = {};
+    const seen = new Set();
+    for (const r of rows) {
+      const isp = r['통신사'];
+      const internet = (r['인터넷'] == null ? '' : String(r['인터넷'])).trim();
+      const tvCol = r['TV'];
+      const total = r['혜택'];
+      if (!isp || !internet || total == null || total === '') continue;
+      const hasTv = tvCol != null && String(tvCol).trim() !== '';
+      // KT 계열: 베이직 TV 외 타입은 별도 테이블(KT_GIFT_BASIC_PLUS_TV) 담당이라 건너뜀
+      if (KT_BASIC_TV_ISPS.has(isp) && hasTv && tvCol !== BASIC_TV) continue;
+      const giftKey = hasTv ? internet + '+tv' : internet;
+      const dedupeId = isp + '||' + giftKey;
+      if (seen.has(dedupeId)) continue;
+      seen.add(dedupeId);
+      const cash = r['현금'], voucher = r['상품권'];
+      let value;
+      if (cash != null && cash !== '' && voucher != null && voucher !== '') {
+        value = { t: Number(total), c: Number(cash) * 10000, v: Number(voucher) * 10000 };
+      } else {
+        value = Number(total);
+        // 엑셀에 현금/상품권 분해가 없고 총액도 기존과 같다면, 기존 현금/상품권 값을 잃지 않도록 보존
+        const origVal = PRODUCTS[isp] && PRODUCTS[isp].gift && PRODUCTS[isp].gift[giftKey];
+        if (origVal && typeof origVal === 'object' && origVal.t === value) value = origVal;
+      }
+      grouped[isp] = grouped[isp] || {};
+      grouped[isp][giftKey] = value;
+    }
+    return grouped;
+  }
+
+  function diffAll(patch){
+    const added = [], removed = [], changed = [];
+    for (const isp in patch) {
+      for (const cat in patch[isp]) {
+        const newCat = patch[isp][cat];
+        const oldCat = (PRODUCTS[isp] && PRODUCTS[isp][cat]) || {};
+        const keys = new Set([...Object.keys(oldCat), ...Object.keys(newCat)]);
+        keys.forEach(k => {
+          const ov = oldCat[k], nv = newCat[k];
+          const hasO = ov !== undefined, hasN = nv !== undefined;
+          if (!hasO && hasN) added.push({isp, cat, k, nv});
+          else if (hasO && !hasN) removed.push({isp, cat, k, ov});
+          else if (JSON.stringify(ov) !== JSON.stringify(nv)) changed.push({isp, cat, k, ov, nv});
+        });
+      }
+    }
+    return {added, removed, changed};
+  }
+
+  function fmtVal(v){
+    if (v && typeof v === 'object') return `총액 ${v.t.toLocaleString()}원 (현금 ${(v.c||0).toLocaleString()} / 상품권 ${(v.v||0).toLocaleString()})`;
+    return `${Number(v).toLocaleString()}원`;
+  }
+
+  function esc(s){ const d = document.createElement('div'); d.textContent = s; return d.innerHTML; }
+
+  function renderDiff(diff){
+    const {added, removed, changed} = diff;
+    if (!added.length && !removed.length && !changed.length) {
+      diffBox.innerHTML = '<div style="color:#888">현재 계산기 데이터와 차이가 없습니다.</div>';
+      diffBox.style.display = 'block';
+      setApplyEnabled(false);
+      return;
+    }
+    let html = '';
+    if (changed.length) {
+      html += `<div style="font-weight:700;color:#b85000;margin-bottom:4px">💰 금액 변경 (${changed.length}건)</div>`;
+      changed.forEach(c => { html += `<div>${esc(c.isp)} · ${esc(c.cat)} · "${esc(c.k)}": ${fmtVal(c.ov)} → <b>${fmtVal(c.nv)}</b></div>`; });
+    }
+    if (added.length) {
+      html += `<div style="font-weight:700;color:#2e7d32;margin:10px 0 4px">➕ 신규 추가 (${added.length}건)</div>`;
+      added.forEach(a => { html += `<div>${esc(a.isp)} · ${esc(a.cat)} · "${esc(a.k)}": ${fmtVal(a.nv)}</div>`; });
+    }
+    if (removed.length) {
+      html += `<div style="font-weight:700;color:#c0001a;margin:10px 0 4px">➖ 삭제 (${removed.length}건) — 새 시트에서 빠졌습니다. 의도한 변경이 맞는지 확인하세요.</div>`;
+      removed.forEach(r => { html += `<div>${esc(r.isp)} · ${esc(r.cat)} · "${esc(r.k)}": ${fmtVal(r.ov)}</div>`; });
+    }
+    diffBox.innerHTML = html;
+    diffBox.style.display = 'block';
+    setApplyEnabled(true);
+  }
+
+  fileInput.onchange = () => {
+    const file = fileInput.files[0];
+    if (!file) return;
+    statusEl.textContent = '엑셀 라이브러리 불러오는 중...';
+    diffBox.style.display = 'none';
+    setApplyEnabled(false);
+    pendingPatch = null;
+
+    ensureXlsxLib().then(() => {
+      statusEl.textContent = '파일 분석 중...';
+      const reader = new FileReader();
+      reader.onload = (e) => {
+        try {
+          const wb = XLSX.read(e.target.result, {type: 'array'});
+          const priceSheet = findSheet(wb, SHEET_CANDIDATES_PRICE);
+          const giftSheet = findSheet(wb, SHEET_CANDIDATES_GIFT);
+          if (!priceSheet && !giftSheet) {
+            statusEl.textContent = '❌ "인터넷_단품 상품 정보"(또는 "인터넷_상품 정보") / "인터넷_사은품 정보" 시트를 찾을 수 없습니다.';
+            return;
+          }
+          const patch = priceSheet ? buildPricePatch(XLSX.utils.sheet_to_json(priceSheet, {defval: null})) : {};
+          if (giftSheet) {
+            const giftGrouped = buildGiftGrouped(XLSX.utils.sheet_to_json(giftSheet, {defval: null}));
+            for (const isp in giftGrouped) {
+              patch[isp] = patch[isp] || {};
+              patch[isp].gift = giftGrouped[isp];
+            }
+          }
+          pendingPatch = patch;
+          statusEl.textContent = `✅ 분석 완료 (단품 ${priceSheet ? '✓' : '시트 없음'} / 사은품 ${giftSheet ? '✓' : '시트 없음'})`;
+          renderDiff(diffAll(patch));
+        } catch (err) {
+          console.error(err);
+          statusEl.textContent = '❌ 파일 분석 중 오류: ' + err.message;
+        }
+      };
+      reader.readAsArrayBuffer(file);
+    }).catch(err => { statusEl.textContent = '❌ ' + err.message; });
+  };
+
+  applyBtn.onclick = async () => {
+    if (!pendingPatch) return;
+    setApplyEnabled(false);
+    applyBtn.textContent = '반영 중...';
+    statusEl.textContent = 'GitHub에 커밋하는 중... (실제 배포까지 1~2분 추가 소요)';
+    try {
+      const res = await fetch('/api/update-calculator-data', {
+        method: 'POST',
+        headers: {'Content-Type': 'application/json'},
+        body: JSON.stringify({ patch: pendingPatch }),
+      });
+      const data = await res.json();
+      if (!res.ok) {
+        statusEl.textContent = '❌ 반영 실패: ' + (data.error || res.status);
+        applyBtn.textContent = '반영하기';
+        setApplyEnabled(true);
+        return;
+      }
+      statusEl.innerHTML = `✅ 커밋 완료! 1~2분 후 계산기에 반영됩니다. <a href="${data.commitUrl}" target="_blank" rel="noopener">커밋 보기</a>`;
+      applyBtn.textContent = '반영 완료';
+    } catch (err) {
+      statusEl.textContent = '❌ 요청 실패: ' + err.message;
+      applyBtn.textContent = '반영하기';
+      setApplyEnabled(true);
+    }
+  };
+})();
+</script>
+-->
 </body>
 </html>
