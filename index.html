@@ -347,6 +347,40 @@ textarea:focus{outline:none;border-color:#3b6ef0}
 .usim-gift-amount{font-size:20px;font-weight:800;color:#1b5e20}
 .usim-gift-sub{font-size:11px;color:#388e3c;margin-top:2px}
 
+/* ── 제휴카드 (참고용) ── */
+.pcard-empty{font-size:12px;color:#999;padding:16px 2px;text-align:center;line-height:1.6}
+.pcard-list{display:flex;flex-direction:column;gap:8px}
+.pcard{border:1.5px solid #e3e7ef;border-radius:10px;padding:10px 12px;background:#fff;transition:border-color .15s,box-shadow .15s}
+.pcard:hover{border-color:#c9d2e6}
+.pcard.best{border-color:#3b6ef0;background:#f8faff;box-shadow:0 0 0 3px rgba(59,110,240,.09)}
+.pcard-head{display:flex;align-items:center;gap:6px;flex-wrap:wrap}
+.pcard-rank{flex:none;width:19px;height:19px;border-radius:50%;background:#e3e7ef;color:#6b7488;font-size:11px;font-weight:800;display:inline-flex;align-items:center;justify-content:center}
+.pcard.best .pcard-rank{background:#3b6ef0;color:#fff}
+.pcard-issuer{flex:none;font-size:11px;font-weight:700;color:#5b6472;background:#f0f2f7;border-radius:5px;padding:2px 6px}
+a.pcard-name,.pcard-name{font-size:13px;font-weight:700;color:#1a1a1a;line-height:1.35;text-decoration:none}
+a.pcard-name::after{content:"↗";font-size:10px;color:#8a92a4;margin-left:3px;vertical-align:super}
+a.pcard-name:hover{color:#2f5dd0;text-decoration:underline}
+a.pcard-name:hover::after{color:#2f5dd0}
+.pcard.picked{border-color:#3b6ef0;background:#eef3ff;box-shadow:0 0 0 3px rgba(59,110,240,.14)}
+/* 상품표 '제휴카드' 행: 선택 결과를 보여주기만 하는 읽기 전용 칸 */
+.pcard-picked{flex:1;min-width:0;display:flex;align-items:center;font-size:13px;font-weight:700;color:#1a1a1a;background:#fff;border:1.5px solid #3b6ef0;border-left:3px solid #3b6ef0;border-radius:7px;padding:7px 10px;line-height:1.3;overflow:hidden;text-overflow:ellipsis}
+.pcard-max{margin-left:auto;flex:none;font-size:15px;font-weight:800;color:#3b6ef0;white-space:nowrap}
+.pcard.best .pcard-max{font-size:17px}
+.pcard-badge{display:inline-block;font-size:10px;font-weight:700;border-radius:5px;padding:2px 6px;margin-top:6px;letter-spacing:0}
+.pcard-badge.warn{background:#fff3e0;color:#c26a00;border:1px solid #ffd9a0}
+.pcard-tiers{list-style:none;margin:7px 0 0;padding:0;display:flex;flex-direction:column;gap:3px}
+.pcard-tiers li{font-size:11.5px;color:#5b6472;line-height:1.5;display:flex;align-items:baseline;gap:5px}
+.pcard-tiers li b{color:#1a1a1a;font-weight:700;margin-left:auto;white-space:nowrap}
+.pt-phase{flex:none;font-size:10px;font-weight:700;color:#8a92a4;background:#f5f7fb;border-radius:4px;padding:1px 5px}
+.pcard-bottom{display:flex;align-items:center;gap:8px;margin-top:8px;padding-top:7px;border-top:1px solid #f0f2f5}
+.pcard-fee{font-size:11px;color:#8a92a4;flex:1;line-height:1.4}
+.pcard-pick{flex:none;background:#eef1ff;border:1.5px solid #ccd6f8;color:#2f5dd0;border-radius:6px;padding:4px 12px;font-size:11px;font-weight:800;cursor:pointer;white-space:nowrap;transition:background .12s,border-color .12s,color .12s}
+.pcard-pick:hover{background:#dde5ff;border-color:#9db2f0}
+.pcard-pick.on{background:#3b6ef0;border-color:#3b6ef0;color:#fff}
+.pcard-pick.on:hover{background:#2f5dd0}
+.pcard-note{font-size:11px;color:#8a92a4;line-height:1.65;margin-top:10px;padding-top:9px;border-top:1px dashed #e3e7ef}
+.pcard-isp-tag{font-size:11px;font-weight:700;color:#3b6ef0;background:#eef1ff;border:1px solid #ccd6f8;border-radius:6px;padding:3px 8px;letter-spacing:0;text-transform:none}
+
 /* ── HubSpot 새로고침 버튼 ── */
 .hubspot-refresh-btn{background:#f5f7fb;border:1px solid #dde1e8;border-radius:6px;width:28px;height:28px;display:inline-flex;align-items:center;justify-content:center;cursor:pointer;padding:0;color:#5b6472;transition:background .15s,border-color .15s}
 .hubspot-refresh-btn:hover:not(:disabled){background:#eef1f6;border-color:#c7ceda}
@@ -606,6 +640,19 @@ textarea:focus{outline:none;border-color:#3b6ef0}
             </td>
             <td class="row-amount disc" id="amt-bundle">—</td>
           </tr>
+          <!-- 제휴카드 (아래 제휴카드 섹션에서 [선택]했을 때만 노출) -->
+          <tr class="row-pcard" id="row-pcard" style="display:none">
+            <td class="row-label">제휴카드</td>
+            <td class="row-select">
+              <div class="field-wrap has-value" id="wrap-pcard">
+                <div class="select-row">
+                  <span class="pcard-picked" id="pcard-picked"></span>
+                  <button class="clear-btn" onclick="clearPartnerCard()" title="선택 해제">✕</button>
+                </div>
+              </div>
+            </td>
+            <td class="row-amount disc" id="amt-pcard">—</td>
+          </tr>
         </tbody>
       </table>
       <div class="promo-note" id="promo-note">✅ 1GB 인터넷 가입 시 설치비 면제 프로모션 확인 (25.04.14 ~ 25.10.13)</div>
@@ -679,6 +726,19 @@ textarea:focus{outline:none;border-color:#3b6ef0}
         </div>
       </div>
     </div>
+    <!-- 제휴카드 (참고용 · 요금 계산에는 반영하지 않음 · agent=테스트로 접속했을 때만 노출) -->
+    <div class="card" id="pcard-card" style="display:none">
+      <div class="card-title">
+        <span class="ct-icon">💳</span><span>제휴카드</span>
+        <span style="font-size:11px;font-weight:500;color:#aaa;margin-left:4px">※ 통신사를 먼저 선택해 주세요</span>
+        <span class="ct-spacer"></span>
+        <span class="pcard-isp-tag" id="pcard-isp-tag" style="display:none"></span>
+      </div>
+      <div id="pcard-body">
+        <div class="pcard-empty">통신사를 선택하면<br>할인 혜택이 큰 카드부터 표시됩니다.</div>
+      </div>
+      <div class="pcard-note" id="pcard-note" style="display:none"></div>
+    </div>
     <!-- 결합 할인 (추후 고도화 예정, 임시로 숨김) -->
     <div class="card" style="display:none">
       <div class="card-title"><span class="ct-icon">🔗</span><span>결합 할인</span></div>
@@ -746,11 +806,11 @@ textarea:focus{outline:none;border-color:#3b6ef0}
       </div>
       <div class="fee-main" id="fee-main-split" style="display:none">
         <div class="fee-main-item">
-          <span class="fm-lbl">결합 전</span>
+          <span class="fm-lbl" id="fee-lbl-before">결합 전</span>
           <span class="fm-val" id="fee-before">—</span>
         </div>
         <div class="fee-main-item">
-          <span class="fm-lbl">결합 후</span>
+          <span class="fm-lbl" id="fee-lbl-after">결합 후</span>
           <span class="fm-val" id="fee-after">—</span>
           <span class="fm-disc" id="fee-disc"></span>
         </div>
@@ -1943,7 +2003,7 @@ function populateSelect(id,options){
   else el.selectedIndex=0;
   updateWrapState(id);
 }
-function onIspChange(){const isp=document.getElementById('isp').value;const ispEl=document.getElementById('isp');if(isp){ispEl.classList.add('isp-selected');}else{ispEl.classList.remove('isp-selected');}if(!isp||!PRODUCTS[isp])return;const p=PRODUCTS[isp];['internet','tv','tv-extra','router','phone','addon','bundle','install'].forEach(id=>{const el=document.getElementById(id);if(el)el.selectedIndex=0;});populateSelect('internet',p.internet);populateSelect('tv',p.tv);populateSelect('tv-extra',p['tv-extra']);populateSelect('router',p.router);populateSelect('phone',p.phone);populateSelect('addon',p.addon);populateSelect('bundle',p.bundle);populateSelect('install',p.install);['internet','tv','tv-extra','router','phone','addon','bundle','install'].forEach(updateWrapState);updateWrapState('isp');updateDandokLock();filterBundleOptions();filterRouterOptions();filterLguIpadTvOptions();filterSkyProductOptions();calc();calcUsimGift();syncUsimIspToInternet();}
+function onIspChange(){const isp=document.getElementById('isp').value;selectedPartnerCard=null;const ispEl=document.getElementById('isp');if(isp){ispEl.classList.add('isp-selected');}else{ispEl.classList.remove('isp-selected');}if(!isp||!PRODUCTS[isp])return;const p=PRODUCTS[isp];['internet','tv','tv-extra','router','phone','addon','bundle','install'].forEach(id=>{const el=document.getElementById(id);if(el)el.selectedIndex=0;});populateSelect('internet',p.internet);populateSelect('tv',p.tv);populateSelect('tv-extra',p['tv-extra']);populateSelect('router',p.router);populateSelect('phone',p.phone);populateSelect('addon',p.addon);populateSelect('bundle',p.bundle);populateSelect('install',p.install);['internet','tv','tv-extra','router','phone','addon','bundle','install'].forEach(updateWrapState);updateWrapState('isp');updateDandokLock();filterBundleOptions();filterRouterOptions();filterLguIpadTvOptions();filterSkyProductOptions();calc();calcUsimGift();syncUsimIspToInternet();}
 // ⚠️ 저수준 헬퍼: PRODUCTS[isp].gift에서 "인터넷 속도 + TV유무"만으로 단순 조회.
 // TV 종류(베이직/에센스 등)나 결합종류는 전혀 구분하지 않음.
 // → 실제 화면/계산에는 이 함수를 직접 쓰지 않고, 아래 calcGift()를 통해서만 사용할 것.
@@ -2142,6 +2202,7 @@ function giftSub(g,isp,bundle){
   return '현금 지급 · 설치 후 7일 이내 자동 지급';
 }
 function calc(){
+  renderPartnerCards();
   const isp=document.getElementById('isp').value;
   if(!isp||!PRODUCTS[isp]){
     document.getElementById('fm-val-single').textContent='상품을 선택하세요';
@@ -2158,6 +2219,7 @@ function calc(){
       const el=document.getElementById('amt-'+id);
       if(el){el.textContent='—';el.className='row-amount zero';}
     });
+    updatePartnerCardRow(0);
     // 메모장 상품제안 / 문자 탭(상품안내·가입완료 등) 자동 연동 부분도 초기화
     if(typeof resetProdSummaryPlaceholder === 'function') resetProdSummaryPlaceholder();
     if(typeof resetMsgTemplatesToPlaceholder === 'function') resetMsgTemplatesToPlaceholder();
@@ -2185,27 +2247,42 @@ function calc(){
   const routerExtra=(routerFee>0&&(isp==='SKT'||isp==='SKB')&&inet==='100mb'&&!bundleDis&&router==='공유기')?1100:0;
   const routerFeeDisplay=routerFee+routerExtra;
   const monthly=inetFee+tvFee+tvExFee+routerFeeDisplay+phoneFee+addonFee-bundleDis;
-  const firstMonth=monthly+installFee;
+  // 제휴카드는 통신사 청구액과 분리해서 다룬다.
+  // monthly     = 통신사 청구액 (메모/문자의 요금 줄에 그대로 쓰는 금액)
+  // monthlyCard = 제휴카드까지 적용한 실부담액 (화면 요금 표시 · 탭 헤더용)
+  const pcardDis=inetFee>0?partnerCardDiscount(monthly):0;
+  const monthlyCard=monthly-pcardDis;
+  const firstMonth=monthlyCard+installFee;
 
-  if(typeof updateTabFee==='function') updateTabFee(monthly);
+  if(typeof updateTabFee==='function') updateTabFee(monthlyCard);
 
-  // 결합 전/후 표시
-  if(bundleDis>0){
-    const beforeRouterExtra=((isp==='SKT'||isp==='SKB')&&inet==='100mb'&&router==='공유기')?1100:0;
-    const ongajokInternetAdj=(ongajokMode&&bundleDis>0&&ONGAJOK_INTERNET_E[inet]!==undefined)?(ONGAJOK_INTERNET_E[inet]-(p.internet[inet]||0)):0;
-    const beforeDis=monthly+bundleDis+beforeRouterExtra-ongajokInternetAdj;
+  // 결합/제휴카드 전·후 표시
+  // beforeRouterExtra: 결합할인이 있을 때만 routerExtra(1,100원)가 monthly에서 빠져 있으므로
+  // "할인 전" 금액에는 다시 더해 준다 (결합할인이 없으면 이미 monthly에 포함돼 있음).
+  const beforeRouterExtra=(bundleDis>0&&(isp==='SKT'||isp==='SKB')&&inet==='100mb'&&router==='공유기')?1100:0;
+  const ongajokInternetAdj=(ongajokMode&&bundleDis>0&&ONGAJOK_INTERNET_E[inet]!==undefined)?(ONGAJOK_INTERNET_E[inet]-(p.internet[inet]||0)):0;
+  const beforeDis=monthly+bundleDis+beforeRouterExtra-ongajokInternetAdj;
+  const totalDis=bundleDis+pcardDis;
+  if(totalDis>0){
     document.getElementById('fee-main-default').style.display='none';
     document.getElementById('fee-main-split').style.display='flex';
     document.getElementById('fee-before').textContent=fmt(beforeDis)+'원';
-    document.getElementById('fee-after').textContent=fmt(monthly)+'원';
-    document.getElementById('fee-disc').textContent='▼ '+fmt(bundleDis)+'원 할인';
+    document.getElementById('fee-after').textContent=fmt(monthlyCard)+'원';
+    document.getElementById('fee-disc').textContent='▼ '+fmt(totalDis)+'원 할인';
+    // 무엇이 빠졌는지에 따라 라벨을 바꾼다 (결합만 / 카드만 / 둘 다)
+    const _lb=document.getElementById('fee-lbl-before'), _la=document.getElementById('fee-lbl-after');
+    if(_lb&&_la){
+      if(bundleDis>0&&pcardDis>0){ _lb.textContent='할인 전'; _la.textContent='결합·카드 후'; }
+      else if(pcardDis>0){ _lb.textContent='카드 전'; _la.textContent='카드 후'; }
+      else { _lb.textContent='결합 전'; _la.textContent='결합 후'; }
+    }
   } else {
     document.getElementById('fee-main-default').style.display='flex';
     document.getElementById('fee-main-split').style.display='none';
-    document.getElementById('fm-val-single').textContent=inetFee>0?fmt(monthly)+'원':'—';
+    document.getElementById('fm-val-single').textContent=inetFee>0?fmt(monthlyCard)+'원':'—';
     document.getElementById('fm-val-single').className='fm-val'+(inetFee===0?' empty':'');
   }
-  document.getElementById('after-fee').textContent=installFee>0?`첫 달 ${fmt(firstMonth)}원 (설치비 포함) · 이후 ${fmt(monthly)}원 · VAT포함 3년약정`:`VAT포함 · 3년 약정`;
+  document.getElementById('after-fee').textContent=installFee>0?`첫 달 ${fmt(firstMonth)}원 (설치비 포함) · 이후 ${fmt(monthlyCard)}원 · VAT포함 3년약정`:`VAT포함 · 3년 약정`;
 
   // 테이블 셀 금액
   function setAmt(id,val,isDisc){
@@ -2217,6 +2294,7 @@ function calc(){
   setAmt('internet',inetFee,false);setAmt('tv',tvFee,false);setAmt('tv-extra',tvExFee,false);
   setAmt('router',routerFeeDisplay,false);setAmt('phone',phoneFee,false);setAmt('addon',addonFee,false);
   setAmt('bundle',bundleDis,true);setAmt('install',installFee,false);
+  updatePartnerCardRow(pcardDis);
 
   // 메모
   const gift=calcGift(isp,inet,tv,hasTv,bundle,phone,tvEx);
@@ -2254,7 +2332,7 @@ function calc(){
   const _tvPart = _BL.tvLine ? _BL.tvLine.replace('▶️ ','') : '';
   const _prodStr = [_prodPart,_tvPart].filter(Boolean).join(' + ');
   const _feeMemoStr = bundleDis>0 ? `${fmt(_BL.beforeBundle)} (${_BL.bundleName||bundle} ${fmt(monthly)})` : fmt(monthly);
-  document.getElementById('memo-text').value=`1. 상품 : ${_prodStr}\n2. 요금 : ${_feeMemoStr}\n3. 사은품 : ${buildGiftMemoText(gift,isp)}\n4. 설치비 : ${installFee>0?fmt(installFee)+' (첫 달 부과)':'없음'}\n5. 설치 희망일자 : ${installDate}\n6. 기타 : 기존 가족 또는 본인 명의 회선있는 경우 유지 필요 안내 / 수긍 이사 고객 Y / 추후 소명 발생 시 관련 서류 제출 동의 인터넷 설치 후 고객센터로 후결합 요청 안내`;
+  document.getElementById('memo-text').value=`1. 상품 : ${_prodStr}\n2. 요금 : ${_feeMemoStr}${_BL.pcardMemo?'\n'+_BL.pcardMemo:''}\n3. 사은품 : ${buildGiftMemoText(gift,isp)}\n4. 설치비 : ${installFee>0?fmt(installFee)+' (첫 달 부과)':'없음'}\n5. 설치 희망일자 : ${installDate}\n6. 기타 : 기존 가족 또는 본인 명의 회선있는 경우 유지 필요 안내 / 수긍 이사 고객 Y / 추후 소명 발생 시 관련 서류 제출 동의 인터넷 설치 후 고객센터로 후결합 요청 안내`;
 
   // 문자 탭 자동 업데이트
   updateMsgTabs(isp,inet,tv,hasTv,monthly,installFee,gift,agentName,installDate,bundle,bundleDis,installItem,router,tvEx,phone,addon);
@@ -2349,7 +2427,14 @@ function buildProductLines(isp,inet,tv,hasTv,monthly,installFee,gift,bundleDis,b
   const installLine = installFee>0 ? '▶️ 설치비 '+instStr : '';
   const giftLine = giftStr ? '▶️ 사은품 '+giftStr : '';
 
-  return {productLine, tvLine, monthlyLine, bundleLine, installLine, giftLine, giftStr, beforeBundle, bundleName, routerName};
+  // 제휴카드: 요금 줄(통신사 청구액)은 그대로 두고 카드 줄만 따로 덧붙인다.
+  // 카드 할인은 카드사 실적 조건이 붙어 있어 고객에게 확정 금액으로 안내하면 안 되기 때문.
+  const pc = (typeof currentPartnerCard === 'function') ? currentPartnerCard() : null;
+  const pcDis = (pc && inet) ? Math.min(pc.max, Math.max(0, monthly)) : 0;
+  const pcardLine = pcDis>0 ? '▶️ 제휴카드 '+pc.name+' 적용 시 월 '+fmt(monthly-pcDis)+'원 (최대 '+fmt(pc.max)+'원 할인)' : '';
+  const pcardMemo = pcDis>0 ? '   ㄴ 제휴카드 : '+pc.name+' / 최대 '+fmt(pc.max)+'원 할인 → 월 '+fmt(monthly-pcDis) : '';
+
+  return {productLine, tvLine, monthlyLine, bundleLine, installLine, giftLine, giftStr, beforeBundle, bundleName, routerName, pcardLine, pcardMemo};
 }
 
 function updateProdSummary(isp,inet,tv,hasTv,monthly,installFee,gift,bundleDis,bundle,installItem,router,tvExtra,phone,addon){
@@ -2359,6 +2444,7 @@ function updateProdSummary(isp,inet,tv,hasTv,monthly,installFee,gift,bundleDis,b
   if(L.tvLine) parts.push(L.tvLine);
   parts.push(L.monthlyLine);
   if(L.bundleLine) parts.push(L.bundleLine);
+  if(L.pcardLine) parts.push(L.pcardLine);
   if(L.installLine) parts.push(L.installLine);
   if(L.giftLine) parts.push(L.giftLine);
   const summaryText = parts.join('\n');
@@ -2728,17 +2814,18 @@ function updateMsgTabs(isp,inet,tv,hasTv,monthly,installFee,gift,agentName,insta
   const tvStr=hasTv?tv:'미가입';
   const monthlyStr=fmt(L.beforeBundle)+'원';
   const bundleLine = L.bundleLine ? '\n'+L.bundleLine : '';
+  const _pcardLine = L.pcardLine ? '\n'+L.pcardLine : '';
   const inetTv = L.tvLine ? `${L.productLine}\n${L.tvLine}` : `${L.productLine}`;
   const signOff = agentName ? `미소 전담 상담사 ${agentName} 드림.` : `미소 전담 상담사 드림.`;
 
   // 0: 상품 안내
   const _instLine = L.installLine ? '\n'+L.installLine : '';
   const _annGiftLine = giftStr ? `\n▶️ 사은품 ${giftStr}` : '';
-  const ann=`[미소] 상품 & 사은품 요약 안내\n\n안녕하세요, 미소 인터넷 부서입니다.\n고객님께서 오늘 상담 받으신 상품 안내드립니다. \n\n[3년약정/VAT포함]\n${inetTv}\n▶️ 월 ${monthlyStr}${bundleLine}${_instLine}${_annGiftLine}\n\n* 혜택은 실시간으로 바뀔 수 있다는 점 안내드립니다.\n\n✅ 후기 작성 시 최대 10,000원 지급\n(미소 공식 네이버 카페)\nhttps://forms.gle/kzVQ5iPKQWP1m5SEA\n✅친구 추천 시 30,000원 지급\n(횟수 제한 없이 무제한 지급)\nhttps://forms.gle/2D9sTnsGmEH97i8D8\n\n${signOff}`;
+  const ann=`[미소] 상품 & 사은품 요약 안내\n\n안녕하세요, 미소 인터넷 부서입니다.\n고객님께서 오늘 상담 받으신 상품 안내드립니다. \n\n[3년약정/VAT포함]\n${inetTv}\n▶️ 월 ${monthlyStr}${bundleLine}${_pcardLine}${_instLine}${_annGiftLine}\n\n* 혜택은 실시간으로 바뀔 수 있다는 점 안내드립니다.\n\n✅ 후기 작성 시 최대 10,000원 지급\n(미소 공식 네이버 카페)\nhttps://forms.gle/kzVQ5iPKQWP1m5SEA\n✅친구 추천 시 30,000원 지급\n(횟수 제한 없이 무제한 지급)\nhttps://forms.gle/2D9sTnsGmEH97i8D8\n\n${signOff}`;
 
   // 1: 가입 완료
   const _doneGiftLine = giftStr ? `\n▶️ 사은품 ${giftStr}\n✅사은품은 설치 후 7일 이내 자동으로 지급되나 평일기준 5시 이전 개통 받았다고 문자 주시면 당일입금 도움드리겠습니다. ` : '';
-  const done=`[미소] 가입 완료 안내\n\n안녕하세요, 고객님.\n미소 인터넷 부서입니다.\n\n✅ 계약이 완료되었어요, 아래 내용은 계약서와 동일한 효력이 있으니 꼼꼼히 읽어주세요.\n\n⚠️ 3년 약정이며, 아래와 같은 상황에 해당하면 받으셨던 사은품은 환수 됩니다. \n① 1년 이내 해지\n② 3개월 (90일) 이상 정지\n③ 1년 이내 요금제 하향 (상향 시에는 환수 되지 않습니다!) \n④ 3개월 이내 명의변경\n⑤ 개통 1년이내 결제수단 지로청구서로 변경\n⚠️ 신규 가입 후 기존에 인터넷은 꼭 해지 해주세요. 자동해지되지 않으며 이럴 경우 요금이 이중 부과되어요. \n⚠️ 3년 이내 해지 시 통신사 본사에 위약금 (할인 반환금) 및 통신사에 따라 면제된 와이파이 / 통신기기 설치비 반환이 필요할 수 있어요. \n\n✅ 가입 상품 안내\n[3년약정/VAT포함]\n${inetTv}\n▶️ 월 ${monthlyStr}${bundleLine}${_instLine}${_doneGiftLine}\n\n✅ 후기 작성 시 최대 10,000원 지급\n(미소 공식 네이버 카페)\nhttps://forms.gle/kzVQ5iPKQWP1m5SEA\n✅친구 추천 시 30,000원 지급\n(횟수 제한 없이 무제한 지급)\nhttps://forms.gle/2D9sTnsGmEH97i8D8\n\n${signOff}`;
+  const done=`[미소] 가입 완료 안내\n\n안녕하세요, 고객님.\n미소 인터넷 부서입니다.\n\n✅ 계약이 완료되었어요, 아래 내용은 계약서와 동일한 효력이 있으니 꼼꼼히 읽어주세요.\n\n⚠️ 3년 약정이며, 아래와 같은 상황에 해당하면 받으셨던 사은품은 환수 됩니다. \n① 1년 이내 해지\n② 3개월 (90일) 이상 정지\n③ 1년 이내 요금제 하향 (상향 시에는 환수 되지 않습니다!) \n④ 3개월 이내 명의변경\n⑤ 개통 1년이내 결제수단 지로청구서로 변경\n⚠️ 신규 가입 후 기존에 인터넷은 꼭 해지 해주세요. 자동해지되지 않으며 이럴 경우 요금이 이중 부과되어요. \n⚠️ 3년 이내 해지 시 통신사 본사에 위약금 (할인 반환금) 및 통신사에 따라 면제된 와이파이 / 통신기기 설치비 반환이 필요할 수 있어요. \n\n✅ 가입 상품 안내\n[3년약정/VAT포함]\n${inetTv}\n▶️ 월 ${monthlyStr}${bundleLine}${_pcardLine}${_instLine}${_doneGiftLine}\n\n✅ 후기 작성 시 최대 10,000원 지급\n(미소 공식 네이버 카페)\nhttps://forms.gle/kzVQ5iPKQWP1m5SEA\n✅친구 추천 시 30,000원 지급\n(횟수 제한 없이 무제한 지급)\nhttps://forms.gle/2D9sTnsGmEH97i8D8\n\n${signOff}`;
 
   // 2: 후결합
   const isp3=isp||'통신사';
@@ -2814,6 +2901,374 @@ document.addEventListener('DOMContentLoaded', function(){
     `최종 업데이트: ${d.getFullYear()}.${pad(d.getMonth()+1)}.${pad(d.getDate())}`;
 });
 
+
+/* ── 제휴카드 (교육 자료_취합 본.xlsx > '제휴카드 혜택' 시트에서 추출) ──
+   할인액이 큰 카드부터 정렬해 둔 상태이며, 화면에서도 max 기준으로 다시 정렬한다.
+   url 은 카드사 신청/안내 페이지(시트의 카드사 셀에 걸린 하이퍼링크).
+   자료 개정 시 이 객체만 교체하면 된다. */
+const PARTNER_CARDS = {
+  "KT": [
+    {
+      issuer: "현대카드", name: "KT-현대카드M Edition3 (통신할인형 2.0)", max: 25000,
+      url: "https://www.hyundaicard.com/cpc/cr/CPCCR0201_01.hc?cardWcd=MKTE3TP",
+      limited: "1~24개월 까지만 할인", fee: "국내 20,000원 / 해외 20,000원",
+      tiers: [
+        { cond: "전월 실적 50만원~100만원 미만", amt: 15000, phase: null },
+        { cond: "전월 실적 100만원 이상", amt: 25000, phase: null },
+      ],
+    },
+    {
+      issuer: "우리카드", name: "KT Plus 우리카드", max: 20000,
+      url: "https://pc.wooricard.com/dcpc/totalSearch.do?searchTerm=KT%20PLUS&gubn=01&mGubn=W",
+      limited: "기간별 할인액 상이", fee: "해외 20,000원",
+      tiers: [
+        { cond: "전월 실적 40만원~80만원 미만", amt: 10000, phase: "~24개월까지" },
+        { cond: "전월 실적 80만원~120만원 미만", amt: 15000, phase: "~24개월까지" },
+        { cond: "전월 실적 120만원 이상", amt: 20000, phase: "~24개월까지" },
+        { cond: "40만원 이상 사용", amt: 5000, phase: "25개월~" },
+      ],
+    },
+    {
+      issuer: "신한카드", name: "KT 가족만족 DC 신한카드", max: 15000,
+      url: "https://www.shinhancard.com/pconts/html/card/apply/credit/1223352_2207.html",
+      limited: null, fee: "국내 15,000원 / 해외 18,000원",
+      tiers: [
+        { cond: "전월 실적 30만원~70만원 미만", amt: 7000, phase: null },
+        { cond: "전월 실적 70만원 이상", amt: 15000, phase: null },
+      ],
+    },
+    {
+      issuer: "BC카드", name: "KT SUPER DC BC 바로카드", max: 9000,
+      url: "https://www.bccard.com/app/card/CreditCardMain.do?gdsno=104063",
+      limited: null, fee: "국내 25,000원 / 해외 25,000원",
+      tiers: [
+        { cond: "전월 실적 40만원~80만원 미만", amt: 5000, phase: null },
+        { cond: "전월 실적 80만원~120만원 미만", amt: 7000, phase: null },
+        { cond: "전월 실적 120만원 이상", amt: 9000, phase: null },
+      ],
+    },
+  ],
+  "SKB": [
+    {
+      issuer: "롯데카드", name: "SK브로드밴드 B롯데카드", max: 20000,
+      url: "https://www.lottecard.co.kr/app/LPBOHAA_V100.lc?bId=92417&vtCdKndC=P02117-A02117",
+      limited: null, fee: "국내 5,000원 / 해외 10,000원",
+      tiers: [
+        { cond: "전월 실적 50만원~100만원 미만", amt: 10000, phase: null },
+        { cond: "전월 실적 100만원 이상", amt: 20000, phase: null },
+      ],
+    },
+    {
+      issuer: "신한카드", name: "SK브로드밴드 신한카드", max: 20000,
+      url: "https://www.shinhancard.com/pconts/html/card/apply/credit/2013724_2207.html",
+      limited: null, fee: "국내 27,000원 / 해외 30,000원",
+      tiers: [
+        { cond: "전월 실적 30만원~70만원 미만", amt: 13000, phase: null },
+        { cond: "전월 실적 70만원~120만원 미만", amt: 17000, phase: null },
+        { cond: "전월 실적 120만원 이상", amt: 20000, phase: null },
+      ],
+    },
+    {
+      issuer: "하나카드", name: "더 심플 하나카드", max: 15000,
+      url: "https://www.hanacard.co.kr/OPI42000000D.web?_frame=no&CD_PD_SEQ=18583",
+      limited: null, fee: "국내 25,000원 / 해외 25,000원",
+      tiers: [
+        { cond: "전월 실적 30만원~80만원 미만", amt: 10000, phase: null },
+        { cond: "전월 실적 80만원 이상", amt: 15000, phase: null },
+      ],
+    },
+    {
+      issuer: "삼성카드", name: "T나는혜택 삼성카드", max: 13000,
+      url: "https://www.samsungcard.com/home/card/cardinfo/PGHPPCCCardCardinfoDetails001?code=AAP1752&alncmpC=QKSKBROAD&affcode=QKSKBROAD&webViewFirstPage=true",
+      limited: null, fee: "국내 20,000원 / 해외 20,000원",
+      tiers: [
+        { cond: "전월 실적 30만원~70만원 미만", amt: 7000, phase: null },
+        { cond: "전월 실적 70만원~120만원 미만", amt: 10000, phase: null },
+        { cond: "전월 실적 120만원 이상", amt: 13000, phase: null },
+      ],
+    },
+  ],
+  "SKT": [
+    {
+      issuer: "현대카드", name: "SKT-현대카드M Edition3(통신할인형2.0)", max: 25000,
+      url: "https://www.hyundaicard.com/cpc/cr/CPCCR0201_01.hc?cardflag=RC&cardWcd=MSKTE3TP",
+      limited: "1~24개월 까지만 할인", fee: "국내 20,000원 / 해외 20,000원",
+      tiers: [
+        { cond: "전월 실적 50만원~100만원 미만", amt: 15000, phase: null },
+        { cond: "전월 실적 100만원 이상", amt: 25000, phase: null },
+      ],
+    },
+    {
+      issuer: "국민카드", name: "T-economy KB국민카드", max: 17000,
+      url: "https://m.kbcard.com/CRD/DVIEW/MCAMCXHIACRC0002?mainCC=b&allianceCode=04288",
+      limited: null, fee: "국내 15,000원 / 해외 15,000원",
+      tiers: [
+        { cond: "전월 실적 30만원~70만원 미만", amt: 12000, phase: null },
+        { cond: "전월 실적 70만원 이상", amt: 17000, phase: null },
+      ],
+    },
+    {
+      issuer: "삼성카드", name: "T나는 혜택카드 삼성카드", max: 13000,
+      url: "https://www.samsungcard.com/home/card/cardinfo/PGHPPCCCardCardinfoDetails001?code=AAP1752",
+      limited: null, fee: "국내 20,000원 / 해외 20,000원",
+      tiers: [
+        { cond: "전월 실적 30만원~70만원 미만", amt: 7000, phase: null },
+        { cond: "전월 실적 70만원~120만원 미만", amt: 10000, phase: null },
+        { cond: "전월 실적 120만원 이상", amt: 13000, phase: null },
+      ],
+    },
+    {
+      issuer: "롯데카드", name: "롯데카드 TELLO SE", max: 13000,
+      url: "https://www.lottecard.co.kr/app/LPCDADB_V100.lc?vtCdKndC=P13248-A13248",
+      limited: null, fee: "국내 25,000원 / 해외 25,000원",
+      tiers: [
+        { cond: "전월 실적 40만원~80만원 미만", amt: 8000, phase: null },
+        { cond: "전월 실적 80만원 이상", amt: 13000, phase: null },
+      ],
+    },
+  ],
+  "LG U+": [
+    {
+      issuer: "롯데카드", name: "LG U+ X LOCA", max: 20000,
+      url: "https://www.lottecard.co.kr/app/LPCDADB_V100.lc?vtCdKndC=P14073-A14073",
+      limited: "기간별 할인액 상이", fee: "국내 20,000원 / 해외 20,000원",
+      tiers: [
+        { cond: "전월 실적 30만원~70만원 미만", amt: 10000, phase: "~25개월까지" },
+        { cond: "전월 실적 70만원~120만원 미만", amt: 15000, phase: "~25개월까지" },
+        { cond: "전월 실적 120만원 이상", amt: 20000, phase: "~25개월까지" },
+        { cond: "전월 실적 30만원~70만원 미만", amt: 6000, phase: "25개월~" },
+        { cond: "전월 실적 70만원~120만원 미만", amt: 8000, phase: "25개월~" },
+        { cond: "전월 실적 120만원 이상", amt: 10000, phase: "25개월~" },
+      ],
+    },
+    {
+      issuer: "하나카드", name: "더 심플 하나카드", max: 15000,
+      url: "https://m.hanacard.co.kr/MKCDCM1000M.web?CD_PD_SEQ=16953",
+      limited: null, fee: "국내 25,000원 / 해외 25,000원",
+      tiers: [
+        { cond: "전월 실적 30만원~80만원 미만", amt: 10000, phase: null },
+        { cond: "전월 실적 80만원 이상", amt: 15000, phase: null },
+      ],
+    },
+    {
+      issuer: "신한카드", name: "LG U+ 스마트플랜 Plus 신한카드", max: 15000,
+      url: "https://www.shinhancard.com/pconts/html/card/apply/credit/1196321_2207.html",
+      limited: null, fee: "국내 22,000원 / 해외 25,000원",
+      tiers: [
+        { cond: "전월 실적 30만원~70만원 미만", amt: 10000, phase: null },
+        { cond: "전월 실적 70만원 이상", amt: 15000, phase: null },
+      ],
+    },
+    {
+      issuer: "삼성카드", name: "LG U⁺ 삼성카드", max: 13000,
+      url: "https://www.samsungcard.com/home/card/cardinfo/PGHPPCCCardCardinfoDetails001?code=AAP1663",
+      limited: null, fee: "국내 20,000원 / 해외 20,000원",
+      tiers: [
+        { cond: "전월 실적 30만원~70만원 미만", amt: 7000, phase: null },
+        { cond: "전월 실적 70만원~120만원 미만", amt: 10000, phase: null },
+        { cond: "전월 실적 120만원 이상", amt: 13000, phase: null },
+      ],
+    },
+  ],
+  "스카이라이프": [
+    {
+      issuer: "신한카드", name: "스카이라이프 신한카드", max: 20000,
+      url: "https://www.shinhancard.com/pconts/html/card/apply/credit/1236601_2207.html",
+      limited: null, fee: "국내 18,000원 / 해외 21,000원",
+      tiers: [
+        { cond: "전월 실적 30만원~70만원 미만", amt: 13000, phase: null },
+        { cond: "전월 실적 70만원~120만원 미만", amt: 16000, phase: null },
+        { cond: "전월 실적 120만원 이상", amt: 20000, phase: null },
+      ],
+    },
+    {
+      issuer: "국민카드", name: "KT 스카이라이프 KB카드", max: 11000,
+      url: "https://m.kbcard.com/CRD/DVIEW/MCAMCXHIACRC0002?mainCC=b&allianceCode=04348",
+      limited: null, fee: "국내 20,000원 / 해외 20,000원",
+      tiers: [
+        { cond: "전월 실적 30만원~70만원 미만", amt: 5000, phase: null },
+        { cond: "전월 실적 70만원 이상", amt: 11000, phase: null },
+      ],
+    },
+  ],
+  "LG헬로비전": [
+    {
+      issuer: "우리카드", name: "LG헬로비전 언제나 우리카드", max: 20000,
+      url: "https://m.wooricard.com/dcmw/mobile/totalSearch.do?searchTerm=%EC%96%B8%EC%A0%9C%EB%82%98%20%EC%9A%B0%EB%A6%AC%EC%B9%B4%EB%93%9C&gubn=01&mGubn=M",
+      limited: null, fee: "국내 20,000원 / 해외 20,000원",
+      tiers: [
+        { cond: "전월 실적 30만원~70만원 미만", amt: 8000, phase: null },
+        { cond: "전월 실적 70만원~120만원 미만", amt: 15000, phase: null },
+        { cond: "전월 실적 120만원 이상", amt: 20000, phase: null },
+      ],
+    },
+    {
+      issuer: "롯데카드", name: "LG헬로비전 롯데카드", max: 20000,
+      url: "https://m.lottecard.co.kr/spa/card/booth?bId=90261&vtCdKndC=P11708-A11708",
+      limited: null, fee: "국내 10,000원 / 해외 12,000원",
+      tiers: [
+        { cond: "전월 실적 30만원~70만원 미만", amt: 11000, phase: null },
+        { cond: "전월 실적 70만원~100만원 미만", amt: 15000, phase: null },
+        { cond: "전월 실적 100만원 이상", amt: 20000, phase: null },
+      ],
+    },
+    {
+      issuer: "신한카드", name: "LG헬로비전 신한카드", max: 15000,
+      url: "https://www.shinhancard.com/pconts/html/card/apply/credit/1203566_2207.html",
+      limited: null, fee: "국내 22,000원 / 해외 22,000원",
+      tiers: [
+        { cond: "전월 실적 40만원~80만원 미만", amt: 10000, phase: null },
+        { cond: "전월 실적 80만원 이상", amt: 15000, phase: null },
+      ],
+    },
+    {
+      issuer: "국민카드", name: "LG 헬로비전Ⅱ카드", max: 11000,
+      url: "https://card.kbcard.com/CRD/DVIEW/HCAMCXPRICAC0076?mainCC=a&cooperationcode=02083&solicitorcode=7022170002",
+      limited: null, fee: "국내 20,000원 / 해외 20,000원",
+      tiers: [
+        { cond: "전월 실적 30만원~70만원 미만", amt: 7000, phase: null },
+        { cond: "전월 실적 70만원 이상", amt: 11000, phase: null },
+      ],
+    },
+  ],
+};
+
+// 계산기 통신사 값 → 제휴카드 자료의 통신사 키. 오피스넷/소호는 본사 카드를 그대로 쓴다.
+const PARTNER_CARD_ISP_MAP = {
+  'KT': 'KT', 'KT 오피스넷': 'KT',
+  'LGU': 'LG U+', 'LG 소호': 'LG U+',
+  'SKB': 'SKB', 'SKT': 'SKT',
+  '헬로비전': 'LG헬로비전', 'SKY': '스카이라이프',
+};
+/* ── 제휴카드 ──
+   선택한 통신사의 제휴카드를 최대 할인액이 큰 순서로 보여주고,
+   [선택] 을 누르면 그 카드의 최대 할인액을 월 요금에서 차감한다.
+   카드 할인은 카드사 전월 실적 조건이 붙어 있어 실제 청구금액과 달라질 수 있으므로
+   메모/문자에서는 요금 줄을 덮어쓰지 않고 '제휴카드' 줄만 따로 덧붙인다. */
+let selectedPartnerCard = null; // 현재 탭에서 선택한 카드 이름. 통신사를 바꾸면 해제된다.
+let _pcardKey = null;           // 마지막으로 그린 상태(통신사|선택카드). 같으면 다시 그리지 않는다.
+// 제휴카드 기능은 agent=테스트 로 접속했을 때만 노출 (그 외에는 섹션 숨김 + 할인 미적용)
+const PCARD_ENABLED = new URLSearchParams(location.search).get('agent') === '테스트';
+document.addEventListener('DOMContentLoaded', () => {
+  const pcardCard = document.getElementById('pcard-card');
+  if(pcardCard) pcardCard.style.display = PCARD_ENABLED ? '' : 'none';
+});
+
+function pcardEsc(s){
+  return String(s).replace(/[&<>"]/g, c => ({'&':'&amp;','<':'&lt;','>':'&gt;','"':'&quot;'}[c]));
+}
+
+// 계산기 통신사 값으로 제휴카드 목록을 뽑는다. 자료가 없으면 null.
+function partnerCardsFor(isp){
+  if(!PCARD_ENABLED) return null;
+  const key = PARTNER_CARD_ISP_MAP[isp];
+  if(!key || !PARTNER_CARDS[key]) return null;
+  // 자료를 교체해도 순서가 보장되도록 화면에서 한 번 더 정렬한다.
+  return PARTNER_CARDS[key].slice().sort((a,b) => b.max - a.max);
+}
+
+// 현재 선택된 카드 객체. 통신사가 바뀌어 목록에 없으면 null.
+function currentPartnerCard(){
+  if(!PCARD_ENABLED || !selectedPartnerCard) return null;
+  const cards = partnerCardsFor(document.getElementById('isp')?.value || '');
+  return (cards && cards.find(c => c.name === selectedPartnerCard)) || null;
+}
+
+// 월 요금에서 실제로 차감할 금액.
+// 카드 할인은 통신요금 한도 안에서만 받을 수 있으므로 월 요금을 넘지 않게 자른다.
+function partnerCardDiscount(monthly){
+  const c = currentPartnerCard();
+  if(!c || !(monthly > 0)) return 0;
+  return Math.min(c.max, monthly);
+}
+
+function selectPartnerCard(name){
+  selectedPartnerCard = (selectedPartnerCard === name) ? null : name; // 같은 카드를 다시 누르면 해제
+  renderPartnerCards();
+  calc();
+}
+
+function clearPartnerCard(){
+  selectedPartnerCard = null;
+  renderPartnerCards();
+  calc();
+}
+
+function renderPartnerCards(){
+  if(!PCARD_ENABLED) return;
+  const body = document.getElementById('pcard-body');
+  if(!body) return;
+  const isp = document.getElementById('isp')?.value || '';
+  const key = isp + '|' + (selectedPartnerCard || '');
+  if(key === _pcardKey) return;
+  _pcardKey = key;
+
+  const note = document.getElementById('pcard-note');
+  const tag = document.getElementById('pcard-isp-tag');
+  const cards = partnerCardsFor(isp);
+
+  if(!cards || !cards.length){
+    body.innerHTML = `<div class="pcard-empty">${isp
+      ? '해당 통신사는 등록된 제휴카드 자료가 없습니다.'
+      : '통신사를 선택하면<br>할인 혜택이 큰 카드부터 표시됩니다.'}</div>`;
+    if(note) note.style.display = 'none';
+    if(tag) tag.style.display = 'none';
+    return;
+  }
+
+  const ispKey = PARTNER_CARD_ISP_MAP[isp];
+  if(tag){ tag.textContent = ispKey; tag.style.display = ''; }
+
+  body.innerHTML = '<div class="pcard-list">' + cards.map((c, i) => {
+    const on = c.name === selectedPartnerCard;
+    const tiers = c.tiers.map(t =>
+      `<li>${t.phase ? `<span class="pt-phase">${pcardEsc(t.phase)}</span>` : ''}` +
+      `<span>${pcardEsc(t.cond)}</span><b>${fmt(t.amt)}원</b></li>`).join('');
+    const title = c.url
+      ? `<a class="pcard-name" href="${pcardEsc(c.url)}" target="_blank" rel="noopener" title="카드사 안내 페이지 열기">${pcardEsc(c.name)}</a>`
+      : `<span class="pcard-name">${pcardEsc(c.name)}</span>`;
+    return `<div class="pcard${i === 0 ? ' best' : ''}${on ? ' picked' : ''}">
+      <div class="pcard-head">
+        <span class="pcard-rank">${i + 1}</span>
+        <span class="pcard-issuer">${pcardEsc(c.issuer)}</span>
+        ${title}
+        <span class="pcard-max">최대 ${fmt(c.max)}원</span>
+      </div>
+      ${c.limited ? `<span class="pcard-badge warn">⚠ ${pcardEsc(c.limited)}</span>` : ''}
+      <ul class="pcard-tiers">${tiers}</ul>
+      <div class="pcard-bottom">
+        <span class="pcard-fee">${c.fee ? '연회비 ' + pcardEsc(c.fee) : '연회비 정보 없음'}</span>
+        <button class="pcard-pick${on ? ' on' : ''}" type="button"
+          onclick="selectPartnerCard(${JSON.stringify(c.name).replace(/"/g, '&quot;')})">${on ? '✓ 선택됨' : '선택'}</button>
+      </div>
+    </div>`;
+  }).join('') + '</div>';
+
+  if(note){
+    note.innerHTML =
+      `※ 전월 실적은 매월 1일~말일 기준으로 산정되며, 카드 발급 후 <b>${pcardEsc(ispKey)} 자동이체 납부 등록</b>이 필요합니다.<br>` +
+      `※ [선택] 하면 <b>최대 할인액</b>이 월 요금에서 차감됩니다. 실적 미달 시 실제 할인은 줄어들 수 있고, ` +
+      `월 요금보다 큰 할인은 월 요금까지만 적용됩니다.`;
+    note.style.display = '';
+  }
+}
+
+// 상품표의 '제휴카드' 행 갱신. 선택했을 때만 행이 보인다.
+function updatePartnerCardRow(dis){
+  const row = document.getElementById('row-pcard');
+  const picked = document.getElementById('pcard-picked');
+  const amt = document.getElementById('amt-pcard');
+  if(!row) return;
+  const c = currentPartnerCard();
+  if(!c || !dis){
+    row.style.display = 'none';
+    if(amt){ amt.textContent = '—'; amt.className = 'row-amount zero'; }
+    return;
+  }
+  row.style.display = '';
+  if(picked) picked.textContent = c.name + (dis < c.max ? ` (월 요금 한도 ${fmt(dis)}원 적용)` : '');
+  if(amt){ amt.textContent = '- ' + fmt(dis); amt.className = 'row-amount disc'; }
+}
 /* ── 유심 동판 ── */
 const USIM_KT_GIFT = {
   '37K': {
@@ -3552,6 +4007,7 @@ function saveTab(n){
   d['usim-isp']=document.getElementById('usim-isp').value;
   d['usim-plan']=document.getElementById('usim-plan').value;
   d['usim-family']=Array.from(document.querySelectorAll('.usim-family-item select')).map(s=>s.value);
+  d['pcard']=selectedPartnerCard;
   tabData[n]=d;
 }
 
@@ -3592,6 +4048,7 @@ function restoreUsimState(d){
 
 function loadTab(n){
   const d=tabData[n];
+  selectedPartnerCard=d['pcard']||null; // 제휴카드 선택은 탭마다 따로 기억한다
   const isp=d['isp']||'';
   const ispEl=document.getElementById('isp');
   ispEl.value=isp;
