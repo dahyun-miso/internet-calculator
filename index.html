@@ -824,7 +824,7 @@ a.pcard-name:hover::after{color:#2f5dd0}
               <td class="row-select" colspan="2">
                 <div class="field-wrap" id="wrap-usim-product">
                   <div class="select-row">
-                    <select id="usim-product" onchange="updateWrapState('usim-product')">
+                    <select id="usim-product" onchange="onUsimProductChange()">
                       <option value="">-- 선택 --</option>
                     </select>
                     <button class="clear-btn" onclick="clearUsimField('usim-product')" title="초기화">✕</button>
@@ -1172,10 +1172,11 @@ a.pcard-name:hover::after{color:#2f5dd0}
               <button class="msg-tab" data-idx="3" data-group="internet" onclick="switchMsgTab(3,this)">연결시도·부재</button>
               <button class="msg-tab" data-idx="4" data-group="internet" onclick="switchMsgTab(4,this)">상품제안·부재</button>
               <button class="msg-tab" data-idx="5" data-group="usim" style="display:none" onclick="switchMsgTab(5,this)">KT유심접수</button>
-              <button class="msg-tab" data-idx="6" data-group="usim" style="display:none" onclick="switchMsgTab(6,this)">SK유심접수</button>
-              <button class="msg-tab" data-idx="7" data-group="usim" style="display:none" onclick="switchMsgTab(7,this)">LG유심접수</button>
-              <button class="msg-tab" data-idx="8" data-group="usim" style="display:none" onclick="switchMsgTab(8,this)">LG-갤럭시</button>
-              <button class="msg-tab" data-idx="9" data-group="usim" style="display:none" onclick="switchMsgTab(9,this)">LG-아이폰</button>
+              <button class="msg-tab" data-idx="6" data-group="usim" style="display:none" onclick="switchMsgTab(6,this)">SKT유심접수</button>
+              <button class="msg-tab" data-idx="7" data-group="usim" style="display:none" onclick="switchMsgTab(7,this)">SKB유심접수</button>
+              <button class="msg-tab" data-idx="8" data-group="usim" style="display:none" onclick="switchMsgTab(8,this)">LG유심접수</button>
+              <button class="msg-tab" data-idx="9" data-group="usim" style="display:none" onclick="switchMsgTab(9,this)">LG-갤럭시</button>
+              <button class="msg-tab" data-idx="10" data-group="usim" style="display:none" onclick="switchMsgTab(10,this)">LG-아이폰</button>
               <button class="msg-tab-add" onclick="openAddTab()" title="탭 추가">＋</button>
             </div>
             <div class="ta-bar" style="margin-top:8px">
@@ -1334,7 +1335,7 @@ a.pcard-name:hover::after{color:#2f5dd0}
         <!-- 1줄: 요금제표 -->
         <div style="display:flex;gap:8px;flex-wrap:wrap">
           <button onclick="setUsimTableTab('kt')" id="utab-kt" style="padding:5px 11px;border-radius:7px;font-size:13px;font-weight:700;cursor:pointer;border:1.5px solid #e8001c;background:#e8001c;color:#fff">KT유심</button>
-          <button onclick="setUsimTableTab('sk')" id="utab-sk" style="padding:5px 11px;border-radius:7px;font-size:13px;font-weight:700;cursor:pointer;border:1.5px solid #e0e4ee;background:#f5f7fb;color:#7a8499">SK유심</button>
+          <button onclick="setUsimTableTab('skt')" id="utab-skt" style="padding:5px 11px;border-radius:7px;font-size:13px;font-weight:700;cursor:pointer;border:1.5px solid #e0e4ee;background:#f5f7fb;color:#7a8499">SKT유심</button><button onclick="setUsimTableTab('skb')" id="utab-skb" style="padding:5px 11px;border-radius:7px;font-size:13px;font-weight:700;cursor:pointer;border:1.5px solid #e0e4ee;background:#f5f7fb;color:#7a8499">SKB유심</button>
           <button onclick="setUsimTableTab('lg')" id="utab-lg" style="padding:5px 11px;border-radius:7px;font-size:13px;font-weight:700;cursor:pointer;border:1.5px solid #e0e4ee;background:#f5f7fb;color:#7a8499">LG유심</button>
         </div>
         <!-- 2줄: 사은품표 -->
@@ -1348,18 +1349,8 @@ a.pcard-name:hover::after{color:#2f5dd0}
       <button onclick="closeUsimTableBtn()" style="background:none;border:none;font-size:18px;cursor:pointer;color:#aaa;padding:2px 6px">✕</button>
     </div>
     <div id="utbl-kt">
-      <div style="margin-bottom:6px"><a href="https://product.kt.com/wDic/index.do?CateCode=6002" target="_blank" style="color:#1a6fe8;font-size:12px;font-weight:600;text-decoration:underline">https://product.kt.com/wDic/index.do?CateCode=6002</a></div>
-      <p style="font-size:11px;color:#e05050;font-weight:600;margin-bottom:6px">⚠️ 접수 가능한 요금제는 변경될 수 있습니다. 정확한 요금제는 신청서를 통해 확인 부탁드립니다.</p>
       <div style="margin-bottom:8px;display:flex;gap:16px;flex-wrap:wrap"><a href="javascript:void(0)" onclick="copyText('http://online.kt.com/index.jsp?prdcID=6C463388-3BDF-4E68-BE73-975E05BDA182','신청서 링크가')" style="color:#1a6fe8;font-size:12px;font-weight:600;text-decoration:underline;cursor:pointer">✅ 신청서 (클릭 시 링크 복사)</a><a href="https://online.kt.com/itg/simple/simpleCustomerInfoPop.do?prdcId=0B843024-18A6-4D09-A228-8A1049E67C51" target="_blank" style="color:#1a6fe8;font-size:12px;font-weight:600;text-decoration:underline">✅ 동판 본인인증 (결합만 체크)</a></div>
-      <p style="font-size:11px;color:#e05050;font-weight:600;margin-bottom:6px">⚠️ 인 단독 +유심동판+가족유심2회선 까지 총 3회선까지 가능 (가족 유심 동판 시 가족관계증명서 + 가족 각각 신분증 필요)</p>
-      <p style="font-size:11px;color:#e05050;font-weight:600;margin-bottom:8px">ㄴ단, 인 단독 + 유심동판 진행 시 가족 유심에 대한 수수료는 미지급되다 보니 번들 가입 시 가족 유심 권유 必</p>
-      <div style="border:1.5px solid #e0e4ee;border-radius:7px;padding:10px 12px;margin-bottom:10px;background:#f8f9fb;font-size:11px;color:#444;line-height:1.7">
-        <div style="font-weight:700;margin-bottom:4px">📋 접수 방법</div>
-        <div>1. 위 신청서 링크로 인증(PASS or 신용카드) 후 신청서 작성</div>
-        <div>2. 아래 두번째 URL의 동판결합 문자 인증 (동판결합인증은 "결합" 부분만 체크하시어 인증 부탁 드립니다.)</div>
-        <div>3. 백메가 접수웹(speedonline.kr)의 KT(일반) ⇒ 모바일 탭으로 접수 부탁 드리겠습니다.</div>
-        <div>4. 접수 시 아래 기타메모 양식 기재 필수</div>
-      </div>
+      <p style="font-size:11px;color:#e05050;font-weight:600;margin-bottom:4px;line-height:1.7">▶ [본인 1개+가족 2개] <span style="color:#c0001a">총 3개</span>까지 유심동판 가능</p><p style="font-size:11px;color:#e05050;font-weight:600;margin-bottom:4px;line-height:1.7">▶ 가족 유심 동판 시 가족관계증명서 + 가족 각각 신분증 필요</p><p style="font-size:11px;color:#e05050;font-weight:600;margin-bottom:4px;line-height:1.7">▶ 인터넷 단독 유심동판의 경우 가족 유심 사은품 제공 불가로 판매 불가</p><p style="font-size:11px;color:#e05050;font-weight:600;margin-bottom:4px;line-height:1.7">▶ [인터넷+TV] 번들 가입 시 가족 유심동판 권유 필요</p><p style="font-size:11px;color:#e05050;font-weight:600;margin-bottom:4px;line-height:1.7">▶ 가족 유심 판매 시 가족에게 연락 후 접수 및 필수 안내 진행 필요</p><p style="font-size:11px;color:#e05050;font-weight:600;margin-bottom:4px;line-height:1.7">▶ 유선 가입 본인 인증+유심동판 결합 본인 인증 → 총 2번 필요</p><p style="font-size:11px;color:#e05050;font-weight:600;margin-bottom:4px;line-height:1.7">▶ 유무선 결합은 선결 가능 (백메가에서 선결합 예정)</p><p style="font-size:11px;color:#e05050;font-weight:600;margin-bottom:4px;line-height:1.7">▶ 인터넷 명의자와 유심 명의자가 상이해도 가입 가능 (가족인 경우만 해당/본인 기준 사은품 제공)</p><p style="font-size:11px;color:#e05050;font-weight:600;margin-bottom:4px;line-height:1.7">▶ 인터넷 접수 월 기준 익월 25일까지 유심 개통되어야 사은품 제공 가능</p><p style="font-size:11px;color:#e05050;font-weight:600;margin-bottom:4px;line-height:1.7">▶ 인터넷이나 유심 중 하나라도 접수 취소 또는 개통 취소 시 사은품 제공 불가</p>
       <table style="width:100%;border-collapse:collapse;font-size:12px">
         <thead><tr style="background:#f0f3fa"><th style="padding:7px 10px;border:1px solid #e0e4ee;width:60px">구간</th><th style="padding:7px 10px;border:1px solid #e0e4ee;text-align:left">상품</th><th style="padding:7px 10px;border:1px solid #e0e4ee;width:50px">구분</th><th style="padding:7px 10px;border:1px solid #e0e4ee;width:80px;text-align:right">월요금</th></tr></thead>
         <tbody>
@@ -1381,41 +1372,22 @@ a.pcard-name:hover::after{color:#2f5dd0}
           <tr><td style="padding:6px 10px;border:1px solid #e0e4ee"><a href="https://product.kt.com/wDic/productDetail.do?ItemCode=1681&amp;CateCode=6002&amp;filter_code=186&amp;option_code=255&amp;pageSize=10" target="_blank" style="color:#3b6ef0;text-decoration:underline">초이스 90</a> <span class="tip-wrap">ℹ️<span class="tip-box">✅ 티빙 / 지니 / 밀리의서재 / 디즈니+<br>유튜브프리미엄(라이트형/프리미엄형)<br>넷플릭스 광고형 스탠다드 / 광고형 프리미엄 (택1)</span></span></td><td style="padding:6px 10px;border:1px solid #e0e4ee;text-align:center;color:#666">5G</td><td style="padding:6px 10px;border:1px solid #e0e4ee;text-align:right;font-weight:600">₩90,000</td></tr>
         </tbody>
       </table>
-      <div style="border:1.5px solid #e0e4ee;border-radius:7px;padding:10px 12px;margin-top:10px;margin-bottom:10px;background:#f8f9fb;font-size:11px;color:#444;line-height:1.7">
-        <div style="font-weight:700;margin-bottom:4px">📋 접수 후 진행 사항</div>
-        <div>1. 해당 고객 인터넷 개통이 완료되면 [개통 완료 / 유심 발송 요청]으로 웹 회신 필요</div>
-        <div style="color:#888;padding-left:12px">※ 이미 개통된 고객 30일 이내 유심동판 시 [개통완료 일자, 개통번호 기재 / 유심 발송 요청] 으로 웹 회신 필요</div>
-        <div>2. 고객이 유심 수령하신 후 미소로 개통 요청 시 [고객 유심 수령 완료 / 개통 진행 요청] 필요</div>
-        <div style="color:#888;padding-left:12px">※ 개통 요청하면 [사전동의문자: 위약금 확인 및 동의문자]가 고객에게 발송되며, 해당 문자 처리 후 개통 진행 가능</div>
-        <div style="color:#888;padding-left:12px">※ 동의 처리하지 않을 시 문자 발송 후 10분 전산에서 강제로 동의처리 후 개통진행 가능</div>
-        <div>3. 수령한 USIM으로 갈아끼우시고 전원 ON에 성공하시면 선택약정과 유무선 결합 진행 필수</div>
-        <div style="color:#888;padding-left:12px">※ 선약 및 결합 완료시 [개통완료]로 처리됨</div>
-      </div>
-      <div style="border:1.5px solid #e0e4ee;border-radius:7px;padding:10px 12px;margin-bottom:6px;background:#fff9e0;font-size:11px;color:#444;line-height:1.7">
-        <div style="font-weight:700;margin-bottom:4px">⚠️ 개통 필수 안내 사항</div>
-        <div>1. 유심 개통은 순차적으로 진행되어 최대 4시간까지 소요될 수 있습니다.</div>
-        <div>2. 사전 동의 문자 처리가 완료되어야 빠른 개통 처리가 가능합니다.</div>
-        <div>3. KT USIM으로 개통되기 전까지는 기존 USIM을 사용하시다가 기존 USIM의 신호가 끊어질 경우 수령하신 USIM으로 갈아 끼워주세요.</div>
-        <div>4. 기기 재시동을 여러번 해주시면 정상 개통이 완료됩니다.</div>
-        <div>5. 유심보호 서비스 가입되어있는 경우 해제 후 유심 분리 필수 (미해제 시 락 걸릴 수 있음)</div>
-      </div>
-      <div style="border:1.5px solid #ffd0d0;border-radius:7px;padding:10px 12px;margin-bottom:6px;background:#fff5f5;font-size:11px;color:#444;line-height:1.7">
-        <div style="font-weight:700;margin-bottom:4px;color:#c0001a">⚠️ 주의 사항 ⚠️</div>
-        <div>1. 유심 당일 발송은 15시에 마감됩니다. 이후 요청건 영업일 기준 익일 진행됩니다.</div>
-        <div>2. 유심 비용 7,700원 / 번호 이동 수수료 800원이 첫 달에 청구됩니다. (번호이동 시 총 8,500원 / 신규 개통 시 7,700원)</div>
-        <div>3. 인터넷 / 유심 중 하나라도 설불 및 개통 불가시 수수료 지급 불가합니다.</div>
-        <div>4. 인터넷 개통월 기준 익월말까지 유심 개통시에만 수수료 인정되어 지급됩니다.</div>
-        <div>5. 선택약정 적용 안될 경우 수수료 지급 불가합니다.</div>
-        <div>6. 인터넷 명의자와 유심 명의자가 상이해도 유심 수수료 지급 가능합니다.</div>
+      <div style="border:1.5px solid #ffd0d0;border-radius:7px;padding:10px 12px;margin-top:10px;background:#fff5f5;font-size:11px;color:#444;line-height:1.7">
+        <div style="font-weight:700;margin-bottom:4px;color:#c0001a">⚠️ KT 유심동판 주의사항 ⚠️</div>
+        <div>1. 유심 배송 요청 마감 시간은 매일 15시입니다. 이후 요청 건은 익영업일에 진행됩니다.</div>
+        <div>2. 유심 개통 요청은 평일 기준 17시까지 가능합니다. (주말 및 공휴일 요청 불가)</div>
+        <div>3. 유심 비용 7,700원+번호이동 수수료 800원이 첫 달에 일회성 청구됩니다. (총 8,500원)</div>
+        <div>4. 인터넷, 유심 중 하나라도 설불 및 개통 불가시 사은품 제공 되지 않습니다.</div>
+        <div>5. 인터넷 접수 월 기준 익월 25일까지 유심 개통되어야 사은품 제공 가능합니다.</div>
+        <div>6. 유무선 결합, 선택약정 적용 안 될 경우 사은품 제공되지 않습니다.</div>
+        <div>7. 인터넷 명의자와 유심 명의자가 상이해도 유심 사은품 제공 가능합니다.</div>
+        <div>8. 휴대폰 요금제는 37K 미만 접수 불가합니다.</div>
+        <div>9. 기존 휴대폰 통신사 약정기간 미종료 or 기기할인(공시지원금) 받고 있는 경우 위약금 발생됩니다.</div>
       </div>
     </div>
     <div id="utbl-sk" style="display:none">
-      <p style="font-size:11px;color:#e05050;font-weight:600;margin-bottom:6px">⚠️ 인단독 &gt; 33K 판매 불가 / 가족 유심 판매 불가, 번들 &gt; 모든 요금제 + 가족 유심 판매 가능</p>
-      <p style="font-size:11px;color:#e05050;font-weight:600;margin-bottom:6px">⚠️ [다이렉트] 요금제는 미소에서 가입 불가</p>
-      <div style="margin-bottom:8px"><a href="https://tgateplus.sktelecom.com/main/main.do?p=b768024ac8f4eefe3a912021d6044065b9efaabff396bcad836f4ee72124b68d" target="_blank" style="color:#1a6fe8;font-size:12px;font-weight:600;text-decoration:underline">✅ SKT 신청서</a></div>
-      <div style="margin-bottom:8px"><a href="https://app.slack.com/client/T08J1TPKM/C07CE346V5W" target="_blank" style="color:#1a6fe8;font-size:12px;font-weight:600;text-decoration:underline">✅ SKB 신청서는 SKB 슬랙방에 요청해주세요</a></div>
-      <p style="font-size:11px;color:#e05050;font-weight:600;margin-bottom:6px">⚠️ 인터넷+TV 번들 가입 시에만 가족 유심동판 신청 가능 (본인1+가족4 = 총 5회선 가능)</p>
-      <p style="font-size:11px;color:#e05050;font-weight:600;margin-bottom:8px">⚠️ 인터넷 단독 가입 시 &gt; 33K 요금제 판매 불가(본인 및 가족 유심 판매 불가), 가족 유심 판매 불가(인터넷 단독은 무조건 가족 불가)</p>
+      <div id="sk-notice-skt" style="display:none"><div style="margin-bottom:8px"><a href="https://tgateplus.sktelecom.com/main/main.do?p=b768024ac8f4eefe3a912021d6044065b9efaabff396bcad836f4ee72124b68d" target="_blank" style="color:#1a6fe8;font-size:12px;font-weight:600;text-decoration:underline">✅ 신청서</a></div><p style="font-size:11px;color:#e05050;font-weight:600;margin-bottom:4px;line-height:1.7">▶ [본인 1개+가족 4개] <span style="color:#c0001a">총 5개</span>까지 유심동판 가능</p><p style="font-size:11px;color:#e05050;font-weight:600;margin-bottom:4px;line-height:1.7">▶ 인터넷 명의자와 유심 명의자가 동일해야 유심 접수 가능</p><p style="font-size:11px;color:#e05050;font-weight:600;margin-bottom:4px;line-height:1.7">▶ 유무선 결합은 선결 가능 (백메가에서 선결합 예정)</p><p style="font-size:11px;color:#e05050;font-weight:600;margin-bottom:4px;line-height:1.7">▶ 가족 유심 판매 시 가족에게 연락 후 접수 및 필수 안내 진행 필요</p><p style="font-size:11px;color:#e05050;font-weight:600;margin-bottom:4px;line-height:1.7">▶ 가족 유심 동판 시 가족관계증명서 + 가족 각 각 신분증 필요</p><p style="font-size:11px;color:#e05050;font-weight:600;margin-bottom:4px;line-height:1.7">▶ 인터넷 개통 이후 [유심 개통 &amp; 유무선 결합]이 같은 월에 진행되어야 사은품 제공 가능</p><p style="font-size:11px;color:#e05050;font-weight:600;margin-bottom:4px;line-height:1.7">▶ 유선 접수 월, 유선 개통 월과 관계 없으며 유선이 먼저 개통된 경우 유선에 대한 사은품 선 제공</p><p style="font-size:11px;color:#e05050;font-weight:600;margin-bottom:4px;line-height:1.7">▶ 인터넷이나 유심 중 하나라도 접수 취소 또는 개통 취소 시 사은품 제공 불가</p></div>
+      <div id="sk-notice-skb" style="display:none"><div style="margin-bottom:8px"><a href="https://app.slack.com/client/T08J1TPKM/C07CE346V5W" target="_blank" style="color:#1a6fe8;font-size:12px;font-weight:600;text-decoration:underline">✅ 신청서 → 슬랙 SKB 채널을 통해 유심 가입신청서 URL 발행 요청</a></div><p style="font-size:11px;color:#e05050;font-weight:600;margin-bottom:4px;line-height:1.7">▶ [본인 1개+가족 4개] <span style="color:#c0001a">총 5개</span>까지 유심동판 가능</p><p style="font-size:11px;color:#e05050;font-weight:600;margin-bottom:4px;line-height:1.7">▶ 인터넷 명의자와 유심 명의자가 동일해야 유심 접수 가능</p><p style="font-size:11px;color:#e05050;font-weight:600;margin-bottom:4px;line-height:1.7">▶ 유심 개통 후 고객이 직접 106번으로 연락해서 유무선 결합 요청 필수 (후결)</p><p style="font-size:11px;color:#e05050;font-weight:600;margin-bottom:4px;line-height:1.7">▶ 가족 유심 판매 시 가족에게 연락 후 접수 및 필수 안내 진행 필요</p><p style="font-size:11px;color:#e05050;font-weight:600;margin-bottom:4px;line-height:1.7">▶ 슬랙 SKB 채널을 통해 유심 가입신청서 링크 발송 요청 필수</p><p style="font-size:11px;color:#e05050;font-weight:600;margin-bottom:4px;line-height:1.7">▶ 인터넷 개통 월 기준 익월 25일까지 유심 개통 및 유무선 결합되어야 사은품 제공 가능</p><p style="font-size:11px;color:#e05050;font-weight:600;margin-bottom:4px;line-height:1.7">▶ 단, 유선 개통 월 유심 개통 시 익월 5일까지 결합 완료되어야 사은품 제공 가능</p><p style="font-size:11px;color:#e05050;font-weight:600;margin-bottom:4px;line-height:1.7">▶ 인터넷이나 유심 중 하나라도 접수 취소 또는 개통 취소 시 사은품 제공 불가</p></div>
       <table style="width:100%;border-collapse:collapse;font-size:12px">
         <thead><tr style="background:#f0f3fa"><th style="padding:7px 8px;border:1px solid #e0e4ee;text-align:left">구간</th><th style="padding:7px 8px;border:1px solid #e0e4ee">상품</th><th style="padding:7px 8px;border:1px solid #e0e4ee">구분</th><th style="padding:7px 8px;border:1px solid #e0e4ee;text-align:right">월요금</th></tr></thead>
         <tbody>
@@ -1441,40 +1413,12 @@ a.pcard-name:hover::after{color:#2f5dd0}
           <tr><td style="padding:6px 8px;border:1px solid #e0e4ee"><a href="https://www.tworld.co.kr/web/product/callplan/NA00009791" target="_blank" style="color:#3b6ef0;text-decoration:underline">베스트 89</a> <span class="tip-wrap">ℹ️<span class="tip-box">✅ 스마트기기 / Google AI / 티빙&amp;웨이브<br>디즈니+ / 유튜브 프리미엄 / T우주 (택1)</span></span></td><td style="padding:6px 8px;border:1px solid #e0e4ee;text-align:center;color:#666">5G</td><td style="padding:6px 8px;border:1px solid #e0e4ee;text-align:right;font-weight:600">₩89,000</td></tr>
         </tbody>
       </table>
-      <div style="border:1.5px solid #e0e4ee;border-radius:7px;padding:10px 12px;margin-top:10px;margin-bottom:10px;background:#f8f9fb;font-size:11px;color:#444;line-height:1.7">
-        <div style="font-weight:700;margin-bottom:4px">📋 접수 방법</div>
-        <div>1. 위 신청서 링크로 인증(PASS or 신용카드) 후 신청서 작성</div>
-        <div>2. 백메가 접수웹(speedonline.kr)의 SK(일반) ⇒ 모바일 탭으로 접수 부탁 드리겠습니다.</div>
-      </div>
-      <div style="border:1.5px solid #e0e4ee;border-radius:7px;padding:10px 12px;margin-bottom:10px;background:#f8f9fb;font-size:11px;color:#444;line-height:1.7">
-        <div style="font-weight:700;margin-bottom:4px">📋 접수 후 진행 사항</div>
-        <div>1. 해당 고객 인터넷 개통이 완료되면 [개통 완료 / 유심 발송 요청]으로 웹 회신 필요</div>
-        <div style="color:#888;padding-left:12px">※ 이미 개통된 고객 30일 이내 유심동판 시 [개통완료 일자, 개통번호 기재 / 유심 발송 요청] 으로 웹 회신 필요</div>
-        <div>2. 고객이 유심 수령하신 후 미소로 개통 요청 시 [고객 유심 수령 완료 / 개통 진행 요청] 필요</div>
-        <div style="color:#888;padding-left:12px">※ 개통 요청하면 [사전동의문자: 위약금 확인 및 동의문자]가 고객에게 발송되며, 해당 문자 처리 후 개통 진행 가능</div>
-        <div style="color:#888;padding-left:12px">※ 동의 처리하지 않을 시 문자 발송 후 10분 전산에서 강제로 동의처리 후 개통진행 가능</div>
-        <div>3. 수령한 USIM으로 갈아끼우시고 전원 ON에 성공하시면 선택약정과 유무선 결합 진행 필수</div>
-        <div style="color:#888;padding-left:12px">※ 선약 및 결합 완료시 [개통완료]로 처리됨</div>
-      </div>
-      <div style="border:1.5px solid #e0e4ee;border-radius:7px;padding:10px 12px;margin-bottom:10px;background:#fff9e0;font-size:11px;color:#444;line-height:1.7">
-        <div style="font-weight:700;margin-bottom:4px">⚠️ 개통 필수 안내 사항</div>
-        <div>1. 유심 개통은 순차적으로 진행되어 최대 1시간까지 소요될 수 있습니다.</div>
-        <div>2. 사전 동의 문자 처리가 완료되어야 빠른 개통 처리가 가능합니다.</div>
-        <div>3. SK USIM으로 개통되기 전까지는 기존 USIM을 사용하시다가 기존 USIM의 신호가 끊어질 경우 수령하신 USIM으로 갈아 끼워주세요.</div>
-        <div>4. 기기 재시동을 여러번 해주시면 정상 개통이 완료됩니다.</div>
-      </div>
-      <div style="border:1.5px solid #ffd0d0;border-radius:7px;padding:10px 12px;margin-bottom:6px;background:#fff5f5;font-size:11px;color:#444;line-height:1.7">
-        <div style="font-weight:700;margin-bottom:4px;color:#c0001a">⚠️ 주의 사항 ⚠️</div>
-        <div>1. 유심 당일 발송은 15시에 마감됩니다. 이후 요청건 영업일 기준 익일 진행됩니다.</div>
-        <div>2. 유심 비용 7,700원 / 번호 이동 수수료 800원이 첫 달에 청구됩니다. (번호이동 시 총 8,500원)</div>
-        <div>3. 인터넷 / 유심 중 하나라도 설불 및 개통 불가시 수수료 지급 불가합니다.</div>
-        <div>4. 인터넷 개통월 기준 익월말까지 유심 개통시에만 수수료 인정되어 지급됩니다.</div>
-        <div>5. 선택약정 적용 안될 경우 수수료 지급 불가합니다.</div>
-        <div>6. 인터넷 명의자와 유심 명의자가 상이해도 유심 수수료 지급 가능합니다.</div>
-      </div>
+      <div id="sk-note-skt" style="display:none"><div style="border:1.5px solid #ffd0d0;border-radius:7px;padding:10px 12px;margin-top:10px;background:#fff5f5;font-size:11px;color:#444;line-height:1.7"><div style="font-weight:700;margin-bottom:4px;color:#c0001a">⚠️ SKT 유심동판 주의사항 ⚠️</div><div>1. 유심 배송 요청 마감 시간은 매일 15시입니다. 이후 요청 건은 익영업일에 진행됩니다.</div><div>2. 유심 개통 요청은 평일 기준 17시까지 가능합니다. (주말 및 공휴일 요청 불가)</div><div>3. 유심 비용 7,700원+번호이동 수수료 800원이 첫 달에 일회성 청구됩니다. (총 8,500원)</div><div>4. 인터넷, 유심 중 하나라도 설불 및 개통 불가시 사은품 제공 되지 않습니다.</div><div>5. 인터넷 개통 이후 [유심 개통 &amp; 유무선 결합]이 같은 월에 진행되어야 사은품 제공 가능합니다.<div style="padding-left:12px">→ 유선 접수 월, 유선 개통 월과 관계 없으며 유선이 먼저 개통된 경우 유선에 대한 사은품 선 제공 가능합니다.</div></div><div>6. 유무선 결합, 선택약정 적용 안 될 경우 사은품 제공되지 않습니다.</div><div>7. 인터넷 명의자와 유심 명의자가 동일해야 사은품 제공 가능합니다.</div><div>8. 휴대폰 요금제는 33K 미만 접수 불가합니다.</div><div>9. 기존 휴대폰 통신사 약정기간 미종료 or 기기할인(공시지원금) 받고 있는 경우 위약금 발생됩니다.</div></div></div>
+      <div id="sk-note-skb" style="display:none"><div style="border:1.5px solid #ffd0d0;border-radius:7px;padding:10px 12px;margin-top:10px;background:#fff5f5;font-size:11px;color:#444;line-height:1.7"><div style="font-weight:700;margin-bottom:4px;color:#c0001a">⚠️ SKB 유심동판 주의사항 ⚠️</div><div>1. 유심 배송 요청 마감 시간은 매일 15시입니다. 이후 요청 건은 익영업일에 진행됩니다.</div><div>2. 유심 개통 요청은 평일 기준 17시까지 가능합니다. (주말 및 공휴일 요청 불가)</div><div>3. 유심 비용 7,700원+번호이동 수수료 800원이 첫 달에 일회성 청구됩니다. (총 8,500원)</div><div>4. 인터넷, 유심 중 하나라도 설불 및 개통 불가시 사은품 제공 되지 않습니다.</div><div>5. 인터넷 개통 월 기준 익월 25일까지 유심 개통되어야 사은품 제공 가능합니다.<div style="padding-left:12px">→ 단, 유선 개통 월 유심 개통 시 익월 5일까지 결합 완료되어야 사은품 제공 가능합니다.</div></div><div>6. 유무선 결합, 선택약정 적용 안 될 경우 사은품 제공되지 않습니다.</div><div>7. 인터넷 명의자와 유심 명의자가 동일해야 사은품 제공 가능합니다.</div><div>8. 휴대폰 요금제는 33K 미만 접수 불가합니다.</div><div>9. 기존 휴대폰 통신사 약정기간 미종료 or 기기할인(공시지원금) 받고 있는 경우 위약금 발생됩니다.</div></div></div>
     </div>
     <div id="utbl-lg" style="display:none">
-      <p style="font-size:11px;color:#e05050;font-weight:600;margin-bottom:8px">⚠️ 가족 유심 사은품은 전 구간 지급 불가입니다.</p>
+      <div style="margin-bottom:8px"><a href="https://onsalemobile.uplus.co.kr/open-market?formId=2562039&amp;agentId=315976&amp;openmktCd=105" target="_blank" style="color:#1a6fe8;font-size:12px;font-weight:600;text-decoration:underline">✅ 신청서</a></div>
+      <p style="font-size:11px;color:#e05050;font-weight:600;margin-bottom:4px;line-height:1.7">▶ [본인 1개+가족 4개] <span style="color:#c0001a">총 5개</span>까지 유심동판 가능</p><p style="font-size:11px;color:#e05050;font-weight:600;margin-bottom:4px;line-height:1.7">▶ 단, 본인만 사은품 제공 가능. 가족은 사은품 제공 불가</p><p style="font-size:11px;color:#e05050;font-weight:600;margin-bottom:4px;line-height:1.7">▶ 가족 유심 동판 시 가족관계증명서 + 가족 각 각 신분증 필요</p><p style="font-size:11px;color:#e05050;font-weight:600;margin-bottom:4px;line-height:1.7">▶ 가족 유심 판매 시 가족에게 연락 후 접수 및 필수 안내 진행 필요</p><p style="font-size:11px;color:#e05050;font-weight:600;margin-bottom:4px;line-height:1.7">▶ LG소호 동판 불가. (LG 홈상품만 유심동판 가능)</p><p style="font-size:11px;color:#e05050;font-weight:600;margin-bottom:4px;line-height:1.7">▶ 유무선 결합은 선결 가능 (백메가에서 선결합 예정)</p><p style="font-size:11px;color:#e05050;font-weight:600;margin-bottom:4px;line-height:1.7">▶ 인터넷 명의자와 유심 명의자가 상이해도 가입 가능 (가족인 경우만 해당/본인 기준 사은품 제공)</p><p style="font-size:11px;color:#e05050;font-weight:600;margin-bottom:4px;line-height:1.7">▶ 인터넷 접수 월 기준 익월 말일까지 유심 개통되어야 사은품 제공 가능</p><p style="font-size:11px;color:#e05050;font-weight:600;margin-bottom:4px;line-height:1.7">▶ 인터넷이나 유심 중 하나라도 접수 취소 또는 개통 취소 시 사은품 제공 불가</p>
       <table style="width:100%;border-collapse:collapse;font-size:12px">
         <thead><tr style="background:#f0f3fa"><th style="padding:7px 10px;border:1px solid #e0e4ee;width:60px">구간</th><th style="padding:7px 10px;border:1px solid #e0e4ee;text-align:left">상품</th><th style="padding:7px 10px;border:1px solid #e0e4ee;width:50px">구분</th><th style="padding:7px 10px;border:1px solid #e0e4ee;width:80px;text-align:right">월요금</th></tr></thead>
         <tbody>
@@ -1522,31 +1466,17 @@ a.pcard-name:hover::after{color:#2f5dd0}
           <tr><td rowspan="1" style="padding:7px 10px;border:1px solid #e0e4ee;font-weight:800;background:#fdeef4;color:#b0184c;text-align:center;vertical-align:top">130K</td><td style="padding:6px 10px;border:1px solid #e0e4ee"><a href="https://www.lguplus.com/mobile/plan/mplan/5g-all/5g-unlimited/Z202205253" target="_blank" style="color:#3b6ef0;text-decoration:underline">플러스플랜130</a></td><td style="padding:6px 10px;border:1px solid #e0e4ee;text-align:center;color:#666">5G</td><td style="padding:6px 10px;border:1px solid #e0e4ee;text-align:right;font-weight:600">₩130,000</td></tr>
         </tbody>
       </table>
-      <div style="border:1.5px solid #e0e4ee;border-radius:7px;padding:10px 12px;margin-bottom:10px;background:#f8f9fb;font-size:11px;color:#444;line-height:1.7;margin-top:10px">
-        <div style="font-weight:700;margin-bottom:4px">📋 접수 후 진행 사항</div>
-        <div>1. 해당 고객 인터넷 개통이 완료되면 [개통 완료 / 유심 발송 요청]으로 웹 회신 필요</div>
-        <div style="color:#888;padding-left:12px">※ 이미 개통된 고객 30일 이내 유심동판 시 [개통완료 일자, 개통번호 기재 / 유심 발송 요청] 으로 웹 회신 필요</div>
-        <div>2. 고객이 유심 수령하신 후 미소로 개통 요청 시 [고객 유심 수령 완료 / 개통 진행 요청] 필요</div>
-        <div style="color:#888;padding-left:12px">※ 개통 요청하면 [사전동의문자:위약금 확인 및 동의문자]가 고객에게 발송되며, 해당 문자 처리 후 개통 진행 가능</div>
-        <div style="color:#888;padding-left:12px">※ 동의 처리하지 않을 시 문자 발송 후 10분 전산에서 강제로 동의처리 후 개통진행 가능</div>
-        <div>3. 수령한 USIM으로 갈아끼우시고 전원 ON에 성공하시면 선택약정과 유무선 결합 진행 필수</div>
-        <div style="color:#888;padding-left:12px">※ 선약 및 결합 완료시 [개통완료]로 처리됨</div>
-      </div>
-      <div style="border:1.5px solid #e0e4ee;border-radius:7px;padding:10px 12px;margin-bottom:6px;background:#fff9e0;font-size:11px;color:#444;line-height:1.7">
-        <div style="font-weight:700;margin-bottom:4px">⚠️ 개통 필수 안내 사항</div>
-        <div>1. 유심 개통은 순차적으로 진행되어 최대 4시간 까지 소요될 수 있습니다.</div>
-        <div>2. 사전 동의 문자 처리가 완료되어야 빠른 개통 처리가 가능합니다.</div>
-        <div>3. LG USIM 으로 개통되기 전까지는 기존 USIM을 사용하시다가 기존 USIM의 신호가 끊어질 경우 수령하신 USIM으로 갈아 끼워주세요.</div>
-        <div>4. 기기 재시동을 여러번 해주시면 정상 개통이 완료됩니다.</div>
-      </div>
-      <div style="border:1.5px solid #ffd0d0;border-radius:7px;padding:10px 12px;margin-bottom:6px;background:#fff5f5;font-size:11px;color:#444;line-height:1.7">
-        <div style="font-weight:700;margin-bottom:4px;color:#c0001a">⚠️ 주의 사항 ⚠️</div>
-        <div>1. 유심 당일 발송은 15시에 마감됩니다. 이후 요청건 영업일 기준 익일 진행됩니다.</div>
-        <div>2. 유심 비용 7,700원 / 번호 이동 수수료 800원이 첫 달에 청구됩니다. (번호이동 시 총 8,500원)</div>
-        <div>3. 인터넷 / 유심 중 하나라도 설불 및 개통 불가시 수수료 지급 불가합니다.</div>
-        <div>4. 인터넷 접수 월 기준 익월 말까지 유심 개통시에만 수수료 인정되어 지급됩니다.</div>
-        <div>5. 선택약정 적용 안될 경우 수수료 지급 불가합니다.</div>
-        <div>6. 인터넷 명의자와 유심 명의자가 상이해도 유심 사은품 지급 가능합니다.</div>
+      <div style="border:1.5px solid #ffd0d0;border-radius:7px;padding:10px 12px;margin-top:10px;background:#fff5f5;font-size:11px;color:#444;line-height:1.7">
+        <div style="font-weight:700;margin-bottom:4px;color:#c0001a">⚠️ LG 유심동판 주의사항 ⚠️</div>
+        <div>1. 유심 배송 요청 마감 시간은 매일 15시입니다. 이후 요청 건은 익영업일에 진행됩니다.</div>
+        <div>2. 유심 개통 요청은 평일 기준 17시까지 가능합니다. (주말 및 공휴일 요청 불가)</div>
+        <div>3. 유심 비용 7,700원+번호이동 수수료 800원이 첫 달에 일회성 청구됩니다. (총 8,500원)</div>
+        <div>4. 인터넷, 유심 중 하나라도 설불 및 개통 불가시 사은품 제공 되지 않습니다.</div>
+        <div>5. 인터넷 접수 월 기준 익월 말일까지 유심 개통되어야 사은품 제공 가능합니다.</div>
+        <div>6. 유무선 결합, 선택약정 적용 안 될 경우 사은품 제공되지 않습니다.</div>
+        <div>7. 인터넷 명의자와 유심 명의자가 상이해도 유심 사은품 제공 가능합니다.</div>
+        <div>8. 휴대폰 요금제는 47K 미만 접수 불가합니다.</div>
+        <div>9. 기존 휴대폰 통신사 약정기간 미종료 or 기기할인(공시지원금) 받고 있는 경우 위약금 발생됩니다.</div>
       </div>
     </div>
     <div id="utbl-ktgift" style="display:none">
@@ -2816,7 +2746,7 @@ function buildProductLines(isp,inet,tv,hasTv,monthly,installFee,gift,bundleDis,b
 
 function updateProdSummary(isp,inet,tv,hasTv,monthly,installFee,gift,bundleDis,bundle,installItem,router,tvExtra,phone,addon){
   const L = buildProductLines(isp,inet,tv,hasTv,monthly,installFee,gift,bundleDis,bundle,installItem,router,tvExtra,phone,addon);
-  let parts = ['[3년약정/VAT포함]'];
+  let parts = ['[인터넷/3년약정/VAT포함]'];
   if(L.productLine) parts.push(L.productLine);
   if(L.tvLine) parts.push(L.tvLine);
   parts.push(L.monthlyLine);
@@ -2824,7 +2754,10 @@ function updateProdSummary(isp,inet,tv,hasTv,monthly,installFee,gift,bundleDis,b
   if(L.installLine) parts.push(L.installLine);
   if(L.giftLine) parts.push(L.giftLine);
   const summaryText = parts.join('\n');
-  window._prodSummaryText = parts.slice(1).join('\n');
+  // 2026-09-08: 상품제안 메모에도 유심 내용을 인터넷 밑에 붙인다(사용자 요청).
+  // 메모는 내부용이라 라벨을 '[유심]' 으로 짧게 쓴다(고객문자는 전체 라벨).
+  const _memoUsim = (typeof getUsimMsgBlock === 'function') ? getUsimMsgBlock('[유심]') : '';
+  window._prodSummaryText = parts.slice(1).join('\n') + (_memoUsim ? '\n\n' + _memoUsim : '');
   window._prodSummaryLines = parts.length;
 
   // 상품제안 모드가 켜진 상태라면, 메모장 안의 "■ 상품제안 내용" 다음 텍스트를 실시간 갱신
@@ -2982,26 +2915,32 @@ function toggleSection(key){
 let currentMsgTab = 0;
 
 const MSG_DEFAULTS = [
-  `[미소] 상품 & 사은품 요약 안내\n\n안녕하세요, 미소 인터넷 부서입니다.\n고객님께서 오늘 상담 받으신 상품 안내드립니다. \n\n[3년약정/VAT포함]\n▶️ 통신사 상품명\n▶️ 월 요금\n▶️ 설치비 없음\n▶️ 사은품 별도 안내\n\n* 혜택은 실시간으로 바뀔 수 있다는 점 안내드립니다.\n\n✅ 후기 작성 시 최대 10,000원 지급\n(미소 공식 네이버 카페)\nhttps://forms.gle/kzVQ5iPKQWP1m5SEA\n✅친구 추천 시 30,000원 지급\n(횟수 제한 없이 무제한 지급)\nhttps://forms.gle/2D9sTnsGmEH97i8D8\n\n미소 전담 상담사 드림.`,
-  `[미소] 가입 완료 안내\n\n안녕하세요, 고객님.\n미소 인터넷 부서입니다.\n\n✅ 계약이 완료되었어요, 아래 내용은 계약서와 동일한 효력이 있으니 꼼꼼히 읽어주세요.\n\n⚠️ 3년 약정이며, 아래와 같은 상황에 해당하면 받으셨던 사은품은 환수 됩니다. \n① 1년 이내 해지\n② 3개월 (90일) 이상 정지\n③ 1년 이내 요금제 하향 (상향 시에는 환수 되지 않습니다!) \n④ 3개월 이내 명의변경\n⑤ 개통 1년이내 결제수단 지로청구서로 변경\n⚠️ 신규 가입 후 기존에 인터넷은 꼭 해지 해주세요. 자동해지되지 않으며 이럴 경우 요금이 이중 부과되어요. \n⚠️ 3년 이내 해지 시 통신사 본사에 위약금 (할인 반환금) 및 통신사에 따라 면제된 와이파이 / 통신기기 설치비 반환이 필요할 수 있어요. \n\n✅ 가입 상품 안내\n[3년약정/VAT포함]\n▶️ 통신사 상품명\n▶️ 월 요금\n▶️ 설치비 없음\n▶️ 사은품 별도 안내\n✅사은품은 설치 후 7일 이내 자동으로 지급되나 평일기준 5시 이전 개통 받았다고 문자 주시면 당일입금 도움드리겠습니다. \n\n✅ 후기 작성 시 최대 10,000원 지급\n(미소 공식 네이버 카페)\nhttps://forms.gle/kzVQ5iPKQWP1m5SEA\n✅친구 추천 시 30,000원 지급\n(횟수 제한 없이 무제한 지급)\nhttps://forms.gle/2D9sTnsGmEH97i8D8\n\n미소 전담 상담사 드림.`,
+  `[미소] 상품 & 사은품 요약 안내\n\n안녕하세요, 미소 인터넷 부서입니다.\n고객님께서 오늘 상담 받으신 상품 안내드립니다. \n\n[인터넷/3년약정/VAT포함]\n▶️ 통신사 상품명\n▶️ 월 요금\n▶️ 설치비 없음\n▶️ 사은품 별도 안내\n\n* 혜택은 실시간으로 바뀔 수 있다는 점 안내드립니다.\n\n✅ 후기 작성 시 최대 10,000원 지급\n(미소 공식 네이버 카페)\nhttps://forms.gle/kzVQ5iPKQWP1m5SEA\n✅친구 추천 시 30,000원 지급\n(횟수 제한 없이 무제한 지급)\nhttps://forms.gle/2D9sTnsGmEH97i8D8\n\n미소 전담 상담사 드림.`,
+  `[미소] 가입 완료 안내\n\n안녕하세요, 고객님.\n미소 인터넷 부서입니다.\n\n✅ 계약이 완료되었어요, 아래 내용은 계약서와 동일한 효력이 있으니 꼼꼼히 읽어주세요.\n\n⚠️ 3년 약정이며, 아래와 같은 상황에 해당하면 받으셨던 사은품은 환수 됩니다. \n① 1년 이내 해지\n② 3개월 (90일) 이상 정지\n③ 1년 이내 요금제 하향 (상향 시에는 환수 되지 않습니다!) \n④ 3개월 이내 명의변경\n⑤ 개통 1년이내 결제수단 지로청구서로 변경\n⚠️ 신규 가입 후 기존에 인터넷은 꼭 해지 해주세요. 자동해지되지 않으며 이럴 경우 요금이 이중 부과되어요. \n⚠️ 3년 이내 해지 시 통신사 본사에 위약금 (할인 반환금) 및 통신사에 따라 면제된 와이파이 / 통신기기 설치비 반환이 필요할 수 있어요. \n\n✅ 가입 상품 안내\n[인터넷/3년약정/VAT포함]\n▶️ 통신사 상품명\n▶️ 월 요금\n▶️ 설치비 없음\n▶️ 사은품 별도 안내\n✅사은품은 설치 후 7일 이내 자동으로 지급되나 평일기준 5시 이전 개통 받았다고 문자 주시면 당일입금 도움드리겠습니다. \n\n✅ 후기 작성 시 최대 10,000원 지급\n(미소 공식 네이버 카페)\nhttps://forms.gle/kzVQ5iPKQWP1m5SEA\n✅친구 추천 시 30,000원 지급\n(횟수 제한 없이 무제한 지급)\nhttps://forms.gle/2D9sTnsGmEH97i8D8\n\n미소 전담 상담사 드림.`,
   `[미소] 결합 방법 안내\n\n고객님, 인터넷 설치 후에 결합을 따로 진행해주셔야 합니다!\n\n■ 통신사 본사 고객센터☎️로 전화하셔서\n■ 결합 상품 신청해주시면, 결합 할인 적용됩니다.\n■ 결합 할인 적용 위해 꼭 잊지 말고 결합 신청해주세요!\n\n감사합니다.\n미소 전담 상담사 드림.`,
   `[미소] 인터넷 가입 혜택 안내 드립니다!\n\n안녕하세요, 고객님!\n인터넷 상담 요청 주셔서 연락드렸지만, 잠시 부재중이셔서 문자로 안내드립니다 😊\n\n지금 가입 시\n✅ 사은품 최대 52만원 +\n✅ 통신요금 결합 할인 혜택 가능해요!\n\n필요하신 정보만 간단하게 안내드릴 수 있어요.\n👉 편하신 상담 방법 알려주세요!\n📞 통화 원하시면 시간 남겨주시고\n📩 문자로 원하시면 '네' 라고만 회신주셔도 바로 상담 도와드릴게요 :)\n\n부담 없이 편하게 연락주세요!\n지금 남겨주시면 가장 빠른 혜택 안내 도와드릴게요!\n\n감사합니다.\n미소 전담 상담사 드림.`,
   `[미소] 인터넷 가입 혜택 관련 최종 안내드립니다!\n\n고객님께 안내드렸던 조건(통신사, 결합 여부, 월요금, 사은품 등)으로\n지금 가입 가능하신 상태입니다 😊\n\n혜택 적용 및 설치 일정 확정을 위해\n고객님의 최종 의사만 기다리고 있습니다.\n\n👉 간단히 '진행할게요' 또는 '보류할게요'로만 회신 주셔도 괜찮습니다!\n📞 통화 원하시면 시간 남겨주셔도 됩니다.\n\n※ 현재 조건은 통신사 사은품 소진 또는 정책 변경 시 달라질 수 있습니다.\n희망하시는 설치일자에 설치받으시려면 빠른 접수가 필요합니다.\n\n잠깐의 회신으로 가장 좋은 조건으로 마무리 도와드릴 수 있습니다.\n\n감사합니다.\n미소 전담 상담사 드림.`,
-  `[미소] 유심 접수 완료 안내\n\n안녕하세요, 고객님. \n미소 인터넷 부서입니다.\n\n✅ 유심동판 접수가 완료되었어요, 아래 내용은 계약서와 동일한 효력이 있으니 꼼꼼히 읽어주세요.\n\n⚠️ 12개월 약정이며, 아래와 같은 상황에 해당하면 받으셨던 사은품은 환수 됩니다. \n① 365일 이내 해지 및 요금제 하향 및 결합 해지 시\n② 365일 이내 개통 후 통화를 한번도 하지 않을 경우\n③ 365 이내 일시정지, 명의변경, 타사 번호 이동 시\n④ 60일 이내 통신사 기기 변경 시\n⑤ 인터넷 개통 후 익월 말일까지 꼭 유심 개통이 필요해요!\n\n⚠️ 해당 유지 기간은 휴대폰 [유심 개통일 기준] 이 아닌, 유심과 인터넷 결합한 [결합일 기준] 입니다.\n⚠️ 유심 개통 완료 되면 사용하셨던 유심과 교체하여 기기 전원을 3~4회 껐다 키시면 됩니다!\n\n✅사은품은 설치 후 7일 이내 자동으로 지급되나 평일기준 5시 이전 개통 받았다고 문자 주시면 당일입금 도움드리겠습니다. \n🔊 해당 연락처로 연락이 어려울 경우 걱정하지 마세요! 아래 대표번호로 문의주시면 확인하여 연락드리겠습니다. 시간 양해 부탁드려요. \n[미소를 소개해주세요]\n지인이 미소에서 인터넷 설치하면 소개해주신 분에게 3만원 드려요.\n▶ 지인에게 추천하고 3O,OOO원 받기\nhttps://forms.gle/2D9sTnsGmEH97i8D8\n\n미소 전담 상담사 드림.`,
-  `[미소] 유심 접수 완료 안내\n\n안녕하세요, 고객님. \n미소 인터넷 부서입니다.\n\n✅ 유심동판 접수가 완료되었어요, 아래 내용은 계약서와 동일한 효력이 있으니 꼼꼼히 읽어주세요.\n\n⚠️ 12개월/24개월 약정이며, 아래와 같은 상황에 해당하면 받으셨던 사은품은 환수 됩니다. \n① 183일 이내 해지 및 요금제 하향\n② 개통 후 무통화 대상\n③ 183일 이내 명의변경 통신사 변경 시\n④ 183일 이내 결합 해지\n⑤ 인터넷 개통 후 익월 말일까지 꼭 유심 개통이 필요해요!\n\n⚠️ 해당 유지 기간은 휴대폰 [유심 개통일 기준] 이 아닌, 유심과 인터넷 결합한 [결합일 기준] 입니다.\n⚠️ 유심 개통 완료 되면 사용하셨던 유심과 교체하여 기기 전원을 3~4회 껐다 키시면 됩니다!\n\n✅사은품은 설치 후 7일 이내 자동으로 지급되나 평일기준 5시 이전 개통 받았다고 문자 주시면 당일입금 도움드리겠습니다. \n🔊 해당 연락처로 연락이 어려울 경우 걱정하지 마세요! 아래 대표번호로 문의주시면 확인하여 연락드리겠습니다. 시간 양해 부탁드려요. \n[미소를 소개해주세요]\n지인이 미소에서 인터넷 설치하면 소개해주신 분에게 3만원 드려요.\n▶ 지인에게 추천하고 3O,OOO원 받기\nhttps://forms.gle/2D9sTnsGmEH97i8D8\n\n미소 전담 상담사 드림.`,
-  `[미소] 유심 접수 완료 안내\n\n안녕하세요, 고객님. \n미소 인터넷 부서입니다.\n\n✅ 유심동판 접수가 완료되었어요, 아래 내용은 계약서와 동일한 효력이 있으니 꼼꼼히 읽어주세요.\n\n⚠️ 12개월 약정이며, 아래와 같은 상황에 해당하면 받으셨던 사은품은 환수 됩니다. \n① 183일 이내 해지, 요금제 하향, 결합 해지 시\n② 개통 후 무통화 대상\n③ 183일 이내 명의변경, 통신사 변경 시\n④ 유심 개통 당일 내 유무선 결합, 선택약정 미적용 시\n⑤ 개통 후 12개월 이내 실사용일수 183일 미만인 경우\n✅사은품은 설치 후 7일 이내 자동으로 지급되나 평일기준 5시 이전 개통 받았다고 문자 주시면 당일입금 도움드리겠습니다. \n\n⚠️ 기존에 사용하시던 휴대폰 통신사 약정 미종료, 공시\n⚠️ 새로운 유심 도착했을 때 바로 갈아 끼우시면 안 되\n⚠️ 유심 개통 완료 되면 사용하셨던 유심과 교체하여 기기 전원을 3~4회 껐다 키시면 됩니다!\n\n[미소를 소개해주세요]\n지인이 미소에서 인터넷 설치하면 소개해주신 분에게 3만원 드려요.\n▶ 지인에게 추천하고 3O,OOO원 받기\nhttps://get.miso.kr/pZbfsUPthzb\n\n미소 드림.`,
+  `[미소] 유심 접수 완료 안내\n\n안녕하세요, 고객님.\n미소 인터넷 부서입니다.\n\n✅ 유심동판 접수가 완료되었어요, 아래 내용은 계약서와 동일한 효력이 있으니 꼼꼼히 읽어주세요.\n\n⚠️ 12개월 약정이며, 아래와 같은 상황에 해당하면 받으셨던 사은품은 환수 됩니다.\n① 개통 후 365일 이내 해지, 무통화, 명의변경, 타사 번호이동, 정지 시\n② 개통 후 183일 이내 요금제 하향 시\n③ 개통 후 60일 이내 통신사 기기 변경 시\n④ 유심 개통 당일 내 유무선 미결합, 선택약정 미적용 시\n⑤ 개통 후 12개월 이내 실사용일수 365일 미만인 경우\n⑥ 유무선 결합 후 365일 이내 결합 해지 시\n✅사은품은 유심 개통 후 7일 이내 자동으로 지급되나 평일 기준 17시 이전 개통 받았다고 문자 주시면 당일 입금 도움드리겠습니다.\n\n⚠️ 기존에 사용하시던 휴대폰 통신사 약정 미종료, 공시지원 할인 중인 경우 위약금 발생할 수 있습니다.\n⚠️ 새로운 유심 도착했을 때 바로 갈아 끼우시면 안 되세요! 개통 완료된 다음 진행이 필요합니다.\n⚠️ 유심 개통 완료 되면 사용하셨던 유심과 교체하여 기기 전원을 2~3회 껐다 키시면 됩니다!\n\n[미소를 소개해주세요]\n지인이 미소에서 인터넷 설치하면 소개해주신 분에게 3만원 드려요.\n▶ 지인에게 추천하고 30,000원 받기 (↓)\nhttps://forms.gle/2D9sTnsGmEH97i8D8\n\n미소 드림.`,
+  `[미소] 유심 접수 완료 안내\n\n안녕하세요, 고객님.\n미소 인터넷 부서입니다.\n\n✅ 유심동판 접수가 완료되었어요, 아래 내용은 계약서와 동일한 효력이 있으니 꼼꼼히 읽어주세요.\n⚠️ 12개월 약정이며, 아래와 같은 상황에 해당하면 받으셨던 사은품은 환수 됩니다.\n① 개통 후 M+6개월 이내 해지, 유무선 결합 해지, 새휴대폰 기기 변경 시\n② 개통 후 무통화 대상\n③ 개통 후 M+6개월 이내 대표자(본인) 번호이동/해지등의 사유로 이탈 시\n④ 개통 후 M+6개월 이내 명의변경 시\n⑤ 개통 후 M+3개월 이내 휴대폰 요금제 변경 시\n\n⚠️ 기존에 사용하시던 휴대폰 통신사 약정 미종료, 공시지원 할인 중인 경우 위약금 발생할 수 있습니다.\n⚠️ 새로운 유심 도착했을 때 바로 갈아 끼우시면 안 되세요! 개통 완료된 다음 진행이 필요합니다.\n⚠️ 유심 개통 완료 되면 사용하셨던 유심과 교체하여 기기 전원을 2~3회 껐다 키시면 됩니다!\n\n[미소를 소개해주세요]\n지인이 미소에서 인터넷 설치하면 소개해주신 분에게 3만원 드려요.\n▶ 지인에게 추천하고 30,000원 받기 (↓)\nhttps://get.miso.kr/pZbfsUPthzb\n\n미소 드림`,
+  `[미소] 유심 접수 완료 안내\n\n안녕하세요, 고객님.\n미소 인터넷 부서입니다.\n\n✅ 유심동판 접수가 완료되었어요, 아래 내용은 계약서와 동일한 효력이 있으니 꼼꼼히 읽어주세요.\n⚠️ 12개월 약정이며, 아래와 같은 상황에 해당하면 받으셨던 사은품은 환수 됩니다.\n① 개통 후 M+3개월 이내 요금제 하향 시\n② 개통 후 M+6개월 이내 해지, 일시정지, 무통화, 명의변경, 기기 변경 시\n③ 개통 후 M+6개월 이내 e-sim으로 변경 시\n④ 유심 개통 월 기준 M+6개월 이내 유무선 결합 해지 시\n⑤ 유심 개통 당월 내(5일 or 25일) 유무선 결합, 선택약정 미적용 시\n\n⚠️ 기존에 사용하시던 휴대폰 통신사 약정 미종료, 공시지원 할인 중인 경우 위약금 발생할 수 있습니다.\n⚠️ 새로운 유심 도착했을 때 바로 갈아 끼우시면 안 되세요! 개통 완료된 다음 진행이 필요합니다.\n⚠️ 유심 개통 완료 되면 사용하셨던 유심과 교체하여 기기 전원을 2~3회 껐다 키시면 됩니다!\n\n[미소를 소개해주세요]\n지인이 미소에서 인터넷 설치하면 소개해주신 분에게 3만원 드려요.\n▶ 지인에게 추천하고 30,000원 받기 (↓)\nhttps://get.miso.kr/pZbfsUPthzb\n\n미소 드림`,
+  `[미소] 유심 접수 완료 안내\n\n안녕하세요, 고객님.\n미소 인터넷 부서입니다.\n\n✅ 유심동판 접수가 완료되었어요, 아래 내용은 계약서와 동일한 효력이 있으니 꼼꼼히 읽어주세요.\n\n⚠️ 12개월 약정이며, 아래와 같은 상황에 해당하면 받으셨던 사은품은 환수 됩니다.\n① 개통 후 183일 이내 해지, 요금제 하향, 결합 해지 시\n② 개통 후 183일 이내 무통화 대상\n③ 개통 후 183일 이내 명의변경, 통신사 변경 시\n④ 유심 개통 당일 내 유무선 결합, 선택약정 미적용 시\n⑤ 개통 후 12개월 이내 실사용일수 183일 미만인 경우\n✅사은품은 설치 후 7일 이내 자동으로 지급되나 평일기준 5시 이전 개통 받았다고 문자 주시면 당일 입금 도움드리겠습니다.\n\n⚠️ 기존에 사용하시던 휴대폰 통신사 약정 미종료, 공시지원 할인 중인 경우 위약금 발생할 수 있습니다.\n⚠️ 새로운 유심 도착했을 때 바로 갈아 끼우시면 안 되세요! 개통 완료된 다음 진행이 필요합니다.\n⚠️ 유심 개통 완료 되면 사용하셨던 유심과 교체하여 기기 전원을 2~3회 껐다 키시면 됩니다!\n\n[미소를 소개해주세요]\n지인이 미소에서 인터넷 설치하면 소개해주신 분에게 3만원 드려요.\n▶ 지인에게 추천하고 30,000원 받기 (↓)\nhttps://get.miso.kr/pZbfsUPthzb\n\n미소 드림.`,
   `[미소] 삼성 갤럭시 휴대폰 정보 확인 방법\n\n안녕하세요, 고객님\n미소 인터넷 부서입니다.\n\nLG 유심 접수를 위해 사용 중이신 휴대폰 정보가 필요해요!\n■ 모델명:\n■ 일련번호 :\n■ IMEI :\n■ IMEI2 :\n\n휴대폰 정보는 아래 경로로 확인하실 수 있어요.\n만약 기재해서 보내주시기 번거로우신 경우 해당 정보가 있는 화면을 캡쳐해서 보내주셔도 됩니다!\n① 설정 → 하단에 '폰 정보' 선택\n② '모델명' 확인\n③ 'IME1' 숫자 확인\n④ 'IME2' 숫자 확인 (휴대폰 기종에 따라 없을 수 있어요!)\n⑤ 하단 '규제 정보' 선택\n⑥ '일련번호' 숫자 확인\n\n감사합니다.\n미소 드림.`,
   `[미소] 아이폰 휴대폰 정보 확인 방법\n\n안녕하세요, 고객님\n미소 인터넷 부서입니다.\n\nLG 유심 접수를 위해 사용 중이신 휴대폰 정보가 필요해요!\n■ 모델명:\n■ 일련번호 :\n■ IMEI :\n■ IMEI2 :\n■ EID :\n\n휴대폰 정보는 아래 경로로 확인하실 수 있어요.\n만약 기재해서 보내주시기 번거로우신 경우 해당 정보가 있는 화면을 캡쳐해서 보내주셔도 됩니다!\n① 설정 → 하단에 '폰 정보' 선택\n② '모델명' 확인\n③ 'IME1' 숫자 확인\n④ 'IME2' 숫자 확인 (휴대폰 기종에 따라 없을 수 있어요!)\n⑤ 하단 '규제 정보' 선택\n⑥ '일련번호' 숫자 확인\n\n감사합니다.\n미소 드림.`,
 ];
+
+/* 2026-09-08: 유심접수 탭(5·6·7)은 원래 정적 문구였는데, 선택한 유심 내용을 끼워 넣게 되면서
+   updateMsgTabs 가 MSG_DEFAULTS[5..7] 을 덮어쓴다. 매번 원본에서 다시 만들어야 블록이
+   중복 삽입되지 않으므로 최초 문구를 여기에 보관해 둔다. */
+const USIM_MSG_BASE = { 5: MSG_DEFAULTS[5], 6: MSG_DEFAULTS[6], 7: MSG_DEFAULTS[7], 8: MSG_DEFAULTS[8] };
 
 // 상품 선택을 초기화했을 때 되돌릴 "상품 미선택" 원본 문구 스냅샷 (위 배열이 실제 상품 정보로
 // 덮어써지기 전, 최초 상태를 그대로 보관해둔다)
 const MSG_PLACEHOLDERS = MSG_DEFAULTS.slice();
 
 // saved[i]: 저장된 내용 (null이면 default 사용)
-const msgSaved = [null, null, null, null, null, null, null, null, null, null];
+const msgSaved = [null, null, null, null, null, null, null, null, null, null, null];
 // pending[i]: 현재 탭에서 수정 중인 내용 (저장 전)
-const msgPending = [null, null, null, null, null, null, null, null, null, null];
+const msgPending = [null, null, null, null, null, null, null, null, null, null, null];
 // 커스텀 탭 {name, content, saved}
 const customTabs = [];
 
@@ -3060,7 +2999,7 @@ function initMsgTabs() {
   document.getElementById('msg-textarea-active').value = getMsgContent(0);
   // 상품 요약 초기값
   const body = document.getElementById('prod-summary-body');
-  if(body) body.textContent = '[3년약정/VAT포함]\n▶️ 통신사 상품명\n▶️ 월 요금\n▶️ 설치비 없음\n▶️ 사은품 별도 안내';
+  if(body) body.textContent = '[인터넷/3년약정/VAT포함]\n▶️ 통신사 상품명\n▶️ 월 요금\n▶️ 설치비 없음\n▶️ 사은품 별도 안내';
 }
 
 /* ── 고객문자 상위 그룹 (인터넷 / 유심) ──
@@ -3258,12 +3197,17 @@ function updateMsgTabs(isp,inet,tv,hasTv,monthly,installFee,gift,agentName,insta
 
   // 0: 상품 안내
   const _instLine = L.installLine ? '\n'+L.installLine : '';
+  // 2026-09-08: 유심 블록 — 유심 미선택이면 빈 문자열이라 문자에서 통째로 빠진다
+  const _usimRaw = (typeof getUsimMsgBlock === 'function') ? getUsimMsgBlock() : '';
+  const _usimBlock = _usimRaw ? '\n\n' + _usimRaw : '';
   const _annGiftLine = giftStr ? `\n▶️ 사은품 ${giftStr}` : '';
-  const ann=`[미소] 상품 & 사은품 요약 안내\n\n안녕하세요, 미소 인터넷 부서입니다.\n고객님께서 오늘 상담 받으신 상품 안내드립니다. \n\n[3년약정/VAT포함]\n${inetTv}\n▶️ 월 ${monthlyStr}${bundleLine}${_instLine}${_annGiftLine}\n\n* 혜택은 실시간으로 바뀔 수 있다는 점 안내드립니다.\n\n✅ 후기 작성 시 최대 10,000원 지급\n(미소 공식 네이버 카페)\nhttps://forms.gle/kzVQ5iPKQWP1m5SEA\n✅친구 추천 시 30,000원 지급\n(횟수 제한 없이 무제한 지급)\nhttps://forms.gle/2D9sTnsGmEH97i8D8\n\n${signOff}`;
+  const ann=`[미소] 상품 & 사은품 요약 안내\n\n안녕하세요, 미소 인터넷 부서입니다.\n고객님께서 오늘 상담 받으신 상품 안내드립니다. \n\n[인터넷/3년약정/VAT포함]\n${inetTv}\n▶️ 월 ${monthlyStr}${bundleLine}${_instLine}${_annGiftLine}${_usimBlock}\n\n* 혜택은 실시간으로 바뀔 수 있다는 점 안내드립니다.\n\n✅ 후기 작성 시 최대 10,000원 지급\n(미소 공식 네이버 카페)\nhttps://forms.gle/kzVQ5iPKQWP1m5SEA\n✅친구 추천 시 30,000원 지급\n(횟수 제한 없이 무제한 지급)\nhttps://forms.gle/2D9sTnsGmEH97i8D8\n\n${signOff}`;
 
   // 1: 가입 완료
+  // 2026-09-08: 가입 완료 문자는 '인터넷만' 담는다(사용자 요청) — 유심 블록을 넣지 않는다.
+  // 유심 내용은 상품 안내(탭0)와 유심접수 탭(5·6·7)에만 들어간다.
   const _doneGiftLine = giftStr ? `\n▶️ 사은품 ${giftStr}\n✅사은품은 설치 후 7일 이내 자동으로 지급되나 평일기준 5시 이전 개통 받았다고 문자 주시면 당일입금 도움드리겠습니다. ` : '';
-  const done=`[미소] 가입 완료 안내\n\n안녕하세요, 고객님.\n미소 인터넷 부서입니다.\n\n✅ 계약이 완료되었어요, 아래 내용은 계약서와 동일한 효력이 있으니 꼼꼼히 읽어주세요.\n\n⚠️ 3년 약정이며, 아래와 같은 상황에 해당하면 받으셨던 사은품은 환수 됩니다. \n① 1년 이내 해지\n② 3개월 (90일) 이상 정지\n③ 1년 이내 요금제 하향 (상향 시에는 환수 되지 않습니다!) \n④ 3개월 이내 명의변경\n⑤ 개통 1년이내 결제수단 지로청구서로 변경\n⚠️ 신규 가입 후 기존에 인터넷은 꼭 해지 해주세요. 자동해지되지 않으며 이럴 경우 요금이 이중 부과되어요. \n⚠️ 3년 이내 해지 시 통신사 본사에 위약금 (할인 반환금) 및 통신사에 따라 면제된 와이파이 / 통신기기 설치비 반환이 필요할 수 있어요. \n\n✅ 가입 상품 안내\n[3년약정/VAT포함]\n${inetTv}\n▶️ 월 ${monthlyStr}${bundleLine}${_instLine}${_doneGiftLine}\n\n✅ 후기 작성 시 최대 10,000원 지급\n(미소 공식 네이버 카페)\nhttps://forms.gle/kzVQ5iPKQWP1m5SEA\n✅친구 추천 시 30,000원 지급\n(횟수 제한 없이 무제한 지급)\nhttps://forms.gle/2D9sTnsGmEH97i8D8\n\n${signOff}`;
+  const done=`[미소] 가입 완료 안내\n\n안녕하세요, 고객님.\n미소 인터넷 부서입니다.\n\n✅ 계약이 완료되었어요, 아래 내용은 계약서와 동일한 효력이 있으니 꼼꼼히 읽어주세요.\n\n⚠️ 3년 약정이며, 아래와 같은 상황에 해당하면 받으셨던 사은품은 환수 됩니다. \n① 1년 이내 해지\n② 3개월 (90일) 이상 정지\n③ 1년 이내 요금제 하향 (상향 시에는 환수 되지 않습니다!) \n④ 3개월 이내 명의변경\n⑤ 개통 1년이내 결제수단 지로청구서로 변경\n⚠️ 신규 가입 후 기존에 인터넷은 꼭 해지 해주세요. 자동해지되지 않으며 이럴 경우 요금이 이중 부과되어요. \n⚠️ 3년 이내 해지 시 통신사 본사에 위약금 (할인 반환금) 및 통신사에 따라 면제된 와이파이 / 통신기기 설치비 반환이 필요할 수 있어요. \n\n✅ 가입 상품 안내\n[인터넷/3년약정/VAT포함]\n${inetTv}\n▶️ 월 ${monthlyStr}${bundleLine}${_instLine}${_doneGiftLine}\n\n✅ 후기 작성 시 최대 10,000원 지급\n(미소 공식 네이버 카페)\nhttps://forms.gle/kzVQ5iPKQWP1m5SEA\n✅친구 추천 시 30,000원 지급\n(횟수 제한 없이 무제한 지급)\nhttps://forms.gle/2D9sTnsGmEH97i8D8\n\n${signOff}`;
 
   // 2: 후결합
   const isp3=isp||'통신사';
@@ -3284,6 +3228,37 @@ function updateMsgTabs(isp,inet,tv,hasTv,monthly,installFee,gift,agentName,insta
       MSG_DEFAULTS[i]=txt;
       if(currentMsgTab===i) document.getElementById('msg-textarea-active').value=txt;
     }
+  });
+
+  // 5·6·7: 유심접수(KT / SK / LG) — 선택한 유심 통신사에 해당하는 탭에만 유심 내용을 넣는다.
+  // '✅사은품은 설치 후 7일 이내 자동으로…' 줄 바로 위에 '✅ 가입 상품 안내' 블록으로 삽입(사용자 요청).
+  const USIM_TAB_OF = { 'KT유심':5, 'SKT유심':6, 'SKB유심':7, 'LG유심':8 };
+  const _uispEl = document.getElementById('usim-isp');
+  const _targetUsimTab = USIM_TAB_OF[_uispEl ? _uispEl.value : ''];
+  /* 삽입 위치: 통신사마다 문구가 달라 정확한 한 문장에 기대면 깨진다(실제로 KT 문구를
+     '설치 후'→'유심 개통 후'로 고쳤을 때 삽입이 멈췄고, SKT/SKB엔 그 줄이 아예 없다).
+     환수 조건 목록 바로 다음에 오는 줄을 앞에서부터 찾아 그 위에 넣는다. */
+  const _usimAnchors = ['✅사은품은', '⚠️ 기존에 사용하시던', '[미소를 소개해주세요]'];
+  [5,6,7,8].forEach(ti => {
+    if(msgSaved[ti] !== null) return;          // 상담사가 저장한 탭은 건드리지 않음
+    let txt = USIM_MSG_BASE[ti];
+    if(ti === _targetUsimTab && _usimRaw){
+      const lines = txt.split('\n');
+      let at = -1;
+      for(const a of _usimAnchors){
+        at = lines.findIndex(l => l.startsWith(a));
+        if(at !== -1) break;
+      }
+      if(at !== -1){
+        // 앵커 바로 위의 빈 줄은 블록 뒤로 넘겨 문단 간격을 유지한다
+        let ins = at;
+        while(ins > 0 && lines[ins-1] === '') ins--;
+        lines.splice(ins, 0, '', '✅ 가입 상품 안내', _usimRaw);
+        txt = lines.join('\n');
+      }
+    }
+    MSG_DEFAULTS[ti] = txt;
+    if(currentMsgTab === ti) document.getElementById('msg-textarea-active').value = txt;
   });
 }
 
@@ -3319,8 +3294,23 @@ function initAutoGrow(id){
     // box-sizing:border-box 면 scrollHeight 에 테두리가 빠져 있어 그만큼 더해 준다
     const extra = cs.boxSizing === 'border-box'
       ? parseFloat(cs.borderTopWidth) + parseFloat(cs.borderBottomWidth) : 0;
+
+    /* 2026-09-08 버그 수정: 타이핑할 때마다 화면이 위로 튀던 문제.
+       높이를 재려면 'auto' 로 되돌려야 하는데, 그 순간 textarea 가 min-height 까지
+       줄어들면서 스크롤 컨테이너(.right-col 등)도 함께 짧아진다. 브라우저는 짧아진
+       높이에 맞춰 scrollTop 을 잘라버리고, 높이를 되돌려도 그 값은 복구되지 않는다.
+       → 되돌리기 전 스크롤 위치를 기억했다가 높이 확정 후 그대로 되돌려 놓는다. */
+    const scrollers = [];
+    for(let el = ta.parentElement; el; el = el.parentElement){
+      if(el.scrollTop) scrollers.push([el, el.scrollTop]);
+    }
+    const sx = window.scrollX, sy = window.scrollY;
+
     ta.style.height = 'auto';
     ta.style.height = (ta.scrollHeight + extra) + 'px';
+
+    scrollers.forEach(([el, top]) => { if(el.scrollTop !== top) el.scrollTop = top; });
+    if(window.scrollX !== sx || window.scrollY !== sy) window.scrollTo(sx, sy);
   };
   ta.addEventListener('input', grow);
 
@@ -4167,7 +4157,9 @@ function openUsimTable(){
   const isp = document.getElementById('usim-isp').value;
   const m = document.getElementById('usim-table-modal');
   m.style.display='flex';
-  setUsimTableTab(isp==='LG유심' ? 'lg' : ((isp==='SKT유심'||isp==='SKB유심')?'sk':'kt'));
+  setUsimTableTab(isp==='LG유심' ? 'lg'
+                : isp==='SKB유심' ? 'skb'
+                : isp==='SKT유심' ? 'skt' : 'kt');
 }
 function closeUsimTable(e){ if(e.target===e.currentTarget) document.getElementById('usim-table-modal').style.display='none'; }
 function closeUsimTableBtn(){ document.getElementById('usim-table-modal').style.display='none'; }
@@ -4180,7 +4172,20 @@ function closeLeadsNotice(e){ if(e.target===e.currentTarget) document.getElement
 function closeLeadsNoticeBtn(){ document.getElementById('leads-notice-modal').style.display='none'; }
 function setUsimTableTab(tab){
   document.getElementById('utbl-kt').style.display = tab==='kt'?'block':'none';
-  document.getElementById('utbl-sk').style.display = tab==='sk'?'block':'none';
+  // 2026-09-08: SKT/SKB는 요금제 목록이 같아 표는 utbl-sk 하나를 공용으로 쓰고
+  // (getUsimProductTable 이 이 id를 파싱한다), 서로 다른 안내만 탭으로 갈아 끼운다.
+  const _isSk = (tab==='sk' || tab==='skt' || tab==='skb');
+  document.getElementById('utbl-sk').style.display = _isSk ? 'block' : 'none';
+  const _nSkt = document.getElementById('sk-notice-skt');
+  const _nSkb = document.getElementById('sk-notice-skb');
+  const _bSkt = document.getElementById('sk-note-skt');
+  const _bSkb = document.getElementById('sk-note-skb');
+  const _showSkb = _isSk && tab==='skb';
+  const _showSkt = _isSk && tab!=='skb';
+  if(_nSkt) _nSkt.style.display = _showSkt ? 'block' : 'none';   // 표 위: 안내 ▶
+  if(_nSkb) _nSkb.style.display = _showSkb ? 'block' : 'none';
+  if(_bSkt) _bSkt.style.display = _showSkt ? 'block' : 'none';   // 표 아래: 주의사항
+  if(_bSkb) _bSkb.style.display = _showSkb ? 'block' : 'none';
   document.getElementById('utbl-ktgift').style.display = tab==='ktgift'?'block':'none';
   document.getElementById('utbl-sktgift').style.display = tab==='sktgift'?'block':'none';
   document.getElementById('utbl-skbgift').style.display = tab==='skbgift'?'block':'none';
@@ -4188,7 +4193,8 @@ function setUsimTableTab(tab){
   document.getElementById('utbl-lggift').style.display = tab==='lggift'?'block':'none';
   const tabs = {
     'kt':      {id:'utab-kt',      active:'#e8001c'},
-    'sk':      {id:'utab-sk',      active:'#e85000'},
+    'skt':     {id:'utab-skt',     active:'#e85000'},
+    'skb':     {id:'utab-skb',     active:'#e85000'},
     'ktgift':  {id:'utab-ktgift',  active:'#e8001c'},
     'sktgift': {id:'utab-sktgift', active:'#e85000'},
     'skbgift': {id:'utab-skbgift', active:'#e85000'},
@@ -4328,13 +4334,18 @@ function resetUsimProductSelect(){
   if(!prod) return;
   prod.value = '';
   prod.innerHTML = '<option value="">-- 선택 --</option>';
+  prod.dataset.unavail = '0'; prod.disabled = false;   // 판매불가 잠금 해제
   updateWrapState('usim-product');
 }
 
 function onUsimPlanChange(){
   const isp = document.getElementById('usim-isp').value;
   const plan = document.getElementById('usim-plan').value;
-  fillUsimProductSelect(document.getElementById('usim-product'), isp, plan);
+  const prodSel = document.getElementById('usim-product');
+  // 구간이 바뀌면 판매불가 판정을 처음부터 다시 한다 (표식을 지우지 않으면
+  // 아래 calcUsimGift 의 상태 비교가 '변화 없음'으로 보고 그냥 넘어감)
+  if(prodSel){ prodSel.dataset.unavail = '0'; prodSel.disabled = false; }
+  fillUsimProductSelect(prodSel, isp, plan);
   updateWrapState('usim-plan');
   updateWrapState('usim-product');
   calcUsimGift();
@@ -4451,9 +4462,14 @@ function addFamilyUsim(){
   psel.appendChild(pblank);
 
   sel.onchange = () => {
+    // 구간이 바뀌면 판매불가 판정을 다시 하도록 표식을 먼저 지운다
+    psel.dataset.unavail = '0'; psel.disabled = false;
     fillUsimProductSelect(psel, document.getElementById('usim-isp').value, sel.value, '-- 가족 상품 선택 --');
     calcUsimGift();
   };
+  // 2026-09-08: 가족 상품명은 사은품 계산에는 영향이 없지만 고객문자의 가족 블록
+  // (요금제명·월요금)에 그대로 들어가므로 바뀌면 문자를 다시 만든다.
+  psel.onchange = () => { refreshMsgFromUsim(); };
 
   const delBtn = document.createElement('button');
   delBtn.title = '삭제';
@@ -4478,25 +4494,27 @@ function clearAllFamilyUsim(){
   updateFamilyAddBtn();
 }
 
-function calcUsimGift(){
+/* 2026-09-08: 유심 사은품을 계산(computeUsimGift)과 화면 표시(calcUsimGift)로 분리했다.
+   고객문자 템플릿(getUsimMsgBlock)이 같은 금액을 써야 하는데, 표시용 DOM 텍스트
+   ("최대 150,000")를 되파싱하면 문구가 바뀔 때마다 깨지므로 계산 결과를 직접 받아쓴다.
+   판정 로직과 화면 문구는 기존 그대로. */
+function computeUsimGift(){
   const ispEl = document.getElementById('usim-isp').value;
   const planEl = document.getElementById('usim-plan').value;
-  const box = document.getElementById('usim-gift-box');
-
-  if(!ispEl || !planEl){ box.classList.remove('show'); calcGiftDisplay(); return; }
+  if(!ispEl || !planEl) return null;
 
   const planKey = planEl.replace(' 요금제',''); // "37K"
   let giftData = null;
 
   if(ispEl === 'KT유심'){
     const prodKey = getUsimProductKey();
-    if(!prodKey){ box.classList.remove('show'); calcGiftDisplay(); return; }
+    if(!prodKey) return null;
     const tbl = USIM_KT_GIFT[planKey];
     if(tbl) giftData = tbl[prodKey.toLowerCase()] || tbl[prodKey.toLowerCase().replace(' 일반','').replace(' 패밀리','')+''] || null;
   } else {
     // LG유심 / SKT유심 / SKB유심 — 속도 + TV 유무만으로 결정 (일반·패밀리, TV 종류 구분 없음)
     const key = getUsimSpeedTvKey();
-    if(!key){ box.classList.remove('show'); calcGiftDisplay(); return; }
+    if(!key) return null;
     const tbl = (ispEl==='LG유심' ? USIM_LGU_GIFT
               : ispEl==='SKB유심' ? USIM_SKB_GIFT : USIM_SKT_GIFT)[planKey];
     if(tbl) giftData = tbl[key] || null;
@@ -4513,10 +4531,17 @@ function calcUsimGift(){
   const familyItems = document.querySelectorAll('.usim-family-item select.usim-family-plan');
   let familyTotal = 0;
   const familyLines = [];
+  // 2026-09-08: 고객문자에서 가족별 블록을 만들려면 금액을 행 단위로 알아야 해서 상세도 같이 담는다.
+  // (인덱스는 화면의 가족 행 순서와 1:1)
+  const familyDetails = [];
 
   familyItems.forEach((sel, i) => {
     const fPlanKey = sel.value ? sel.value.replace(' 요금제','') : '';
-    if(!fPlanKey){ familyLines.push(`가족 ${i+1}: 요금제 미선택`); return; }
+    if(!fPlanKey){
+      familyLines.push(`가족 ${i+1}: 요금제 미선택`);
+      familyDetails.push({ idx:i, planKey:'', amount:0, label:'요금제 미선택', available:false, unavailable:false });
+      return;
+    }
 
     let fGiftData = null;
     if(ispEl === 'KT유심'){
@@ -4540,6 +4565,10 @@ function calcUsimGift(){
     else if (!fGiftData) fLabel = '판매불가';
     else fLabel = '사은품 없음';
     familyLines.push(`가족 ${i+1}(${fPlanKey}) ${fLabel}`);
+    // 판매불가 = 사은품 데이터가 아예 없거나, 시트가 '판매 불가' 문구를 넣어둔 칸(금액 0).
+    // '사은품 없음'(데이터는 있고 금액만 0)과는 구분한다 — 후자는 가입 자체는 가능.
+    const fUnavailable = !fGiftData || (!!fGiftData.familyNote && fAmt === 0);
+    familyDetails.push({ idx:i, planKey:fPlanKey, amount:fAmt, label:fLabel, available:!!fGiftData, unavailable:fUnavailable });
   });
 
   const total = ownerGift + familyTotal;
@@ -4548,13 +4577,138 @@ function calcUsimGift(){
   else if (!ownerAvailable && familyTotal === 0) headline = '판매불가';
   else headline = '사은품 없음';
 
+  return { ownerAvailable, ownerGift, ownerLabel, familyTotal, familyLines, familyDetails, total, headline };
+}
+
+function calcUsimGift(){
+  const box = document.getElementById('usim-gift-box');
+  const g = computeUsimGift();
+
+  applyUsimProductAvailability(g);
+
+  if(!g){ box.classList.remove('show'); calcGiftDisplay(); refreshMsgFromUsim(); return; }
+
   box.classList.add('show');
-  document.getElementById('usim-gift-amount').textContent = headline;
-  let sub = '인터넷 명의자 '+ownerLabel;
-  if(familyLines.length > 0) sub += '\n' + familyLines.join('\n');
+  document.getElementById('usim-gift-amount').textContent = g.headline;
+  let sub = '인터넷 명의자 '+g.ownerLabel;
+  if(g.familyLines.length > 0) sub += '\n' + g.familyLines.join('\n');
   document.getElementById('usim-gift-sub').textContent = sub;
 
   calcGiftDisplay();
+  refreshMsgFromUsim();
+}
+
+/* 2026-09-08: 사은품이 '판매불가'인 구간은 그 아래 상품명 드롭다운을 못 고르게 막는다(사용자 요청).
+   - 옵션 하나('판매불가')만 남기고 disabled. value 는 빈 문자열이라 고객문자의 유심 블록도
+     자연스럽게 빠진다(선택된 상품명이 없으면 블록을 안 만드는 기존 규칙 그대로).
+   - dataset.unavail 로 현재 상태를 기억해, 상태가 그대로면 건드리지 않는다.
+     매번 다시 채우면 사용자가 골라둔 상품이 날아가기 때문. */
+function applyUsimAvailability(sel, usimIsp, planLabel, placeholder, unavailable){
+  if(!sel) return;
+  const cur = sel.dataset.unavail === '1';
+  if(unavailable === cur) return;
+  sel.dataset.unavail = unavailable ? '1' : '0';
+  if(unavailable){
+    sel.innerHTML = '';
+    const o = document.createElement('option');
+    o.value = ''; o.textContent = '판매불가';
+    sel.appendChild(o);
+    sel.value = '';
+    sel.disabled = true;
+  } else {
+    sel.disabled = false;
+    fillUsimProductSelect(sel, usimIsp, planLabel, placeholder);
+  }
+  if(sel.id) updateWrapState(sel.id);
+}
+
+/* 본인 + 가족 상품명 드롭다운에 판매불가 여부를 한 번에 반영 */
+function applyUsimProductAvailability(g){
+  const usimIsp = (document.getElementById('usim-isp')||{}).value || '';
+  const plan    = (document.getElementById('usim-plan')||{}).value || '';
+  applyUsimAvailability(document.getElementById('usim-product'), usimIsp, plan,
+                        '-- 선택 --', !!(g && !g.ownerAvailable));
+  document.querySelectorAll('.usim-family-item').forEach((row, i) => {
+    const ps = row.querySelector('select.usim-family-product');
+    const pl = row.querySelector('select.usim-family-plan');
+    const det = (g && g.familyDetails) ? g.familyDetails[i] : null;
+    applyUsimAvailability(ps, usimIsp, pl ? pl.value : '',
+                          '-- 가족 상품 선택 --', !!(det && det.unavailable));
+  });
+}
+
+/* 2026-09-08: 고객문자(상품 안내 / 가입 완료)에 붙는 유심 블록.
+   - 요금제명·월요금은 '상품명'(#usim-product) 기준. 같은 구간(37K) 안에서도 상품마다 실제
+     요금이 달라(베이직 4GB 37,000 / 키즈 38 38,000 / 베이직 7GB 45,000) 구간 값으로는 못 씀.
+   - 유심을 고르지 않았으면 빈 문자열 → 블록 자체가 문자에서 빠진다(사용자 요청).
+   - 사은품은 본인(인터넷 명의자)과 가족을 각각 한 줄로 나눠 적는다(사용자 요청). */
+function getUsimMsgBlock(label){
+  const ispSel  = document.getElementById('usim-isp');
+  const planSel = document.getElementById('usim-plan');
+  const prodSel = document.getElementById('usim-product');
+  const isp  = ispSel  ? ispSel.value  : '';
+  const plan = planSel ? planSel.value : '';
+  const prod = prodSel ? prodSel.value : '';
+  if(!isp || !plan || !prod) return '';
+
+  // 요금제표에서 파싱된 fee 는 "₩37,000" 형태의 문자열
+  const feeOf = (planLabel, prodName) => {
+    const it = getUsimProducts(isp, planLabel).find(x => x.name === prodName);
+    return (it && it.fee) ? (parseInt(String(it.fee).replace(/[^0-9]/g,''), 10) || 0) : 0;
+  };
+  // 선택약정 25% 할인. 요금이 1,000원 단위라 0.75 를 곱해도 정수로 떨어진다
+  // (Math.round 는 혹시 모를 소수점 방어용 — 절사/반올림 가공은 하지 않음).
+  const feeLine = (f) => `▶️ 월 ${fmt(f)}원 (선택약정 25% 적용 시 월 ${fmt(Math.round(f*0.75))}원)`;
+  // 사은품 라벨은 화면용이라 '사은품 없음'처럼 '사은품'을 이미 품고 있다 —
+  // 여기선 앞에 '사은품 '을 붙이므로 중복되지 않게 다듬는다.
+  const giftText = (amt, label) => amt > 0 ? fmt(amt)+'원'
+                 : (label === '사은품 없음' ? '없음' : (label || '없음'));
+
+  const g = computeUsimGift();
+
+  // ── 본인(인터넷 명의자) 블록 ──
+  // label 미지정이면 고객문자용 전체 라벨. 상품제안 메모는 '[유심]' 처럼 짧게 넘긴다.
+  const head = label || '[유심/12개월약정/VAT포함]';
+  const lines = [head, `▶️ 요금제명 : ${prod}`, '▶️ 선택약정 : 12개월'];
+  const fee = feeOf(plan, prod);
+  if(fee > 0) lines.push(feeLine(fee));
+  if(g) lines.push(`▶️ 사은품 ${giftText(g.ownerGift, g.ownerLabel)}`);
+  const blocks = [lines.join('\n')];
+
+  // ── 가족 유심 블록 (본인과 동일한 형식, 사용자 요청) ──
+  // 요금제·상품명을 모두 고른 행만 내보낸다. 번호는 고객이 읽는 문자라 빈 번호가 생기지
+  // 않도록 내보낸 순서대로 1,2,3… 을 매긴다(화면의 '가족 N' 행 번호와는 다를 수 있음).
+  const famRows = document.querySelectorAll('.usim-family-item');
+  let famNo = 0;
+  famRows.forEach((row, i) => {
+    const fPlanSel = row.querySelector('select.usim-family-plan');
+    const fProdSel = row.querySelector('select.usim-family-product');
+    const fPlan = fPlanSel ? fPlanSel.value : '';
+    const fProd = fProdSel ? fProdSel.value : '';
+    if(!fPlan || !fProd) return;
+
+    famNo++;
+    const fLines = [`[가족 유심 ${famNo}]`, `▶️ 요금제명 : ${fProd}`, '▶️ 선택약정 : 12개월'];
+    const fFee = feeOf(fPlan, fProd);
+    if(fFee > 0) fLines.push(feeLine(fFee));
+    const det = (g && g.familyDetails) ? g.familyDetails[i] : null;
+    if(det) fLines.push(`▶️ 사은품 ${giftText(det.amount, det.label)}`);
+    blocks.push(fLines.join('\n'));
+  });
+
+  return blocks.join('\n\n');
+}
+
+/* 유심 선택이 바뀌면 고객문자의 유심 블록도 따라가야 한다. calc() 는 calcUsimGift() 를
+   호출하지 않으므로 여기서 되불러도 재귀가 생기지 않는다. */
+function refreshMsgFromUsim(){
+  const ispEl = document.getElementById('isp');
+  if(typeof calc === 'function' && ispEl && ispEl.value) calc();
+}
+
+function onUsimProductChange(){
+  updateWrapState('usim-product');
+  refreshMsgFromUsim();   // 상품명·월요금이 문자에 그대로 들어가므로 다시 생성
 }
 
 function clearUsimField(id){
@@ -4635,8 +4789,8 @@ function copyComplete(){ copyCurrentMsg(); }
 function copyMemo(){ copyText(document.getElementById('memo-text').value,'메모가'); }
 
 const USIM_MEMO = {
-  kt: `고객명 :\n동판유선명의자 :\n연락처 :\n기존통신사 :\n유심발송주소 :\n선택약정여부 (12개월/24개월) :\n요금제 :\n유심비 후청구 동의 (Y/N) :\n\n★ 결합여부 (프리미엄가족/프리미엄싱글/총액) :\n★ 할인지정(지정할인or기여도) :\n★ 동판 결합인증 (URL 완료여부) :\n★ 패스or신용카드 인증 :`,
-  sk: `고객명 :\n동판유선명의자 :\n연락처 :\n기존통신사 :\n유심발송주소 :\n선택약정여부 (12개월/24개월) :\n요금제 :\n유심비 후청구 동의 (Y/N) :\n\n★ 결합여부 (요가/온할) :\n★ 할인지정(대표자할인or분할할인) :\n★ 패스or신용카드 인증 :`,
+  kt: `고객명 :\n동판유선명의자 :\n연락처 :\n기존통신사 :\n유심발송주소 :\n선택약정여부 (12개월/24개월) : 12개월\n요금제 :\n유심비 후청구 동의 (Y/N) : Y\n\n★ 결합여부 (총액/정액/프리미엄가족/프리미엄싱글) :\n★ 할인지정(지정할인or기여도) :\n★ 동판 결합인증 (Y/N) : Y\n★ 패스or신용카드 인증 :`,
+  sk: `고객명 :\n동판유선명의자 :\n연락처 :\n기존통신사 :\n유심발송주소 :\n선택약정여부 (12개월/24개월) : 12개월\n요금제 :\n유심비 후청구 동의 (Y/N) : Y\n\n★ 결합여부 : 요가결\n★ 할인지정(대표자할인or분할할인) : 분할할인\n★ 패스or신용카드 인증 :`,
   lg: `고객명 :\n동판유선명의자 :\n연락처 :\n기존통신사 :\n유심발송주소 :\n선택약정여부 (12개월/24개월) : 12개월\n요금제 :\n유심비 후청구 동의 (Y/N) : Y\n\n★ 결합여부 (참가결/투게더) :\n★ 동판 결합인증 (URL 완료여부) : Y/N\n★ 패스or신용카드 인증 :\n\n■ 모델명:\n■ 일련번호 :\n■ IMEI :\n■ IMEI2 :\n■ EID : (아이폰만 기재 / 삼성은 기재 X)`,
 };
 let currentUsimMemo = 'kt';
@@ -5262,7 +5416,12 @@ function updateComboCard(bundleValue){
       // 기본 문자 탭(상품 안내/가입 완료 등)에서 저장했던 수정본 복원
       if(data['msgSaved'] && typeof msgSaved !== 'undefined'){
         try {
-          const savedMsg = JSON.parse(data['msgSaved']);
+          let savedMsg = JSON.parse(data['msgSaved']);
+          // 2026-09-08: SKB유심접수 탭이 7번에 새로 끼어들면서 그 뒤(LG·갤럭시·아이폰)가 한 칸씩
+          // 밀렸다. 예전에 저장된 10칸 배열을 그대로 쓰면 LG 문구가 SKB 탭에 붙으므로 옮겨 준다.
+          if(savedMsg.length === 10){
+            savedMsg = savedMsg.slice(0,7).concat([null], savedMsg.slice(7));
+          }
           savedMsg.forEach((v,i) => { if(i < msgSaved.length) msgSaved[i] = v; });
         } catch(e){}
       }
