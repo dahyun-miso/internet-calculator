@@ -1209,7 +1209,10 @@ a.pcard-name:hover::after{color:#2f5dd0}
 
         <div class="card">
           <div style="display:flex;align-items:center;margin-bottom:8px">
-            <div class="memo-lbl" style="margin-bottom:0;flex:1">📋 백메가 유심동판 메모</div>
+            <div style="display:flex;align-items:center;gap:6px;flex:1">
+              <div class="memo-lbl" style="margin-bottom:0">📋 백메가 유심동판 메모</div>
+              <button onclick="resetUsimMemo()" title="유심동판 메모 초기화" style="background:#fff5f5;border:1.5px solid #e05050;cursor:pointer;font-size:15px;color:#e05050;padding:4px 9px;border-radius:7px;line-height:1;transition:transform .3s,background .15s" onmouseenter="this.style.transform='rotate(180deg)'" onmouseleave="this.style.transform='rotate(0deg)'">↺</button>
+            </div>
             <div style="display:flex;gap:6px">
               <button id="usim-memo-btn-kt" class="msg-tab active" style="font-size:12px" onclick="switchUsimMemo('kt')">KT</button>
               <button id="usim-memo-btn-sk" class="msg-tab" style="font-size:12px" onclick="switchUsimMemo('sk')">SK</button>
@@ -4809,6 +4812,11 @@ function switchUsimMemo(isp) {
 
 function initUsimMemo() {
   document.getElementById('usim-memo-text').value = USIM_MEMO['kt'];
+}
+
+// 메모를 손으로 고쳐 놓았을 때 현재 통신사 탭의 원본 양식으로 되돌린다
+function resetUsimMemo() {
+  document.getElementById('usim-memo-text').value = USIM_MEMO[currentUsimMemo];
 }
 
 /* ── 제휴카드 문자 템플릿 ── */
