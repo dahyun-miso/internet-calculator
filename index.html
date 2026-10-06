@@ -5031,13 +5031,42 @@ function resetUsimMemo() {
 /* ── 제휴카드 문자 템플릿 ── */
 // 시트 '제휴카드 문자' 탭 공통 꼬리 — 통신사별 전체 카드 목록(노션 안내 페이지)
 const CARD_MSG_ALL_LINK = `▶️ 전체 카드 보기\n✅ 바로가기 링크 : https://deciduous-saxophone-129.notion.site/3c8f55e4d09481fab9eee0a08242ec3f`;
+// 2026-10-06: 카드를 선택하지 않았을 때 나가는 기본 안내 문자의 카드 목록(통신사당 4장).
+// 실적은 시트의 모든 구간을 한 줄씩 넣는다. 노출 순서는 최저 실적 구간 할인액이 큰 순서이고, 같으면 아래 적은 순서를 따른다.
+// 카드명·링크·실적은 PARTNER_CARDS(관리 시트)에서 가져오므로 시트를 고치면 기본 문자도 같이 바뀐다.
+const CARD_MSG_DEFAULT_CARDS = {
+  'KT':           ['KT 가족만족 DC 신한카드', 'KT Plus 우리카드', 'KT 현대카드M Edition3(청구할인형)', 'KT DC Plus 고객용 더 심플 하나카드'],
+  'SKB':          ['더 심플 하나카드', 'SK브로드밴드 B롯데카드', 'T나는혜택 삼성카드', 'SK브로드밴드 신한카드'],
+  'SKT':          ['T나는 혜택카드 삼성카드', '롯데카드 TELLO SE', 'T-economy KB국민카드', 'T라이트 카드'],
+  'LG U+':        ['LG U+ X LOCA', '더 심플 하나카드', 'LG U+ 스마트플랜 Plus 신한카드', 'NH올원 LG U⁺ 카드'],
+  '스카이라이프': ['스카이라이프 신한카드', 'KT 스카이라이프 KB카드', 'LOCA X Special SE', 'NEW 렌탈 플러스 하나카드'],
+  'LG헬로비전':   ['LG헬로비전 언제나 우리카드', 'LG헬로비전 신한카드', 'LG헬로비전 롯데카드', 'LG헬로비전 렌탈플러스 하나카드'],
+};
+// 2026-10-06: 할인액이 고정 금액이 아니라 청구할인(%)의 월 한도인 카드(시트 안내문에 "최대 한도"가 적힌 카드,
+// 예: U+Family 하나카드)는 문자에서도 금액 앞에 '최대'를 붙인다 — 카드목록엔 한도라고 나오는데 문자엔 빠져 혼선이 있다는 건의.
+function pcardAmtLabel(c, amt){
+  return (/최대 한도/.test(c.limited || '') ? '최대 ' : '') + fmt(amt) + '원 할인';
+}
+function cardMsgDefaultBlocks(isp){
+  const isLater = t => t.phase && t.phase.endsWith('~');
+  return CARD_MSG_DEFAULT_CARDS[isp]
+    .map(name => (PARTNER_CARDS[isp] || []).find(x => x.name === name))
+    .filter(Boolean)
+    .map(c => ({ c, low: c.tiers.find(t => !isLater(t)) || c.tiers[0] }))
+    .sort((x, y) => y.low.amt - x.low.amt)  // 안정 정렬이라 동률이면 목록 순서 유지
+    .map(({ c }) => {
+      const tierLines = c.tiers.map(t =>
+        `- ${t.cond} : ${pcardAmtLabel(c, t.amt)}` + (t.phase ? ` (${t.phase})` : '')).join('\n');
+      return `▶️ ${c.issuer}\n✅ 카드명 : ${c.name}\n✅ 실적 :\n${tierLines}\n✅ 바로가기 링크 : ${c.url}`;
+    }).join('\n\n');
+}
 const CARD_MSG = {
-kt: `[미소] KT 제휴카드 안내 문자\n\n안녕하세요, 고객님.\nKT 인터넷 할인 받으실 수 있는 제휴카드 문자로 정리해서 공유드립니다. 🙂\n\n카드 발급 받으신 뒤 KT 고객센터 100번으로 연락하신 뒤 자동이체 연결하셔야 할인 적용 가능합니다.\n(카드사 사정에 따라 사전 예고 없이 변경되거나 발급이 중단될 수 있습니다. 신청 전 각 카드사 홈페이지에서 확인해 주세요)\n\n감사합니다. 😃\n\n▶️ 우리카드\n✅ 카드명 : KT Plus 우리카드\n✅ 실적 : 전월 실적 40~80만원 미만 : 10,000원 할인 (25개월 차부터는 5,000원 할인)\n✅ 바로가기 링크 : https://m.wooricard.com/dcmw/mobile/totalSearch.do?searchTerm=kt%20plus&gubn=01&mGubn=M\n\n▶️ 신한카드\n✅ 카드명 : KT 가족만족 DC 신한카드\n✅ 실적 : 전월 실적 70만원 이상 : 15,000원 할인\n✅ 바로가기 링크 : https://www.shinhancard.com/pconts/html/card/apply/credit/1223352_2207.html\n\n▶️ BC카드\n✅ 카드명 : KT SUPER DC BC 바로카드\n✅ 실적 : 전월 실적 40~80만원 미만 : 5,000원 할인\n✅ 바로가기 링크 : https://m.bccard.com/app/mobileweb/CardDetail.do?exec=cardDetail&cardGdsNo=104063\n\n▶️ 현대카드\n✅ 카드명 : KT-현대카드M Edition3 (통신할인형 2.0)\n✅ 실적 : 전월 실적 50~100만원 미만 : 24개월 동안 15,000원 할인\n✅ 바로가기 링크 : https://www.hyundaicard.com/cpc/cr/CPCCR0201_01.hc?cardWcd=MKTE3TP#cardDetailHash\n\n${CARD_MSG_ALL_LINK}\n\n감사합니다.\n미소 드림.`,
-skt: `[미소] SKT 제휴카드 안내 문자\n\n안녕하세요, 고객님.\nSKT 인터넷 할인 받으실 수 있는 제휴카드 문자로 정리해서 공유드립니다. 🙂\n\n카드 발급 받으신 뒤 SKT 고객센터 1600-2000번으로 연락하신 뒤 자동이체 연결하셔야 할인 적용 가능합니다.\n(카드사 사정에 따라 사전 예고 없이 변경되거나 발급이 중단될 수 있습니다. 신청 전 각 카드사 홈페이지에서 확인해 주세요)\n\n감사합니다. 😃\n\n▶️ 삼성카드\n✅ 카드명 : T나는혜택 삼성카드\n✅ 실적 : 전월 실적 30~70만원 미만 : 7,000원 할인\n✅ 바로가기 링크 : https://www.samsungcard.com/home/card/cardinfo/PGHPPCCCardCardinfoDetails001?code=AAP1752\n\n▶️ 롯데카드\n✅ 카드명 : 롯데카드 TELLO SE\n✅ 실적 : 전월 실적 40~80만원 미만 : 8,000원 할인\n✅ 바로가기 링크 : https://m.lottecard.co.kr/spa/card/cards/credit/catalog/card-detail?vtCdKndC=P13248-A13248&LCFrom=card\n\n▶️ 현대카드\n✅ 카드명 : SKT-현대카드M Edition3(통신할인형2.0)\n✅ 실적 : 전월 실적 50~100만원 미만 : 24개월 동안 15,000원 할인\n✅ 바로가기 링크 : https://www.hyundaicard.com/cpc/cr/CPCCR0201_01.hc?cardWcd=MSKTE3TP#cardDetailHash\n\n▶️ 국민카드\n✅ 카드명 : T-economy KB국민카드\n✅ 실적 : 전월 실적 30~70만원 미만 : 12,000원 할인\n✅ 바로가기 링크 : https://m.kbcard.com/CRD/DVIEW/MCAMCXHIACRC0002?mainCC=b&allianceCode=04288\n\n${CARD_MSG_ALL_LINK}\n\n감사합니다.\n미소 드림.`,
-skb: `[미소] SKB 제휴카드 안내 문자\n\n안녕하세요, 고객님.\nSKB 인터넷 할인 받으실 수 있는 제휴카드 문자로 정리해서 공유드립니다. 🙂\n\n카드 발급 받으신 뒤 SKB 고객센터 106번으로 연락하신 뒤 자동이체 연결하셔야 할인 적용 가능합니다.\n(카드사 사정에 따라 사전 예고 없이 변경되거나 발급이 중단될 수 있습니다. 신청 전 각 카드사 홈페이지에서 확인해 주세요)\n\n감사합니다. 😃\n\n▶️ 하나카드\n✅ 카드명 : 더 심플 하나카드\n✅ 실적 : 전월 실적 30~80만원 미만 : 10,000원 할인\n✅ 바로가기 링크 : https://www.hanacard.co.kr/OPI42000000D.web?_frame=no&CD_PD_SEQ=18583#none\n\n▶️ 롯데카드\n✅ 카드명 : SK브로드밴드 B롯데카드\n✅ 실적 : 전월 실적 50~100만원 미만 : 10,000원 할인\n✅ 바로가기 링크 : https://m.lottecard.co.kr/spa/card/cards/credit/catalog/card-detail?vtCdKndC=P02117-A02117&LCFrom=card\n\n▶️ 삼성카드\n✅ 카드명 : T나는혜택 삼성카드\n✅ 실적 : 전월 실적 30~70만원 미만 : 7,000원 할인\n✅ 바로가기 링크 : https://www.samsungcard.com/home/card/cardinfo/PGHPPCCCardCardinfoDetails001?code=AAP1752\n\n▶️ 신한카드\n✅ 카드명 : SK브로드밴드 신한카드\n✅ 실적 : 전월 실적 30~70만원 미만 : 13,000원 할인\n✅ 바로가기 링크 : https://www.shinhancard.com/pconts/html/card/apply/credit/2013724_2207.html\n\n${CARD_MSG_ALL_LINK}\n\n감사합니다.\n미소 드림.`,
-lg: `[미소] LG U+ 제휴카드 안내 문자\n\n안녕하세요, 고객님.\nLG U+ 인터넷 할인 받으실 수 있는 제휴카드 문자로 정리해서 공유드립니다. 🙂\n\n카드 발급 받으신 뒤 LG U+ 고객센터 101번으로 연락하신 뒤 자동이체 연결하셔야 할인 적용 가능합니다.\n(카드사 사정에 따라 사전 예고 없이 변경되거나 발급이 중단될 수 있습니다. 신청 전 각 카드사 홈페이지에서 확인해 주세요)\n\n감사합니다. 😃\n\n▶️ 롯데카드\n✅ 카드명 : LG U+ X LOCA\n✅ 실적 : 전월 실적 30~70만원 미만 : 25개월 동안 10,000원 할인\n✅ 바로가기 링크 : https://m.lottecard.co.kr/spa/card/cards/credit/catalog/card-detail?vtCdKndC=P14073-A14073&LCFrom=card\n\n▶️ 하나카드\n✅ 카드명 : 더 심플 하나카드\n✅ 실적 : 전월 실적 30~80만원 미만 : 10,000원 할인\n✅ 바로가기 링크 : https://m.hanacard.co.kr/MKCDCM1000M.web?CD_PD_SEQ=16953\n\n▶️ 신한카드\n✅ 카드명 : LG U+ 스마트플랜 Plus\n✅ 실적 : 전월 실적 70만원 이상 : 5,000원 할인\n✅ 바로가기 링크 : https://www.shinhancard.com/pconts/html/card/apply/credit/1196321_2207.html\n\n▶️ 삼성카드\n✅ 카드명 : LG U⁺ 삼성카드\n✅ 실적 : 전월 실적 30~70만원 미만 : 7,000원 할인\n✅ 바로가기 링크 : https://www.samsungcard.com/home/card/cardinfo/PGHPPCCCardCardinfoDetails001?code=AAP1663\n\n${CARD_MSG_ALL_LINK}\n\n감사합니다.\n미소 드림.`,
-sky: `[미소] 스카이라이프 제휴카드 안내 문자\n\n안녕하세요, 고객님.\n스카이라이프 할인 받으실 수 있는 제휴카드 문자로 정리해서 공유드립니다. 🙂\n\n카드 발급 받으신 뒤 스카이라이프 고객센터 1588-3002번으로 연락하신 뒤 자동이체 연결하셔야 할인 적용 가능합니다.\n(카드사 사정에 따라 사전 예고 없이 변경되거나 발급이 중단될 수 있습니다. 신청 전 각 카드사 홈페이지에서 확인해 주세요)\n\n감사합니다. 😃\n\n▶️ 신한카드\n✅ 카드명 : 스카이라이프 신한카드\n✅ 실적 : 전월 실적 30~70만원 미만 : 13,000원 할인\n✅ 바로가기 링크 : https://www.shinhancard.com/pconts/html/card/apply/credit/1236601_2207.html\n\n▶️ 국민카드\n✅ 카드명 : KT 스카이라이프 KB카드\n✅ 실적 : 전월 실적 70만원 이상 : 11,000원 할인\n✅ 바로가기 링크 : https://m.kbcard.com/CRD/DVIEW/MCAMCXHIACRC0002?mainCC=b&allianceCode=04348\n\n${CARD_MSG_ALL_LINK}\n\n감사합니다.\n미소 드림.`,
-hello: `[미소] LG헬로비전 제휴카드 안내 문자\n\n안녕하세요, 고객님.\nLG헬로비전 할인 받으실 수 있는 제휴카드 문자로 정리해서 공유드립니다. 🙂\n\n카드 발급 받으신 뒤 LG헬로비전 고객센터 1855-1000번으로 연락하신 뒤 자동이체 연결하셔야 할인 적용 가능합니다.\n(카드사 사정에 따라 사전 예고 없이 변경되거나 발급이 중단될 수 있습니다. 신청 전 각 카드사 홈페이지에서 확인해 주세요)\n\n감사합니다. 😃\n\n▶️ 국민카드\n✅ 카드명 : LG 헬로비전Ⅱ카드\n✅ 실적 : 전월 실적 30~70만원 미만 : 7,000원 할인\n✅ 바로가기 링크 : https://card.kbcard.com/CRD/DVIEW/HCAMCXPRICAC0076?mainCC=a&cooperationcode=02083&solicitorcode=7022170002\n\n▶️ 우리카드\n✅ 카드명 : LG헬로비전 언제나 우리카드\n✅ 실적 : 전월 실적 30~70만원 미만 : 8,000원 할인\n✅ 바로가기 링크 : https://m.wooricard.com/dcmw/mobile/totalSearch.do?searchTerm=%EC%96%B8%EC%A0%9C%EB%82%98%20%EC%9A%B0%EB%A6%AC%EC%B9%B4%EB%93%9C&gubn=01&mGubn=M\n\n▶️ 신한카드\n✅ 카드명 : LG헬로비전 신한카드\n✅ 실적 : 전월 실적 40~80만원 미만 : 10,000원 할인\n✅ 바로가기 링크 : https://www.shinhancard.com/pconts/html/card/apply/credit/1203566_2207.html\n\n▶️ 롯데카드\n✅ 카드명 : LG헬로비전 롯데카드\n✅ 실적 : 전월 실적 30~70만원 미만 : 11,000원 할인\n✅ 바로가기 링크 : https://m.lottecard.co.kr/spa/card/booth?bId=90261&vtCdKndC=P11708-A11708\n\n${CARD_MSG_ALL_LINK}\n\n감사합니다.\n미소 드림.`
+kt: `[미소] KT 제휴카드 안내 문자\n\n안녕하세요, 고객님.\nKT 인터넷 할인 받으실 수 있는 제휴카드 문자로 정리해서 공유드립니다. 🙂\n\n카드 발급 받으신 뒤 KT 고객센터 100번으로 연락하신 뒤 자동이체 연결하셔야 할인 적용 가능합니다.\n(카드사 사정에 따라 사전 예고 없이 변경되거나 발급이 중단될 수 있습니다. 신청 전 각 카드사 홈페이지에서 확인해 주세요)\n\n감사합니다. 😃\n\n${cardMsgDefaultBlocks('KT')}\n\n${CARD_MSG_ALL_LINK}\n\n감사합니다.\n미소 드림.`,
+skt: `[미소] SKT 제휴카드 안내 문자\n\n안녕하세요, 고객님.\nSKT 인터넷 할인 받으실 수 있는 제휴카드 문자로 정리해서 공유드립니다. 🙂\n\n카드 발급 받으신 뒤 SKT 고객센터 1600-2000번으로 연락하신 뒤 자동이체 연결하셔야 할인 적용 가능합니다.\n(카드사 사정에 따라 사전 예고 없이 변경되거나 발급이 중단될 수 있습니다. 신청 전 각 카드사 홈페이지에서 확인해 주세요)\n\n감사합니다. 😃\n\n${cardMsgDefaultBlocks('SKT')}\n\n${CARD_MSG_ALL_LINK}\n\n감사합니다.\n미소 드림.`,
+skb: `[미소] SKB 제휴카드 안내 문자\n\n안녕하세요, 고객님.\nSKB 인터넷 할인 받으실 수 있는 제휴카드 문자로 정리해서 공유드립니다. 🙂\n\n카드 발급 받으신 뒤 SKB 고객센터 106번으로 연락하신 뒤 자동이체 연결하셔야 할인 적용 가능합니다.\n(카드사 사정에 따라 사전 예고 없이 변경되거나 발급이 중단될 수 있습니다. 신청 전 각 카드사 홈페이지에서 확인해 주세요)\n\n감사합니다. 😃\n\n${cardMsgDefaultBlocks('SKB')}\n\n${CARD_MSG_ALL_LINK}\n\n감사합니다.\n미소 드림.`,
+lg: `[미소] LG U+ 제휴카드 안내 문자\n\n안녕하세요, 고객님.\nLG U+ 인터넷 할인 받으실 수 있는 제휴카드 문자로 정리해서 공유드립니다. 🙂\n\n카드 발급 받으신 뒤 LG U+ 고객센터 101번으로 연락하신 뒤 자동이체 연결하셔야 할인 적용 가능합니다.\n(카드사 사정에 따라 사전 예고 없이 변경되거나 발급이 중단될 수 있습니다. 신청 전 각 카드사 홈페이지에서 확인해 주세요)\n\n감사합니다. 😃\n\n${cardMsgDefaultBlocks('LG U+')}\n\n${CARD_MSG_ALL_LINK}\n\n감사합니다.\n미소 드림.`,
+sky: `[미소] 스카이라이프 제휴카드 안내 문자\n\n안녕하세요, 고객님.\n스카이라이프 할인 받으실 수 있는 제휴카드 문자로 정리해서 공유드립니다. 🙂\n\n카드 발급 받으신 뒤 스카이라이프 고객센터 1588-3002번으로 연락하신 뒤 자동이체 연결하셔야 할인 적용 가능합니다.\n(카드사 사정에 따라 사전 예고 없이 변경되거나 발급이 중단될 수 있습니다. 신청 전 각 카드사 홈페이지에서 확인해 주세요)\n\n감사합니다. 😃\n\n${cardMsgDefaultBlocks('스카이라이프')}\n\n${CARD_MSG_ALL_LINK}\n\n감사합니다.\n미소 드림.`,
+hello: `[미소] LG헬로비전 제휴카드 안내 문자\n\n안녕하세요, 고객님.\nLG헬로비전 할인 받으실 수 있는 제휴카드 문자로 정리해서 공유드립니다. 🙂\n\n카드 발급 받으신 뒤 LG헬로비전 고객센터 1855-1000번으로 연락하신 뒤 자동이체 연결하셔야 할인 적용 가능합니다.\n(카드사 사정에 따라 사전 예고 없이 변경되거나 발급이 중단될 수 있습니다. 신청 전 각 카드사 홈페이지에서 확인해 주세요)\n\n감사합니다. 😃\n\n${cardMsgDefaultBlocks('LG헬로비전')}\n\n${CARD_MSG_ALL_LINK}\n\n감사합니다.\n미소 드림.`
 };
 
 // 2026-08-25: 카드 목록에서 선택한 카드가 있으면, 이 통신사 문자 탭엔 전체 카드 안내 대신
@@ -5061,7 +5090,7 @@ function buildCardMsgPersonalized(key, cards){
     const dis = monthly > 0 ? Math.min(tier.amt, monthly) : 0;
     // 2026-09-02: 전체 구간 나열 대신 고른 실적 구간 하나만 표기하고,
     // 적용 시 월 요금을 그 바로 아래 줄로 옮긴다(괄호 설명은 생략) — 사용자 요청.
-    const tierStr = tier.cond + ' : ' + fmt(tier.amt) + '원 할인' + (tier.phase ? ' (' + tier.phase + ')' : '');
+    const tierStr = tier.cond + ' : ' + pcardAmtLabel(c, tier.amt) + (tier.phase ? ' (' + tier.phase + ')' : '');
     // 할인 전 월 요금 → 카드 적용 후 요금을 한 줄에 나란히
     const appliedStr = monthly > 0
       ? `\n✅ 월 요금 : ${fmt(monthly)}원 / 카드 적용 시 : ${fmt(monthly - dis)}원` : '';
